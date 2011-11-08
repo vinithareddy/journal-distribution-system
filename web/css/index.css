@@ -1,0 +1,33 @@
+/*
+    Document   : index
+*/
+
+root {
+    display: block;
+}
+
+
+#loginDiv{
+    margin: 10% 30%;
+    width: 40%;
+    text-align: center;
+    background-color: #ECE5B6;
+}
+
+#loginDiv table{
+
+    margin-left: 20%;
+}
+
+#loginErrorMsg{
+
+    margin-bottom: 20px;
+    margin-top: 10px;
+    text-align: center;
+    color: red;
+}
+
+#resetpwdDiv{
+
+    margin: 10% 10%;
+}
