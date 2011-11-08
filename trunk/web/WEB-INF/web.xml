@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+    <servlet>
+        <servlet-name>main</servlet-name>
+        <servlet-class>IAS.Controller.main</servlet-class>
+        <run-as>
+            <role-name>user</role-name>
+        </run-as>
+    </servlet>
+    <servlet>
+        <servlet-name>inward</servlet-name>
+        <servlet-class>IAS.Controller.inward</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>main</servlet-name>
+        <url-pattern>/main</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>inward</servlet-name>
+        <url-pattern>/inward</url-pattern>
+    </servlet-mapping>
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+    <welcome-file-list>
+        <welcome-file>/home.jsp</welcome-file>
+    </welcome-file-list>
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>JSS</web-resource-name>
+            <description> accessible by authenticated users of the user role</description>--&gt;
+            <url-pattern>*.*</url-pattern>
+            </web-resource-collection>
+        <auth-constraint>
+            <description>These roles are allowed access</description>
+            <role-name>user</role-name>
+        </auth-constraint>
+        <user-data-constraint>
+            <description>SSL Required</description>
+            <transport-guarantee>NONE</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+    <security-role>
+        <description>Only 'user' role is allowed to access this web application</description>
+        <role-name>user</role-name>
+    </security-role>
+</web-app>
