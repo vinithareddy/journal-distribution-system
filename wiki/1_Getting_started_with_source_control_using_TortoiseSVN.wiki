@@ -1,0 +1,84 @@
+=Getting started with source control=
+
+===IDE and Development Environment===
+  * I am using NetBeans 7.0.1
+  * Tomcat 7.0.1
+  * JDK 6
+
+===Install TortoiseSVN===
+  * Download and install latest TortoiseSVN from [http://tortoisesvn.net/downloads.html]
+  * I am using TortoiseSVN 1.7.1
+  * Install the 32bit or 64 bit version based on the operating system
+
+===Getting password to be used for any operation===
+  * Get code.google.com password
+  * Sign in to Project Hosting
+  * Go to Profile >> Settings
+  * Take note of the password
+  * In my case the password is *fp9zb9xN5uB3*
+
+===Subversion URL of project host at google code===
+  * Sign in to Project Hosting
+  * Go to Project>>Source
+  * Will be in the format of [https://journal-distribution-system.googlecode.com/svn/trunk/]
+  * *If you use http instead of https you will have authentication problem*
+
+===Network Settings===
+  * Goto TortoiseSVN>>Settings>>Network
+  * Enter the proxy server address. Enter username and password used for authentication on the proxy server
+
+===Getting code from google code into my laptop===
+  * Create a folder called as sandbox
+  * Right Click on folder >> SVN Checkout...
+  * Check if the Repository URL is [https://journal-distribution-system.googlecode.com/svn/trunk/]
+  * Check if the directory in which the code has to be brought from google code is correct.
+  * press OK and the code will be brought from google code to your laptop.
+
+===Opening code in NetBeans for the first time===
+  * Open NetBeans. Check if you are able to load the project
+  * If NetBeans detects that the code is under source control, then you will see multiple options under "Team" on the mail menu
+  * *If you see an error "Reference Problems".* please let me know ASAP
+
+===Making my first change===
+  * I have modified the file "sidebar.jsp". Added "Generate Reminders" under "Mailing List".
+  * Tested the code and saw that in the sidebar "Generate Reminders" is present.
+  * The moment I save the changes, you will see the file marked with a different color and on mouse-over on the directory "templates", it shows the comment "Contains new, modified or deleted file properties" and also a small box at the beginning of the directory.
+  * Click on "Team" >> "Show Changes". This will show the file "sidebar.jsp" status as "Locally Modified" and the path on the repository.
+  * If you have tested the changes and are ready to merge the changes in the mail repository, then right click on the file and press "Commit". This will upload your files on the server.
+  * It is always a good idea to "update" your view with the latest changes from the server before commiting the new changes.
+  * Also it a good idea to file a bug in the bug tracker and refer to the bug ID in the "Comments".
+
+===If you are getting error like "org.tigris.subversion.javahl.ClientException: The path appears to be part of a Subversion 1.7 or greaterworking copy. Please upgrade your Subversion client to use thisworking copy" ===
+  * Open the file netbeans.conf. I have my Netbeans installed in D://TECH_INSTALLS/NetBeans 7.0.1
+  * I found the file at D://TECH_INSTALLS/NetBeans 7.0.1/etc/netbeans.conf
+  *  In "netbeans_default_options", I added the string "-J-DsvnClientAdapterFactory=commandline" as the last option
+  * Then re-start Netbeans
+  * Reload the project. You may see a popup saying "NetBeans Subversion support requires a Subversion client!". Select option "Install Subversion Commandline Client". Give the patch where Subversion 1.7 is installed. In my cas, I gave the path as "C:/Program Files/TortoiseSVN/bin"
+  * Why this change is required: Subversion 1.7 (still in beta phase) will introduce a fundamental change in the working copy format. Rather than a few hundred ".svn" directories scattered all around your directory tree, there will be a single ".svn" folder in the root directory (like in most other version control tools). Till a plugin is available to read files stored by svn 1.7 this is the only solution. For this reason the NetBeans is setup to use the command line client exclusively. This is achieved by setting the switch "-J-DsvnClientAdapterFactory=commandline"from the command-line or in the netbeans.conf file.
+
+==Advanced==
+
+===Which files should go into source control when you are using NetBeans===
+  * http://netbeans.org/kb/docs/java/import-eclipse.html#versioning
+  * If the project is checked out of a version control system, the build (or nbbuild), dist (or nbdist), and the nbproject/private folders should not be checked into that version control system. If the project is under the CVS, Subversion, or Mercurial version control systems, the appropriate "ignore" files are created or updated for these directories when the project is imported. Though nbproject/private should be ignored, nbproject should be checked into the version control system. nbproject contains project metadata that enables others users to open the project in NetBeans without having to import the project first.
+
+===Setting ignore for certain directories===
+  * Click on NetBeans >> Team >> Show Changes
+  * It will show that the folder "lib", "CopyLibs" and all files under these directories as "Locally new".
+  * These are files that are generated and hence should not be under source control.
+  * In the "Status", right click on the folder and select "Ignore". Now the directory will not be shown in "Changed list".   
+
+===Importing Source into Google Projects===
+  * Right click on the folder you want to import into svn.
+  * Right click on folder >> TortoiseSVN >> Import
+  * Give the URL as [https://journal-distribution-system.googlecode.com/svn/trunk/]
+  * Give username as the google username and the password should be what is noted above
+  * If yo get an error with saying "Cannot connect...", then it means the proxy is not set correctly.
+
+===Integrating bug tracker with version control===
+  * Install gurtle
+  * Right Click any folder >> TortoiseSVN >> Settings >> Issue Tracker Integration >> Add
+  * Enter local path where the bug tracker data can be stored.
+  * Give parameters as "project=journal-distribution-system". Click on "Options" >> Test
+  * I got a message "The Google Code project ... appears valid and reachable at ...." 
+
