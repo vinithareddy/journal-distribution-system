@@ -10,7 +10,7 @@
 {{{
 #commit comment here
 
-#next line doesn't need any number. Issue number will be automatically assigned after commit. Do not remove the "New Issue" text.
+#next line doesn't need any number. Issue number will be automatically assigned after commit. During commit the commit-message will be parsed and if the string "New Issue" is found a new issue will be automatically filed.
 New issue
 #A summary is always needed. Please complete next line
 Summary:
@@ -32,7 +32,7 @@ Summary:
 {{{
 #commit comment here
 
-#Complete next line with issue number. Do not remove the "Update issue" text below
+#Complete next line with issue number e.g: Update issue 78. This will update the issue 78 with text given below
 Update issue
 #summary is rarely updated. If you need that uncomment and complete next line
 #Summary:
@@ -54,7 +54,7 @@ Update issue
 {{{
 #commit comment here
 
-#Complete next line with issue number. Do not remove the text "Fixes issue"
+#Complete next line with issue number e.g Fixes issue 78. Do not remove the text "Fixes issue". This will change the state of issue 78 to fixed.
 Fixes issue
 
 #Comment text for the issue tracker goes here
