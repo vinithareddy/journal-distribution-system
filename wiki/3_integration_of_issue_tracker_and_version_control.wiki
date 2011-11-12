@@ -3,11 +3,14 @@
   
   * The way issue trakcer and version control will be used is as follows:
     # *Every code that is committed to the main branch should have a bug associated with it.*
-    # If you want to enter a *new issue*, then enter the following text in the *commit-log* message.
+    # The template to be used for *new issue*, *update an issue* and *fix an issue* is given below.
+    # Save the 3 templates to your laptop. In NetBeans, right click on the folder, file to be committed. In the "Commit Message", click on "Load template". This option is present on the top right corner inline with the "Commit Message" label. Select "Automatically fill into commit message". Click on "Load File". Load the appropriate template and edit the relevant information. Remove the text that is not required e.g Remove "#" for the right label and remove the other labels.
+
+    * If you want to enter a *new issue*, then enter the following text in the *commit-log* message.
 {{{
 #commit comment here
 
-#next line doesn't need any number. ssue number will be automaticaly assigned after commit
+#next line doesn't need any number. Issue number will be automatically assigned after commit. Do not remove the "New Issue" text.
 New issue
 #A summary is always needed. Please complete next line
 Summary:
@@ -25,11 +28,11 @@ Summary:
 
 #Comment text for the issue tracker goes here
 }}}
-    # If you want to *update an issue* with more details
+    * If you want to *update an issue* with more details
 {{{
 #commit comment here
 
-#Complete next line with issue number
+#Complete next line with issue number. Do not remove the "Update issue" text below
 Update issue
 #summary is rarely updated. If you need that uncomment and complete next line
 #Summary:
@@ -47,12 +50,11 @@ Update issue
 
 #Comment text for the issue tracker goes here
 }}}
-    # If you want to *Fix* an issue
+    * If you want to *Fix* an issue
 {{{
-FixIssue.tmpl
 #commit comment here
 
-#Complete next line with issue number
+#Complete next line with issue number. Do not remove the text "Fixes issue"
 Fixes issue
 
 #Comment text for the issue tracker goes here
