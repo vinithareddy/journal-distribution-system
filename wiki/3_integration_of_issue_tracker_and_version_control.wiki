@@ -1,0 +1,61 @@
+===google code’s integration of issue tracker and version control===
+  * google code’s integration of issue tracker and version control permits an user to create, update, or fix an issue when you are committing a change. In a nutshell "google code’s integration of issue tracker and version control" permits to create, update and close issues just adding some keyword on your commit. Please check [http://code.google.com/p/support/wiki/IssueTracker#Integration_with_version_control] for more information.
+  
+  * The way issue trakcer and version control will be used is as follows:
+    # *Every code that is committed to the main branch should have a bug associated with it.*
+    # If you want to enter a *new issue*, then enter the following text in the *commit-log* message.
+{{{
+#commit comment here
+
+#next line doesn't need any number. ssue number will be automaticaly assigned after commit
+New issue
+#A summary is always needed. Please complete next line
+Summary:
+#Uncomment the right Status
+#Status: Accepted
+#Status: Fixed
+#Status: New
+#Uncommet right Labels and/or add labels to the list (comma or space separate)
+#Labels: Type-Defect Priority-Medium
+#Labels: Type-Defect Priority-High
+#Labels: Type-Defect Priority-Critical
+#Labels: Type-Enhancement Priority-Medium
+#Labels: Type-Enhancement Priority-Low
+#Labels: Type-Enhancement Priority-High
+
+#Comment text for the issue tracker goes here
+}}}
+    # If you want to *update an issue* with more details
+{{{
+#commit comment here
+
+#Complete next line with issue number
+Update issue
+#summary is rarely updated. If you need that uncomment and complete next line
+#Summary:
+#Uncomment the new Status you would get your issue. No uncomment status will keep the previous status
+#Status: Accepted
+#Status: Fixed
+#Status: New
+#Uncommet Labels and/or add labels to the list (comma or space separate) if you want update/add Labels
+#Labels: Type-Defect Priority-Medium
+#Labels: Type-Defect Priority-High
+#Labels: Type-Defect Priority-Critical
+#Labels: Type-Enhancement Priority-Medium
+#Labels: Type-Enhancement Priority-Low
+#Labels: Type-Enhancement Priority-High
+
+#Comment text for the issue tracker goes here
+}}}
+    # If you want to *Fix* an issue
+{{{
+FixIssue.tmpl
+#commit comment here
+
+#Complete next line with issue number
+Fixes issue
+
+#Comment text for the issue tracker goes here
+}}}
+
+  * Reference: [http://www.javalinux.it/wordpress/2009/10/17/google-code-issue-tracker-integration-with-version-control-using-git-commit-template/]
