@@ -63,3 +63,44 @@ Fixes issue
 }}}
 
   * Reference: [http://www.javalinux.it/wordpress/2009/10/17/google-code-issue-tracker-integration-with-version-control-using-git-commit-template/]
+
+===Integrating bug tracker with version control===
+  * TortoiseSVN can use a COM plugin to query issue trackers when in the commit dialog. [http://code.google.com/p/gurtle/]
+  * Install gurtle from the following site [http://code.google.com/p/gurtle/downloads/list]. Install the 32bit or 64bit version based on your operating system. Check the "Requirements" section in the webpage.
+  * Right Click any folder >> TortoiseSVN >> Settings >> Issue Tracker Integration >> Add
+  * Enter local path where the bug tracker data can be stored.
+  * Give parameters as "project=journal-distribution-system". Click on "Options" >> Test
+  * I got a message "The Google Code project ... appears valid and reachable at ...."
+
+  * *Following settings should be done by the administrator*, once so that the changes are visible to all. Open the command prompt and type in the following:
+{{{
+
+The assumption is that TortoiseSVN is installed at 
+C:\Program Files\TortoiseSVN and 
+that the repository is present at 
+D:\PERSONAL_SAVE\IAS\test
+
+Step1:
+This property specifies the COM UUID of the IBugtraqProvider
+C:\PROGRA~1\TortoiseSVN\bin>svn propset bugtraq:provideruuid {91974081-2DC7-4FB1-B3BE-0DE1C8D6CE4E} D:\PERSONAL_SAVE\IAS\test
+property 'bugtraq:provideruuid' set on 'D:\PERSONAL_SAVE\IAS\test'
+
+For systems that are using 64-bit TorToiseSVN use the following command
+C:\PROGRA~1\TortoiseSVN\bin>svn propset bugtraq:provideruuid64 {A0557FA7-7C95-485b-8F40-31303F762C57} D:\PERSONAL_SAVE\IAS\test
+
+Step2:
+This property specifies the parameters passed to the IBugtraqProvider.
+C:\PROGRA~1\TortoiseSVN\bin>svn propset bugtraq:providerparams project=journal-distribution-system D:\PERSONAL_SAVE\IAS\test
+property 'bugtraq:providerparams' set on 'D:\PERSONAL_SAVE\IAS\test'
+
+Step3: Commit the changes to the main trunk.
+D:\PERSONAL_SAVE\IAS\test>C:\PROGRA~1\TortoiseSVN\bin\svn commit -m "Added TSVN/Gurtle IBugTraqProvider properties."
+
+The same can be added using the visual interface.
+Right-Click on the repository >> TortoiseSVN >> Properties and add a new property.
+
+}}} 
+
+  * Check if the issue list is visible. Right Click on any File >> SVN Commit >> Select Issue. Click on "Select Issue", you should be able to see the list of issues.
+
+  * Reference: [http://tortoisesvn.net/docs/release/TortoiseSVN_en/tsvn-dug-settings.html]
