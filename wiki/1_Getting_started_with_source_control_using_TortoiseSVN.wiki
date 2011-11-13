@@ -1,7 +1,7 @@
 =Getting started with source control=
 
 ===Some browser issues===
-  * This wiki page is not rendered correctly in IE7.0 for some reason. I am using Chrome 15.0.874.106 m and it renders fine!
+  * This wiki page is not rendered correctly in some places. When the page is reviewed in the "preview" it appears to be fine! Not such a put off for now, but can be reviewed later!
 
 ===IDE and Development Environment===
   * NetBeans 7.0.1
@@ -77,10 +77,3 @@
   * Give the URL as [https://journal-distribution-system.googlecode.com/svn/trunk/]
   * Give username as the google username and the password should be what is noted above
   * If you get an error saying "Cannot connect...", then it means the proxy settings in the TortoiseSVN are not set correctly.
-
-===Integrating bug tracker with version control===
-  * Install gurtle
-  * Right Click any folder >> TortoiseSVN >> Settings >> Issue Tracker Integration >> Add
-  * Enter local path where the bug tracker data can be stored.
-  * Give parameters as "project=journal-distribution-system". Click on "Options" >> Test
-  * I got a message "The Google Code project ... appears valid and reachable at ...." 
