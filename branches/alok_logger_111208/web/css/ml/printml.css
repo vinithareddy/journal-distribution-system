@@ -1,0 +1,86 @@
+/*
+    Document   : printml
+    Created on : Nov 12, 2011, 8:02:26 PM
+    Author     : Shailendra Mahapatra
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/*
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+
+/*Reset Style*/
+body {
+    border: none;
+    font: 12px Arial, Helvetica,"Lucida Grande", serif; color: #000;
+}
+
+#printPreview{
+    width: 100%;
+    left: 0;
+    height: 100%;
+    padding-bottom: 0.3cm;
+    overflow: auto;
+
+}
+
+#sidebar, #header, #bodyContainer{
+    display: none;
+}
+
+.MainFieldset{
+    border: none;
+}
+
+.sticker{
+    margin-top: 0.3cm;
+    background-color: white;
+    width: 100%;
+    border-width: thin;
+    border-style: solid;
+    height: 3.5cm;
+}
+
+.label{
+    margin-top: 0.9cm;
+    background-color: white;
+    margin-left: 1.5cm;
+    width: 20cm;
+    border-width: thin;
+    border-style: solid;
+    height: 13.5cm;
+}
+
+.stickerAddressDiv{
+    margin-top: 1cm;
+    margin-bottom: 0.5cm;
+    margin-right: 0.5cm;
+    margin-left: 20%;
+}
+
+.labelAddressDiv{
+    margin-top: 4cm;
+    margin-bottom: 2cm;
+    margin-right: 2cm;
+    float: right;
+}
+
+.IASFormLeftDiv{
+    width: 9.5cm;
+    margin-left: 1cm;
+    float: left;
+
+}
+
+.IASFormRightDiv{
+    width: 10cm;
+    margin-right: 0.5cm;
+    float: right;
+}
+
+#print-modal{
+    width: 23.5cm;
+}
