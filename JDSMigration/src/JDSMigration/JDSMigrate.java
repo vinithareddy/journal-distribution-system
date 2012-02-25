@@ -15,14 +15,14 @@ import org.apache.log4j.Logger;
  */
 public class JDSMigrate {
 
-    static final Logger logger = Logger.getRootLogger();
+    private static final Logger logger = Logger.getLogger(JDSMigrate.class);
 
     public static void main(String[] args) {
 
         try {
             Inward _inward = new Inward();
             _inward.Migrate();
-        } catch (IOException | ParseException | SQLException e) {
+        } catch (SQLException e) {
             StackTraceElement elements[] = e.getStackTrace();
             for (int i = 0, n = elements.length; i < n; i++) {
                 logger.fatal("--------------- start --------------------");
@@ -32,7 +32,18 @@ public class JDSMigrate {
                 logger.fatal("File Name: " + elements[i].getFileName());
                 logger.fatal("--------------- end --------------------");
             }
-        }catch(Exception e){
+
+        } catch (IOException | ParseException e) {
+            StackTraceElement elements[] = e.getStackTrace();
+            for (int i = 0, n = elements.length; i < n; i++) {
+                logger.fatal("--------------- start --------------------");
+                logger.fatal("Class: " + elements[i].getClassName());
+                logger.fatal("Method Name: " + elements[i].getMethodName());
+                logger.fatal("Line Number: " + elements[i].getLineNumber());
+                logger.fatal("File Name: " + elements[i].getFileName());
+                logger.fatal("--------------- end --------------------");
+            }
+        } catch (Exception e) {
             StackTraceElement elements[] = e.getStackTrace();
             for (int i = 0, n = elements.length; i < n; i++) {
                 logger.fatal("--------------- start --------------------");

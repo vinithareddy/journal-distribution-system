@@ -21,7 +21,7 @@ public class MigrationBase {
     public String dataFolder = "data";
     public Database db = null;
 
-    static final Logger logger = Logger.getRootLogger();
+    private static final Logger logger = Logger.getLogger(MigrationBase.class);
 
     public MigrationBase() {
 

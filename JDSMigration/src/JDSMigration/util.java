@@ -53,6 +53,17 @@ public final class util {
         return sqlDate;
     }
 
+    public static java.sql.Date dateStringToSqlDate(String stringDate, String Format) throws ParseException {
+
+        if (stringDate == null || stringDate.length() == 0) {
+            return null;
+        }
+        DateFormat formater = new SimpleDateFormat(Format);
+        java.util.Date parsedUtilDate = formater.parse(stringDate);
+        java.sql.Date sqlDate = new java.sql.Date(parsedUtilDate.getTime());
+        return sqlDate;
+    }
+
     public static String convertResultSetToXML(ResultSet rs) throws ParserConfigurationException, SQLException, TransformerException {
 
         String xml = null;
