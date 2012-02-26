@@ -55,6 +55,18 @@ If this opens the tomcat page means that the tomcat server is running.
 The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path
 }}}
 
-==Solution5:== Ignore the error.
+==Solution5:== 
+Ignore the error.
 
+----
+==Problem6:==
+In NetBeans observed that NetBeans is using the default version of JDK i.e JDK 1.6.0.22 (Using JRE_HOME:        "D:\TECH_INSTALLS\jdk1.6.0_22")
+But I wanted it to use JDK 1.7.0.22
+==Solution6:== 
+I did not want to change the default "JRE_HOME" since this was being used by other programs. Hence another way to change this it to configure NetBeans to use the JDK you want to use.
+Edited "D:\TECH_INSTALLS\NetBeans 7.0.1\etc\netbeans.conf".
+Changed "netbeans_jdkhome="D:\TECH_INSTALLS\jdk1.6.0_22"" to use
+netbeans_jdkhome="D:\TECH_INSTALLS\jdk1.7.0_02"
+Another way is as follows:
+In NetBeans Navigate to servers->Apache tomcat->properties->platform, select 1.7 jdk if already present in the drop down else add and select it.
 ----
