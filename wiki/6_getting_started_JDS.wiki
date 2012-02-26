@@ -37,6 +37,8 @@
 
 (9) NetBeans -> Tools -> Options -> Miscellaneous -> Versioning -> Select Subversion.
 
+Open Netbeans->Services->Servers->Apache->Right Click, select properties. In the connection tab, give the username and pwd as tomcat/tomcat.
+
 (10) Set "Path to the SVN executable File:". In my case I gave "C:\Program Files\TortoiseSVN\bin"
 
 (11) Install 'mysql-5.5.16-winx64.msi". Install 32-bit or 64 bit based on your system type.
@@ -81,4 +83,5 @@ Check if the script executes successfully.
 In access for Database "jds" enable "select", "insert", "update", "execute".
 
 This should setup your system for working on JDS.
+Close NetBeans and re-start NetBeans.
 In NetBeans, click on "Run". Check if you are able to login.
