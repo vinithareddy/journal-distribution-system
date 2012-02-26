@@ -30,3 +30,24 @@ Re-install tortoiseSVN. Select "Modify" and install commandline option.
 Open a command line shell, check if the following command produces an output, "svn --version".
 else add the "C:\Program Files\TortoiseSVN\bin" to the path.
 ----
+==Problem4:==
+Many times when I run Netbeans, I get an error saying 
+{{{
+port 8080 already in use.
+}}}
+==Solution4: ==
+Check if the tomcat server is running by typing the following in the browser. http://localhost:8080.
+If this opens the tomcat page means that the tomcat server is running.
+  * Try to shutdown the server by executing the shutdown.bat in the tomcat installation directory.
+  * If that also does not work, check if the "java" process is running. Kill the java process and check that tomcat server is not running. Try running your executable in NetBeans now.
+  * If that still does not work, then goto Servers->Select Apache Tomcat ->Connection. Change the Server port to some other port no say 8081
+  * If that does not work, then you need to reboot your machine
+----
+==Problem5:==
+{{{
+The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path
+}}}
+
+==Solution5:== Ignore the error.
+
+----
