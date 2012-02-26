@@ -1,0 +1,9 @@
+==Problem1: ==
+Exception in thread "main" java.lang.IllegalArgumentException: PWC6309: Illegal compilerSourceVM: 1.7
+	at org.apache.jasper.JspC.setCompilerSourceVM(JspC.java:708)
+
+	at org.netbeans.modules.web.project.ant.JspC.main(JspC.java:80
+==Solution1:==
+Do not build jsp. 
+Project->Properties->Compiling->De-select "Test compile all JSP files during builds"
+http://netbeans.org/bugzilla/show_bug.cgi?id=201414
