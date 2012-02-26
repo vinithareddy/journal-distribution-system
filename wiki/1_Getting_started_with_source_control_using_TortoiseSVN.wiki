@@ -3,6 +3,13 @@
 ===Some browser issues===
   * This wiki page is not rendered correctly in some places. When the page is reviewed in the "preview" it appears to be fine! Not such a put off for now, but can be reviewed later!
 
+===Creating the database tables===
+  * Download latest code from site.
+  * Open toad, open database "JDS".
+  * Under db you will find the file "jds_schema_data.sql".
+  * Open "Edit SqL" in Toad. Copy paste the contents there.
+  * Run "Execute. This should run the sql script and create the db that you want.
+
 ===Making my first change===
   * I have modified the file "sidebar.jsp". Added "Generate Reminders" under "Mailing List".
   * Tested the code and saw that in the sidebar "Generate Reminders" is present.
@@ -12,17 +19,12 @@
   * It is always a good idea to "update" your view with the latest changes from the server before commiting the new changes.
   * Also it a good idea to file a bug in the bug tracker and refer to the bug ID in the "Comments".
 
-  *Note: A better way for development is using "feature branches" [https://code.google.com/p/journal-distribution-system/wiki/4_using_branches_for_development]
+===Before committing changes===
+  * Before committing the code, you need to run the script "generateschema". This will dump the additions or changes that you have made to your database copy in the "jds_schema_data.sql" file. Now you can commit you changes.
 
-===If you are getting error like  "org.tigris.subversion.javahl.ClientException: The path appears to be part of a Subversion 1.7 or greaterworking copy. Please upgrade your Subversion client to use thisworking copy" ===
-  * Open the file netbeans.conf. I have my Netbeans installed in D:\TECH_INSTALLS\NetBeans 7.0.1
-  * I found the file at D:\TECH_INSTALLS\NetBeans 7.0.1/etc/netbeans.conf
-  *  In "netbeans_default_options", I added the string "-J-DsvnClientAdapterFactory=commandline" as the last option
-  * Then re-start Netbeans
-  * Reload the project. You may see a popup saying "NetBeans Subversion support requires a Subversion client!". Select option "Install Subversion Commandline Client". Give the patch where Subversion 1.7 is installed. In my cas, I gave the path as "C:/Program Files/TortoiseSVN/bin"
-  * Why this change is required: Subversion 1.7 (still in beta phase) will introduce a fundamental change in the working copy format. Rather than a few hundred ".svn" directories scattered all around your directory tree, there will be a single ".svn" folder in the root directory (like in most other version control tools). Till a plugin is available to read files stored by svn 1.7 this is the only solution. For this reason the NetBeans is setup to use the command line client exclusively. This is achieved by setting the switch "-J-DsvnClientAdapterFactory=commandline"from the command-line or in the netbeans.conf file.
+  * Note: A better way for development is using "feature branches" [https://code.google.com/p/journal-distribution-system/wiki/4_using_branches_for_development]
 
-==Advanced (Required for first time setup only)==
+==Advanced (Required for first time setup by administrators only)==
 
 ===Which files should go into source control when you are using NetBeans===
   * http://netbeans.org/kb/docs/java/import-eclipse.html#versioning
