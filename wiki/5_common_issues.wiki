@@ -1,9 +1,32 @@
 ==Problem1: ==
+{{{
 Exception in thread "main" java.lang.IllegalArgumentException: PWC6309: Illegal compilerSourceVM: 1.7
 	at org.apache.jasper.JspC.setCompilerSourceVM(JspC.java:708)
 
 	at org.netbeans.modules.web.project.ant.JspC.main(JspC.java:80
+}}}
 ==Solution1:==
 Do not build jsp. 
 Project->Properties->Compiling->De-select "Test compile all JSP files during builds"
 http://netbeans.org/bugzilla/show_bug.cgi?id=201414
+----
+==Problem2:==
+If you get the following error:
+{{{
+org.tigris.subversion.javahl.ClientException: The path 'C:\Users\I038668\Desktop\personal\IAS\sandbox' appears to be part of a Subversion 1.7 or greater working copy.  Please upgrade your Subversion client to use this working copy.
+}}}
+==Solution2:==
+In the C:\Program Files\netBeans\Etc add the following to the netbeans.conf.
+# command line switches:
+netbeans_default_options=-J-DsvnClientAdapterFactory=commandline
+----
+==Problem3:==
+If you see the following problem with Netbeans when you try to use Subversion with NetBeans
+{{{
+"Netbeans Subversion support requires a Subversion client! Install Subversion Commandline Client.."
+}}}
+==Solution3: ==
+Re-install tortoiseSVN. Select "Modify" and install commandline option.
+Open a command line shell, check if the following command produces an output, "svn --version".
+else add the "C:\Program Files\TortoiseSVN\bin" to the path.
+----
