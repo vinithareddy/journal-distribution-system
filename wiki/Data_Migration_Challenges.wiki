@@ -1,0 +1,28 @@
+------------------- Inward ---------------
+
+1. All inwards with old purpose as subscription have been changed to "renew subscription"
+
+2. Search mechanism, The city field from the old inward was used to determine the city, if the city did not exist in the database or was an invalid city the search order was modified to check if the name is a state or country. search order city->state->country
+Inwards in which city/state/country was not found in db, they were appended to the remarks.
+
+3. These inward reasons are invalid. The fellowship reason will be converted to "New subscription", the rest will be changed to "others" and the old reason will be appended to remarks.
+
+ERROR main JDSMigration.Inward - Could not find inward reason spl pub (jil)
+
+ERROR main JDSMigration.Inward - Could not find inward reason permission fee
+
+ERROR main JDSMigration.Inward - Could not find inward reason bv
+
+ERROR main JDSMigration.Inward - Could not find inward reason fellowship
+
+ERROR main JDSMigration.Inward - Could not find inward reason royality
+
+ERROR main JDSMigration.Inward - Could not find inward reason bv for curr
+
+ERROR main JDSMigration.Inward - Could not find inward reason reg worshop refund
+
+ERROR main JDSMigration.Inward - Could not find inward reason
+
+ERROR main JDSMigration.Inward - Could not find inward reason ld
+
+
