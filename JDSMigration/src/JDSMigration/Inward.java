@@ -101,6 +101,7 @@ public class Inward extends MigrationBase {
             String inwardPurpose = columns[4].toLowerCase();
             String Currency = "INR";
             String szchqddNumber = columns[5];
+            String remarks="";
 
             // replace all non word characters
             City = City.replaceAll("'", "");
@@ -184,6 +185,7 @@ public class Inward extends MigrationBase {
 
                         }else{
                             isCityFound = false;
+                            remarks = City;
                             pst_insert.setInt(++paramIndex, countryId);
                             pst_insert.setString(++paramIndex, null);
                             pst_insert.setString(++paramIndex, null);
@@ -198,13 +200,11 @@ public class Inward extends MigrationBase {
             pst_insert.setString(++paramIndex, columns[10]);
             pst_insert.setDate(++paramIndex, inwardDate);
 
-
-
             if (inwardPurpose == null) {
-                logger.error("No inward reason for: " + inwardNumber);
-                continue;
+                logger.debug("No inward reason for: " + inwardNumber);
+                inwardPurpose = "Others";
+                //continue;
             }
-
 
             if (inwardPurpose.contains("subscription") || inwardPurpose.contains("sub")) {
                 inwardPurpose = "Renew Subscription";
@@ -216,9 +216,13 @@ public class Inward extends MigrationBase {
                 inwardPurpose = "Reprint";
             } else if (inwardPurpose.contains("manuscript")) {
                 inwardPurpose = "Manuscript";
-            } else {
-                logger.error("Could not find inward reason " + inwardPurpose);
-                continue;
+            } else if(inwardPurpose.contains("fellowship")){
+                inwardPurpose = "New Subscription";
+            }else {
+                logger.debug("Could not find inward reason " + inwardPurpose + " for inward " + inwardNumber);
+                remarks += inwardPurpose;
+                inwardPurpose = "Others";
+                //continue;
             }
             pst_insert.setString(++paramIndex, inwardPurpose);
 
@@ -247,11 +251,11 @@ public class Inward extends MigrationBase {
             pst_insert.setFloat(++paramIndex, amount);
 
             // if the city is not found add it in the remarks, append to the existing remarks
-            String remarks = columns[9];
-            if (!isCityFound) {
-                logger.error("City, State, District and Country not found, will append " + City + " to remarks: " + inwardNumber);
+            remarks += columns[9];
+            /*if (!isCityFound) {
+                logger.debug("City, State, District and Country not found, will append " + City + " to remarks: " + inwardNumber);
                 remarks += "\n" + City;
-            }
+            }*/
 
             pst_insert.setString(++paramIndex, remarks);
 
