@@ -101,7 +101,7 @@ public class Inward extends MigrationBase {
             String inwardPurpose = columns[4].toLowerCase();
             String Currency = "INR";
             String szchqddNumber = columns[5];
-            String remarks="";
+            String remarks = null;
 
             // replace all non word characters
             City = City.replaceAll("'", "");
@@ -185,7 +185,7 @@ public class Inward extends MigrationBase {
 
                         }else{
                             isCityFound = false;
-                            remarks = City;
+                            remarks = remarks == null ? City : remarks + City;
                             pst_insert.setInt(++paramIndex, countryId);
                             pst_insert.setString(++paramIndex, null);
                             pst_insert.setString(++paramIndex, null);
@@ -220,7 +220,8 @@ public class Inward extends MigrationBase {
                 inwardPurpose = "New Subscription";
             }else {
                 logger.debug("Could not find inward reason " + inwardPurpose + " for inward " + inwardNumber);
-                remarks += inwardPurpose;
+                //remarks = inwardPurpose;
+                remarks = (remarks == null) ? inwardPurpose : remarks + inwardPurpose;
                 inwardPurpose = "Others";
                 //continue;
             }
@@ -251,11 +252,10 @@ public class Inward extends MigrationBase {
             pst_insert.setFloat(++paramIndex, amount);
 
             // if the city is not found add it in the remarks, append to the existing remarks
-            remarks += columns[9];
-            /*if (!isCityFound) {
-                logger.debug("City, State, District and Country not found, will append " + City + " to remarks: " + inwardNumber);
-                remarks += "\n" + City;
-            }*/
+            if(columns[9] != null && !columns[9].isEmpty()){
+                remarks = (remarks == null) ? columns[9] : remarks + columns[9];
+                //remarks += columns[9];
+            }
 
             pst_insert.setString(++paramIndex, remarks);
 
