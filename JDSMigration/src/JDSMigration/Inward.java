@@ -80,11 +80,11 @@ public class Inward extends MigrationBase {
         String _line = null;
         while (true) {
 
-            totalRows++;
             _line = this.getNextLine();
             if (_line == null) {
                 break;
             }
+            totalRows++;
             int cityId = 0;
             int districtId = 0;
             int countryId = 0;

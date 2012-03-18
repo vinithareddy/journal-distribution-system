@@ -16,25 +16,27 @@ import org.apache.log4j.Logger;
 public class JDSMigrate {
 
     private static final Logger logger = Logger.getLogger(JDSMigrate.class);
+    private boolean MIGRATE_INWARD = false;
+    private boolean MIGRATE_SUBSCRIBER = true;
 
     public static void main(String[] args) {
 
+        JDSMigrate _jdsmigrate = new JDSMigrate();
+        Object obj = null;
         try {
-            Inward _inward = new Inward();
-            _inward.Migrate();
-        } catch (SQLException e) {
-            StackTraceElement elements[] = e.getStackTrace();
-            for (int i = 0, n = elements.length; i < n; i++) {
-                logger.fatal("--------------- start --------------------");
-                logger.fatal("Class: " + elements[i].getClassName());
-                logger.fatal("Method Name: " + elements[i].getMethodName());
-                logger.fatal("Line Number: " + elements[i].getLineNumber());
-                logger.fatal("File Name: " + elements[i].getFileName());
-                logger.fatal("--------------- end --------------------");
+
+            if(_jdsmigrate.MIGRATE_INWARD){
+                Inward _inward = new Inward();
+                _inward.Migrate();
+            }else if(_jdsmigrate.MIGRATE_SUBSCRIBER){
+                Subscriber _subscriber = new Subscriber();
+                _subscriber.Migrate();
             }
 
-        } catch (IOException | ParseException e) {
-            StackTraceElement elements[] = e.getStackTrace();
+        } catch (IOException | ParseException |  SQLException e) {
+
+            logger.fatal(e.getMessage());
+            /*StackTraceElement elements[] = e.getStackTrace();
             for (int i = 0, n = elements.length; i < n; i++) {
                 logger.fatal("--------------- start --------------------");
                 logger.fatal("Class: " + elements[i].getClassName());
@@ -42,9 +44,10 @@ public class JDSMigrate {
                 logger.fatal("Line Number: " + elements[i].getLineNumber());
                 logger.fatal("File Name: " + elements[i].getFileName());
                 logger.fatal("--------------- end --------------------");
-            }
+            }*/
         } catch (Exception e) {
-            StackTraceElement elements[] = e.getStackTrace();
+            logger.fatal(e.getMessage());
+            /*StackTraceElement elements[] = e.getStackTrace();
             for (int i = 0, n = elements.length; i < n; i++) {
                 logger.fatal("--------------- start --------------------");
                 logger.fatal("Class: " + elements[i].getClassName());
@@ -52,8 +55,7 @@ public class JDSMigrate {
                 logger.fatal("Line Number: " + elements[i].getLineNumber());
                 logger.fatal("File Name: " + elements[i].getFileName());
                 logger.fatal("--------------- end --------------------");
-            }
+            }*/
         }
-
     }
 }
