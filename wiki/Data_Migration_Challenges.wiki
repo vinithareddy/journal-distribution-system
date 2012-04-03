@@ -26,8 +26,8 @@ ERROR main JDSMigration.Inward - Could not find inward reason
 ERROR main JDSMigration.Inward - Could not find inward reason ld
 
 = Subscriber =
-# There are a lot of foreign cities in the subscriber data, do we need to add all of them to the cities table. The cities table will grow enormously over a period of time, as a result all pages where the cities drop down is present will become slower to load cities list.
-
+  # There are a lot of foreign cities in the subscriber data, do we need to add all of them to the cities table. The cities table will grow enormously over a period of time, as a result all pages where the cities drop down is present will become slower to load cities list.
+{{{
 e.g.
 St Martin d'Heres		France
 Amsterdam 1000 CE		Netherlands
@@ -44,6 +44,6 @@ Hamburg 80, D-21029		Germany
 S-106 91 Stockholm		Sweden
 Edinburgh EH3 5LR		Scotland
 New Haven CT 06520-8101		U.S.A.
-
+}}}
 = Subscription =
-# How is journal group id mapped to the subscription data in JNLS.DBF. Since there are no journal groups in the old data, how do we identify what group the journal belonged to?
+  # How is journal group id mapped to the subscription data in JNLS.DBF. Since there are no journal groups in the old data, how do we identify what group the journal belonged to?
