@@ -47,7 +47,5 @@ New Haven CT 06520-8101		U.S.A.
 }}}
 = Subscription =
   # How is journal group id mapped to the subscription data in JNLS.DBF. Since there are no journal groups in the old data, how do we identify what group the journal belonged to?
-
   # What is the significance of Amount and Paid Flag? Where those fields should be migrated to? Currently after migration it is put in remarks column.
-
   # There is no inward no. associated with the subscription.
