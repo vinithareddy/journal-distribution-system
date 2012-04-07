@@ -36,7 +36,7 @@ public class JDSMigrate {
         } catch (IOException | ParseException |  SQLException e) {
 
             logger.fatal(e.getMessage());
-            /*StackTraceElement elements[] = e.getStackTrace();
+            StackTraceElement elements[] = e.getStackTrace();
             for (int i = 0, n = elements.length; i < n; i++) {
                 logger.fatal("--------------- start --------------------");
                 logger.fatal("Class: " + elements[i].getClassName());
@@ -44,10 +44,10 @@ public class JDSMigrate {
                 logger.fatal("Line Number: " + elements[i].getLineNumber());
                 logger.fatal("File Name: " + elements[i].getFileName());
                 logger.fatal("--------------- end --------------------");
-            }*/
+            }
         } catch (Exception e) {
             logger.fatal(e.getMessage());
-            /*StackTraceElement elements[] = e.getStackTrace();
+            StackTraceElement elements[] = e.getStackTrace();
             for (int i = 0, n = elements.length; i < n; i++) {
                 logger.fatal("--------------- start --------------------");
                 logger.fatal("Class: " + elements[i].getClassName());
@@ -55,7 +55,7 @@ public class JDSMigrate {
                 logger.fatal("Line Number: " + elements[i].getLineNumber());
                 logger.fatal("File Name: " + elements[i].getFileName());
                 logger.fatal("--------------- end --------------------");
-            }*/
+            }
         }
     }
 }
