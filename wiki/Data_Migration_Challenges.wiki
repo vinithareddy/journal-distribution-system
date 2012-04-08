@@ -26,6 +26,7 @@ ERROR main JDSMigration.Inward - Could not find inward reason
 ERROR main JDSMigration.Inward - Could not find inward reason ld
 
 = Subscriber =
+  # There are duplicate subscriber and zero ids across multiple files(TEMP, INDTEMP).
   # There are a lot of foreign cities in the subscriber data, do we need to add all of them to the cities table. The cities table will grow enormously over a period of time, as a result all pages where the cities drop down is present will become slower to load cities list.
 {{{
 e.g.
