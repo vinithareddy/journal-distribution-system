@@ -17,7 +17,8 @@ public class JDSMigrate {
 
     private static final Logger logger = Logger.getLogger(JDSMigrate.class);
     private boolean MIGRATE_INWARD = false;
-    private boolean MIGRATE_SUBSCRIBER = true;
+    private boolean MIGRATE_SUBSCRIBER = false;
+    private boolean MIGRATE_SUBSCRIPTION = true;
 
     public static void main(String[] args) {
 
@@ -25,15 +26,17 @@ public class JDSMigrate {
         Object obj = null;
         try {
 
-            if(_jdsmigrate.MIGRATE_INWARD){
+            if (_jdsmigrate.MIGRATE_INWARD) {
                 Inward _inward = new Inward();
                 _inward.Migrate();
-            }else if(_jdsmigrate.MIGRATE_SUBSCRIBER){
+            } else if (_jdsmigrate.MIGRATE_SUBSCRIBER) {
                 Subscriber _subscriber = new Subscriber();
                 _subscriber.Migrate();
+            } else if (_jdsmigrate.MIGRATE_SUBSCRIPTION) {
+                Subscription _subscription = new Subscription();
+                _subscription.Migrate();
             }
-
-        } catch (IOException | ParseException |  SQLException e) {
+        } catch (IOException | ParseException | SQLException e) {
 
             logger.fatal(e.getMessage());
             StackTraceElement elements[] = e.getStackTrace();
