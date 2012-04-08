@@ -1,13 +1,14 @@
-#summary One-sentence summary of this page.
+= 08 April 2012 =
 
-= Introduction =
-
-Add your content here.
-
-
-= Details =
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+== Action Items ==
+  # Alok:
+   ## to check in Bulk Email Sender(BES).
+   ## complete master data, atleast database should have been filled, UI is second priority. Print order, Journals Grps and Journal Price grps. Add year for Journal price grp.
+   ## Clean up controllers and move all exception email handling to /errorHandler.
+  # Deepali to clarify/mail all migration issues.
+  # Shail: 
+   ## Identify duplicate subscribers are in which file and migrate subscriber from other .dbf file
+   ## Complete edit subscription
+  # Pinki to complete subscription migration by EOW
+ 
+ 
