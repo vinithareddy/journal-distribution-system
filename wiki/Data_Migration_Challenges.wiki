@@ -53,6 +53,7 @@ New Haven CT 06520-8101		U.S.A.
   # Start Year is three digit, what does this mean?
   # Start year and end year is zero?
   # Paid Flag has Y,P, etc what does each mean?
+  # Subscription does not have subscriber id
   # Identification of group id:
     ## If all journals are subscribed, the group id should be the 1 to 11 group,
     ## if all except 1st journal group is subscribed, then it should be 2 to 11 group
