@@ -1,7 +1,7 @@
 = 08 April 2012 =
 
 == Action Items ==
-  # Alok:
+  # Alok/Deepali:
    ## to check in Bulk Email Sender(BES).
    ## complete master data, atleast database should have been filled, UI is second priority. Print order, Journals Grps and Journal Price grps. Add year for Journal price grp.
    ## Clean up controllers and move all exception email handling to /errorHandler.
