@@ -11,4 +11,17 @@
    ## Complete edit subscription
   # Pinki to complete subscription migration by EOW
  
- 
+
+= 22 April 2012 =
+
+== Action Items ==
+  === Alok/Deepali ===
+   ## to check in Bulk Email Sender(BES).    
+   ## Remove year from journal groups table and add month table, change   the group name as per
+   ## Deepali to clarify/mail all migration issues.
+  
+
+  === Shail/Pinki ===
+    ## Send email on exception in the exception handler.
+    ## Identify duplicate subscribers are in which file and migrate subscriber from other .dbf file
+    ## Complete request for invoice.
