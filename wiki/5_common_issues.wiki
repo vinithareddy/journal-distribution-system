@@ -70,3 +70,13 @@ netbeans_jdkhome="D:\TECH_INSTALLS\jdk1.7.0_02"
 Another way is as follows:
 In NetBeans Navigate to servers->Apache tomcat->properties->platform, select 1.7 jdk if already present in the drop down else add and select it.
 ----
+==Problem7:==
+In the apache tomcat log you find the following error while deploying the application.
+{{{
+SEVERE: Exception opening database connection
+java.sql.SQLException: com.mysql.jdbc.Driver
+	at org.apache.catalina.realm.JDBCRealm.open(JDBCRealm.java:701)
+	at org.apache.catalina.realm.JDBCRealm.startInternal(JDBCRealm.java:782)
+}}}
+==Solution7:== 
+Copy the "mysql-connector-java-5.1.18-bin" in the "Apache Tomcat 7.0.14\lib" directory.
