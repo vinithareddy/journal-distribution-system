@@ -29,7 +29,7 @@
   * Select hook type as pre-update hook
   * Select the JDS root in the "Working Copy Path"
   * Select the path to JDS\db\generateschema.bat in the "Command line to execute" text box.
-  * Every time an update occurs the *.sql files in the JDS\db folder gets refreshed
+  * Every time an update occurs the .sql files in the JDS\db folder gets refreshed
 
 ===Before committing changes===
   * Before committing the code, you need to run the script "generateschema". This will dump the additions or changes that you have made to your database copy in the "jds_schema_data.sql" file. Now you can commit you changes.
