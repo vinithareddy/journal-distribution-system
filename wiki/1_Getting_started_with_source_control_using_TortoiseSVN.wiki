@@ -32,7 +32,7 @@
   * Every time an update occurs the .sql files in the JDS\db folder gets refreshed
 
 ===Before committing changes===
-  * Before committing the code, you need to run the script "generateschema". This will dump the additions or changes that you have made to your database copy in the "jds_schema_data.sql" file. Now you can commit you changes.
+~~  * Before committing the code, you need to run the script "generateschema". This will dump the additions or changes that you have made to your database copy in the "jds_schema_data.sql" file. Now you can commit you changes.~~
 
   * Note: A better way for development is using "feature branches" [https://code.google.com/p/journal-distribution-system/wiki/4_using_branches_for_development]
 
