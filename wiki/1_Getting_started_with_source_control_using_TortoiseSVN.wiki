@@ -48,3 +48,13 @@
   * Give username as the google username
   * The password can be found by logging into google project >> Profile (Top Right corner of the UI) >> Settings
   * If you get an error saying "Cannot connect...", then it means the proxy settings in the TortoiseSVN are not set correctly.
+
+=== Adding a pre-update hook ===
+  * Since we have distributed database designers We need to add a pre-update hook to tortoise so that every time we get changes or update our code our local database schema gets merged with the checked in version.
+  * Navigate to the JDS subversion client
+  * Right click->select Tortoise SVN->Settings->Hook Scripts-
+  * Click on the Add button on the right hand side.
+  * Select hook type as pre-update hook
+  * Select the JDS root in the "Working Copy Path"
+  * Select the path to JDS\db\generateschema.bat in the "Command line to execute" text box.
+  * Every time an update occurs the *.sql files in the JDS\db folder gets refreshed
