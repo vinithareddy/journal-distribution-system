@@ -1,5 +1,7 @@
 =Getting started with source control=
 
+<wiki:toc max_depth="3" />
+
 ===Some browser issues===
   * This wiki page is not rendered correctly in some places. When the page is reviewed in the "preview" it appears to be fine! Not such a put off for now, but can be reviewed later!
 
@@ -19,10 +21,21 @@
   * It is always a good idea to "update" your view with the latest changes from the server before commiting the new changes.
   * Also it a good idea to file a bug in the bug tracker and refer to the bug ID in the "Comments".
 
+=== Adding a pre-update hook ===
+  * Since we have distributed database designers We need to add a pre-update hook to tortoise so that every time we get changes or update our code our local database schema gets merged with the checked in version.
+  * Navigate to the JDS subversion client
+  * Right click->select Tortoise SVN->Settings->Hook Scripts-
+  * Click on the Add button on the right hand side.
+  * Select hook type as pre-update hook
+  * Select the JDS root in the "Working Copy Path"
+  * Select the path to JDS\db\generateschema.bat in the "Command line to execute" text box.
+  * Every time an update occurs the *.sql files in the JDS\db folder gets refreshed
+
 ===Before committing changes===
   * Before committing the code, you need to run the script "generateschema". This will dump the additions or changes that you have made to your database copy in the "jds_schema_data.sql" file. Now you can commit you changes.
 
   * Note: A better way for development is using "feature branches" [https://code.google.com/p/journal-distribution-system/wiki/4_using_branches_for_development]
+
 
 ==Advanced (Required for first time setup by administrators only)==
 
@@ -48,13 +61,3 @@
   * Give username as the google username
   * The password can be found by logging into google project >> Profile (Top Right corner of the UI) >> Settings
   * If you get an error saying "Cannot connect...", then it means the proxy settings in the TortoiseSVN are not set correctly.
-
-=== Adding a pre-update hook ===
-  * Since we have distributed database designers We need to add a pre-update hook to tortoise so that every time we get changes or update our code our local database schema gets merged with the checked in version.
-  * Navigate to the JDS subversion client
-  * Right click->select Tortoise SVN->Settings->Hook Scripts-
-  * Click on the Add button on the right hand side.
-  * Select hook type as pre-update hook
-  * Select the JDS root in the "Working Copy Path"
-  * Select the path to JDS\db\generateschema.bat in the "Command line to execute" text box.
-  * Every time an update occurs the *.sql files in the JDS\db folder gets refreshed
