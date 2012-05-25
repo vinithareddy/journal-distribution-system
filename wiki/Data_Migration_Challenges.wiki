@@ -59,3 +59,7 @@ New Haven CT 06520-8101		U.S.A.
     ## If all journals are subscribed, the group id should be the 1 to 11 group,
     ## if all except 1st journal group is subscribed, then it should be 2 to 11 group
     ## All other cases, should be individual journals.
+
+    # How to identify summer fellows
+
+    #JNLS.DBF - If end year is blank it means subscription is for 1 year
