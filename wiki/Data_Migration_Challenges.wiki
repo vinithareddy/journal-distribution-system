@@ -68,9 +68,9 @@ New Haven CT 06520-8101		U.S.A.
     ## There are some fellows who do not want a hard copy. For them the no of copies will be made 0
     ## Migrate all fellows
 ---
-#JNLS.DBF - If end year is blank it means subscription is for 1 year
-#Row no in CORR.DBF corresponds to REC_NO in JNLS.DBF
-#PRO_NO - Proformo Number
-#CORR.DBF - has entry as "PLEASEREFER" in REF_NO, these are the please refer list folks
-#All rows which have PR0_NO will be present in the please refer list
-#If col CHK_NO is empty, then payment is pending. Check entries in U, V, W, X
+    #JNLS.DBF - If end year is blank it means subscription is for 1 year
+    #Row no in CORR.DBF corresponds to REC_NO in JNLS.DBF
+    #PRO_NO - Proformo Number
+    #CORR.DBF - has entry as "PLEASEREFER" in REF_NO, these are the please refer list folks
+    #All rows which have PR0_NO will be present in the please refer list
+    #If col CHK_NO is empty, then payment is pending. Check entries in U, V, W, X
