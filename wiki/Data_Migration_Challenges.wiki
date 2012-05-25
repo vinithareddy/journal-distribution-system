@@ -48,18 +48,29 @@ New Haven CT 06520-8101		U.S.A.
 }}}
 = Subscription =
   # How is journal group id mapped to the subscription data in JNLS.DBF. Since there are no journal groups in the old data, how do we identify what group the journal belonged to?
-  # What is the significance of Amount and Paid Flag? Where those fields should be migrated to? Currently after migration it is put in remarks column.
-  # There is no inward no. associated with the subscription.
-  # There are subscription with all Zero entries, what is the significance of this record
-  # Start Year is three digit, what does this mean?
-  # Start year and end year is zero?
-  # Paid Flag has Y,P, etc what does each mean?
-  # Subscription does not have subscriber id
+  # What is the significance of Amount and Paid Flag? Where those fields should be migrated to? Currently after migration it is put in remarks column. - TBD
+  # There is no inward no. associated with the subscription. - Ignore. Missing info. Maybe mark it with something.
+  # There are subscription with all Zero entries, what is the significance of this record - ignore these records
+  # Start Year is three digit, what does this mean? - data entry mistake
+  # Start year and end year is zero? - Check if DATE_RES and DATE_CURR
+  # Paid Flag has Y,P, etc what does each mean? - TBD
+  # Subscription does not have subscriber id - Check if all entries are zero. If yes, ignore this row.
   # Identification of group id:
     ## If all journals are subscribed, the group id should be the 1 to 11 group,
     ## if all except 1st journal group is subscribed, then it should be 2 to 11 group
     ## All other cases, should be individual journals.
 
-    # How to identify summer fellows
-
-    #JNLS.DBF - If end year is blank it means subscription is for 1 year
+    # How to identify summer fellows - REF_NO col will have "SRF year no" and the type is "IP"
+    # How to identify KVPY - REF_No col will have "KVPY year no" and the type if "IP".
+    # Do not consider "Authors"
+    # FELLOWS
+    ## FELLOWS - life members no end date.
+    ## There are some fellows who do not want a hard copy. For them the no of copies will be made 0
+    ## Migrate all fellows
+---
+#JNLS.DBF - If end year is blank it means subscription is for 1 year
+#Row no in CORR.DBF corresponds to REC_NO in JNLS.DBF
+#PRO_NO - Proformo Number
+#CORR.DBF - has entry as "PLEASEREFER" in REF_NO, these are the please refer list folks
+#All rows which have PR0_NO will be present in the please refer list
+#If col CHK_NO is empty, then payment is pending. Check entries in U, V, W, X
