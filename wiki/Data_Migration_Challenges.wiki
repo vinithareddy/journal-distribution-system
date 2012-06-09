@@ -46,6 +46,11 @@ S-106 91 Stockholm		Sweden
 Edinburgh EH3 5LR		Scotland
 New Haven CT 06520-8101		U.S.A.
 }}}
+  # FELJM.DBF has these fields, which we dont understand the meaning for. Also these fields do not exists for a normal subscriber? are these special attributes for a fellow and should new fields be created for this type of subscriber. Below are the unkown fields and an example row containing data for these fields.
+
+|| TEMPSEL || OF || SELECT || SE || CATEGORY || AFFIL || STATUS || SEC_COM || EBMEMBER || FC || SUBJECT || PATRIKA	|| CON_LIST || CIRCULAR	|| ANN_REP ||
+|| s ||	R || a || F ||	PS || The Indian Nitrogen Group, New Delhi || A || || EB - MS, Resonance || C || General Biology || HC || SC || HC ||	HC ||
+
 = Subscription =
   # How is journal group id mapped to the subscription data in JNLS.DBF. Since there are no journal groups in the old data, how do we identify what group the journal belonged to?
   # What is the significance of Amount and Paid Flag? Where those fields should be migrated to? Currently after migration it is put in remarks column. - Ignore
