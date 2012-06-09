@@ -50,7 +50,8 @@ New Haven CT 06520-8101		U.S.A.
 
 || TEMPSEL || OF || SELECT || SE || CATEGORY || AFFIL || STATUS || SEC_COM || EBMEMBER || FC || SUBJECT || PATRIKA	|| CON_LIST || CIRCULAR	|| ANN_REP ||
 || s ||	R || a || F ||	PS || The Indian Nitrogen Group, New Delhi || A || || EB - MS, Resonance || C || General Biology || HC || SC || HC ||	HC ||
-
+  # Summer Fellows 	No code 	Free 	part of CORR/TEMP/JNLS
+    If summer fellows have no subscriber type code, should we then create a new one "Summer Fellow" for them
 = Subscription =
   # How is journal group id mapped to the subscription data in JNLS.DBF. Since there are no journal groups in the old data, how do we identify what group the journal belonged to?
   # What is the significance of Amount and Paid Flag? Where those fields should be migrated to? Currently after migration it is put in remarks column. - Ignore
