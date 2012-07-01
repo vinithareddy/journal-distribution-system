@@ -24,6 +24,7 @@ import org.apache.log4j.Logger;
 public class Subscriber extends MigrationBase {
 
     private String dataFile = null;
+    private int COMMIT_BATCH_SIZE = 1000;
     private static final Logger logger = Logger.getLogger(Subscriber.class.getName());
     int totalRows = 0;
     int insertedRows = 0;
@@ -36,28 +37,39 @@ public class Subscriber extends MigrationBase {
             + "((select id from subscriber_type where subtypecode = ?),?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     PreparedStatement pst_insert = null;
 
-    public Subscriber() {
+    public Subscriber() throws SQLException{
         //super(); // call the base class constructor
-        this.dataFile = this.dataFolder + "\\subscriber_temp.txt";
+        //this.dataFile = this.dataFolder + "\\subscriber\\temp.txt";
+        this.dataFile = this.dataFolder + "\\subscriber\\indtemp.txt";
         this.conn = this.db.getConnection();
+        conn.setAutoCommit(false);
 
     }
 
+    @Override
     public void Migrate() throws FileNotFoundException, IOException, ParseException, SQLException {
 
         this.openFile(dataFile);
         String _line = null;
+        int lineNum = 0;
         int numOfCols = 57;
+        int recordCounter = 0;
         List DuplicateList = new ArrayList();
 
         String[] datacolumns = new String[numOfCols];
         pst_insert = this.conn.prepareStatement(sql_insert);
 
+        //conn.setAutoCommit(false);
+        
         // truncate the old data
-        this.truncateTable("Subscriber");
+        //this.truncateTable("Subscriber");
 
         while (true) {
             _line = this.getNextLine();
+            lineNum++;
+            if(lineNum == 1){
+                continue;
+            }
             String[] columns = new String[numOfCols];
             if (_line == null) {
                 break;
@@ -81,9 +93,15 @@ public class Subscriber extends MigrationBase {
             String cityAndPin = datacolumns[11];
             String country = datacolumns[13];
             String email = datacolumns[55];
+            
+            //skip foreign suscribers
+            if(subscribercode.equalsIgnoreCase("FP") || subscribercode.equalsIgnoreCase("FI")){
+                logger.error("Skipping foreign subscriber:" + subscriberNumber);
+                continue;
+            }
 
             if(subscriberNumber.isEmpty() || Integer.parseInt(subscriberNumber) == 0){
-                logger.error("No Subscriber Number found for:" + subscriberName);
+                logger.error("No Subscriber Number found for:" + subscriberName + " at line number:" + lineNum);
                 continue;
             }
 
@@ -152,17 +170,29 @@ public class Subscriber extends MigrationBase {
             //pst_insert.setInt(++paramIndex, 0);
             pst_insert.setInt(++paramIndex, 0);
             pst_insert.setString(++paramIndex, email);
+            pst_insert.addBatch();
+            recordCounter++;
+            
+            
+            
             int ret = this.db.executeUpdatePreparedStatement(pst_insert);
             if (ret == 0) {
-                logger.error("Skipping Subscriber : " + subscriberNumber + " Name: " + subscriberName);
+                logger.error("Skipping Duplicate Subscriber : " + subscriberNumber + " Name: " + subscriberName);
                 DuplicateList.add(subscriberNumber);
                 duplicateRows++;
             } else {
                 insertedRows++;
             }
+            
+            if(recordCounter == COMMIT_BATCH_SIZE){
+                logger.debug("commiting database after " + String.valueOf(insertedRows) + " rows");
+                conn.commit();
+                recordCounter = 0;
+            }
 
 
         }
+        conn.commit();
         logger.debug("Total Rows: " + totalRows);
         logger.debug("Rows Inserted: " + insertedRows);
         logger.debug("Duplicate Rows: " + duplicateRows);

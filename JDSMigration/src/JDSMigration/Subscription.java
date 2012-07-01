@@ -5,24 +5,23 @@
 package JDSMigration;
 
 import com.mysql.jdbc.Statement;
-import org.apache.log4j.Logger;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.regex.Pattern;
+import jxl.read.biff.BiffException;
+import org.apache.log4j.Logger;
 
 public class Subscription extends MigrationBase {
 
-    private String dataFile = null;
     private static final Logger logger = Logger.getLogger(Subscription.class.getName());
     int totalRows = 0;
     int insertedRows = 0;
     int insertedRowsSubDtls = 0;
-    Connection conn = null;
+    int subscriberID;
+    String subscriberNumber;
 //--------------------------------------------------------------------------------------------    
     //Select Statement for Inward Id
     private String sql_select_inward = "Select id from inward where inwardNumber = ?";
@@ -37,7 +36,8 @@ public class Subscription extends MigrationBase {
     private String sql_insert_subscription = "insert into subscription(subscriberID,inwardID,remarks)values(?,?,?)";
 //--------------------------------------------------------------------------------------------
     //Insert Statement for Subscription Details
-    private String sql_insert_subscriptiondetails = "insert into subscriptiondetails(subscriptionID, journalGroupID, copies, startYear, endYear)values(?,?,?,?,?)";
+    private String sql_insert_subscriptiondetails = "insert into subscriptiondetails(subscriptionID, "
+            + "journalGroupID, copies, startYear, startMonth, endYear, journalPriceGroupID)values(?,?,?,?,?,?,?)";
 //--------------------------------------------------------------------------------------------    
     //Prepared Statements
     PreparedStatement pst_insert_subscription = null;
@@ -48,17 +48,19 @@ public class Subscription extends MigrationBase {
 //--------------------------------------------------------------------------------------------
     //Constructor
     public Subscription() {
-        this.dataFile = this.dataFolder + "\\subscription.txt";
+        this.dataFile = this.dataFolder + "\\jnls.xls";
         this.conn = this.db.getConnection();
+
     }
 
     //Migration
-    public void Migrate() throws FileNotFoundException, IOException, ParseException, SQLException {
-        this.openFile(dataFile);
-        String _line = null;
-        int lineNum = 0;
-        int numOfCols = 34;
-        String[] datacolumns = new String[numOfCols];
+    @Override
+    public void Migrate() throws FileNotFoundException, IOException, ParseException, SQLException, BiffException {
+        this.conn.setAutoCommit(false);
+        this.openExcel(dataFile);
+        int commitCounter = 0;
+
+        String[] datacolumns = null;
 
         pst_select_inward = this.conn.prepareStatement(sql_select_inward);
         pst_select_subscriber = this.conn.prepareStatement(sql_select_subscriber);
@@ -71,45 +73,47 @@ public class Subscription extends MigrationBase {
         this.truncateTable("subscriptiondetails");
 
         while (true) {
-            _line = this.getNextLine();
-            logger.debug("Row Number " + _line);
-            lineNum++;
-            //skip first line
-            if (lineNum == 1) {
-                continue;
-            }
-
-            //For testing
-            /*
-             * if (lineNum == 15) { break; }
-             */
-
-            String[] columns = new String[numOfCols];
-            if (_line == null) {
+            datacolumns = this.getNextRow();
+            if (datacolumns == null) {
                 break;
             }
-            for (int i = 0; i < numOfCols; i++) {
-                columns[i] = "";
-                datacolumns[i] = "";
-            }
             totalRows++;
-            columns = _line.split(Pattern.quote("\t"));
-            System.arraycopy(columns, 0, datacolumns, 0, columns.length);
 
 //------------------------------------------------------------------------------------------------------------------------------
             //Insert Subscription
 //------------------------------------------------------------------------------------------------------------------------------
-
+            // check if start year is 2011 or 2012, else do not migrate the records
+            int startYear = Integer.parseInt(datacolumns[31]);
+            int endYear = Integer.parseInt(datacolumns[32]) > 0 ? Integer.parseInt(datacolumns[32]) : startYear;
+            
+            if(startYear < 2011){
+                logger.error("Skipping record for subscriber " + datacolumns[0] + " subsription start year is " + datacolumns[31]);
+                continue;
+            }
+            else if(endYear - startYear + 1 > 5 ){
+                logger.error("Skipping record since subscription period > 5 years for subscriber " + datacolumns[0]);
+                continue;
+            }
+            logger.debug("Start Year:" + datacolumns[31]);
+            logger.debug("End Year:" + endYear);
+            
+            
             //Subscriber Number from excel
+            this.subscriberNumber = datacolumns[0];
             int subscriberId = 0;
             pst_select_subscriber.setString(1, datacolumns[0]);
             ResultSet rs_subscriber = this.db.executeQueryPreparedStatement(pst_select_subscriber);
-            if (rs_subscriber.first()) {
+            logger.debug("Migrating subscription for subscriber Number: " + datacolumns[0]);
+            try{
+                rs_subscriber.first();
                 subscriberId = rs_subscriber.getInt(1);
-            } else {
+                this.subscriberID = subscriberId;
+            }
+            catch(SQLException e){
                 logger.error("No Subscriber ID found for Subscriber Number " + datacolumns[0] + " in Subscriber DB Table");
                 continue;
             }
+            
 
 
             //Inward Number from excel
@@ -122,8 +126,9 @@ public class Subscription extends MigrationBase {
 
 
             //Current Date, Amount and Paid Flag is mapped to Remarks currently
-            String remarks = "DATE_CURR = " + datacolumns[28] + "\n" + "AMOUNT = " + datacolumns[29] + "\n" + "PAID_FLAG = " + datacolumns[30];
+            String remarks = ""; //"DATE_CURR = " + datacolumns[28] + "\n" + "AMOUNT = " + datacolumns[29] + "\n" + "PAID_FLAG = " + datacolumns[30];
 
+            
 
             int paramIndex = 0;
             pst_insert_subscription.setInt(++paramIndex, subscriberId);
@@ -137,6 +142,7 @@ public class Subscription extends MigrationBase {
             //Logging the inserting row
             if (ret == 1) {
                 insertedRows++;
+                commitCounter++;
             }
 
 
@@ -208,12 +214,12 @@ public class Subscription extends MigrationBase {
             //  RES      - Column -> 22  GrpID -> 3
             //  AS       - Column -> 25  GrpID -> 3
             //  CURR     - Column -> 27  GrpID -> 3
-            //  ALL      - Column -> No  GrpID -> 3
-            //  Except CS  ------        GrpID -> 3
+            //  ALL      - Column -> No  GrpID -> 12
+            //  Except MS  ------        GrpID -> 13
 //---------------------------------------------------------
 
-            int[] jrnlArr = {4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 25, 27}; //Data Columns frm excel
-            int[] jrnlGrpIDArr = {4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 25, 27, 100, 101}; //Journal Group IDs 
+            int[] jrnlArr = {4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 27}; //Data Columns frm excel
+            int[] jrnlGrpIDArr = {3, 4, 11, 5, 7, 6, 8, 9, 10, 2, 1, 12, 13}; //Journal Group IDs 
             int allGrpFlag = 0;
             int noCopies = 0;
             if (!datacolumns[4].isEmpty()) {
@@ -221,6 +227,11 @@ public class Subscription extends MigrationBase {
             } else {
                 noCopies = 0;
             }
+
+            /*
+             * If all journals have the same copy count and is not null or empty
+             * then we consider that he has subscribed to all journals
+             */
             for (int j = 0; j < jrnlArr.length; j++) {
                 if (!datacolumns[jrnlArr[j]].equalsIgnoreCase("0") && !datacolumns[jrnlArr[j]].isEmpty()) {
                     if (noCopies == Integer.parseInt(datacolumns[jrnlArr[j]])) {
@@ -228,32 +239,73 @@ public class Subscription extends MigrationBase {
                     }
                 }
             }
-                if (allGrpFlag == 12) {
-                    // Journal Group for all the journals required by a subscriber
-                    insertedRowsSubDtls = migrateSubDtls(subscriptionID, jrnlGrpIDArr[13], Integer.parseInt(datacolumns[jrnlArr[1]]), startYr, endYr);
+            if (allGrpFlag == 12) {
+                // Journal Group for all the journals required by a subscriber
+                insertedRowsSubDtls = migrateSubDtls(subscriptionID, jrnlGrpIDArr[11], noCopies, 1, startYr, endYr);
+            } else {
+                if (allGrpFlag == 11 && (datacolumns[8].equalsIgnoreCase("0") || datacolumns[14].isEmpty())) {
+                    // Journal Group for all the journals except CS
+                    insertedRowsSubDtls = migrateSubDtls(subscriptionID, jrnlGrpIDArr[12], Integer.parseInt(datacolumns[jrnlArr[1]]), 1, startYr, endYr);
                 } else {
-                    if (allGrpFlag == 11 && (datacolumns[14].equalsIgnoreCase("0") || datacolumns[14].isEmpty())) {
-                        // Journal Group for all the journals except CS
-                        insertedRowsSubDtls = migrateSubDtls(subscriptionID, jrnlGrpIDArr[14], Integer.parseInt(datacolumns[jrnlArr[1]]), startYr, endYr);
-                    } else {
-                        for (int j = 0; j < jrnlArr.length; j++) {
-                            // Journal Group for individual journals
-                            if (!datacolumns[jrnlArr[j]].equalsIgnoreCase("0") && !datacolumns[jrnlArr[j]].isEmpty()) {
-                                insertedRowsSubDtls = migrateSubDtls(subscriptionID, jrnlGrpIDArr[j], Integer.parseInt(datacolumns[jrnlArr[j]]), startYr, endYr);
-                            }
+                    String dateRes = datacolumns[23];
+                    String dateCurr = datacolumns[28];
+                    String dateStr = null;
+                    int startMonth = 1;
+
+                    // if CURR_DATE or RES_DATE is set, it means it could start from middle of the year
+                    if ((!datacolumns[22].isEmpty() && !datacolumns[22].equals("0"))
+                            || (!datacolumns[27].isEmpty() && !datacolumns[27].equals("0"))) {
+                        if (!dateRes.isEmpty()) {
+                            dateStr = dateRes;
+                        } else if (!dateCurr.isEmpty()) {
+                            dateStr = dateCurr;
+                        } else {
+                            dateStr = "1/1/2012";
+                        }
+                        String[] splitDate = dateStr.split("/");
+                        startMonth = Integer.parseInt(splitDate[0]);
+                    }
+
+
+                    for (int j = 0; j < jrnlArr.length; j++) {
+                        // Journal Group for individual journals
+                        if (!datacolumns[jrnlArr[j]].equalsIgnoreCase("0") && !datacolumns[jrnlArr[j]].isEmpty()) {
+                            insertedRowsSubDtls = migrateSubDtls(subscriptionID, jrnlGrpIDArr[j], Integer.parseInt(datacolumns[jrnlArr[j]]), startMonth, startYr, endYr);
                         }
                     }
                 }
             }
-        
+            // commit in bulk, its faster
+            if (commitCounter == COMMIT_SIZE) {
+                conn.commit();
+                commitCounter = 0;
+            }
+        }
+        conn.setAutoCommit(true);
         logger.debug("Rows Inserted in Subscription: " + insertedRows);
-        logger.debug("Rows Inserted in SubscriptionDtls: " + insertedRowsSubDtls);
+        //logger.debug("Rows Inserted in SubscriptionDtls: " + insertedRowsSubDtls);
+        
+
     }
 
-    public int migrateSubDtls(int subscriptionID, int jrnlGrpId, int noCopies, int startYr, int endYr)
+    private int migrateSubDtls(int subscriptionID, int jrnlGrpId, int noCopies, 
+            int startMonth, int startYr, int endYr)
             throws FileNotFoundException, IOException, ParseException, SQLException {
+        endYr = endYr > 0 ? endYr : startYr;
         int paramIndex1 = 0;
-
+        int subtypeID = this.getSubscriberTyeID(this.subscriberID);
+        int priceGroupID = this.getJournalPriceGroupID(jrnlGrpId, subtypeID, startYr, endYr);
+        logger.debug("Price group id is: " + priceGroupID);
+        if(priceGroupID==0){            
+            logger.error("JouralGrpID=" + jrnlGrpId);
+            logger.error("SubtypeID=" + subtypeID);
+            logger.error("year=" + startYr);
+            logger.error("Period: " + (endYr - startYr + 1));
+            logger.fatal("Price Group ID is 0 for subscriber Number " + this.subscriberNumber + " at row:" + (totalRows + 1));
+            //System.exit(1);
+        }
+        
+        
         //Cases where start year and end year is zero but no. of copies are not zero - LOG IT
         if (startYr == 0) {
             logger.error("No start year for subscription " + subscriptionID + "but subscription details are updated in the table");
@@ -263,7 +315,9 @@ public class Subscription extends MigrationBase {
         pst_insert_subscription_dtls.setInt(++paramIndex1, jrnlGrpId);
         pst_insert_subscription_dtls.setInt(++paramIndex1, noCopies);
         pst_insert_subscription_dtls.setInt(++paramIndex1, startYr);
+        pst_insert_subscription_dtls.setInt(++paramIndex1, startMonth);
         pst_insert_subscription_dtls.setInt(++paramIndex1, endYr);
+        pst_insert_subscription_dtls.setInt(++paramIndex1, priceGroupID);
 
         //Inserting the record in Subscription Table
         int retUpdStatus = this.db.executeUpdatePreparedStatement(pst_insert_subscription_dtls);
@@ -271,7 +325,7 @@ public class Subscription extends MigrationBase {
         //Logging the inserting row
         if (retUpdStatus == 1) {
             insertedRowsSubDtls++;
-            logger.debug("Rows Inserted for SubscriptionID: " + subscriptionID);
+            //logger.debug("Rows Inserted for SubscriptionID: " + subscriptionID);
         }
         return insertedRowsSubDtls;
     }
