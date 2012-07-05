@@ -155,30 +155,37 @@ public class MigrationBase implements IMigrate {
 
     public int getAgentID(String agentName) throws SQLException {
         String sql = "select id from agents where agentName=? LIMIT 1";
-        PreparedStatement pst = this.conn.prepareStatement(sql);
-        pst.setString(1, agentName);
-        ResultSet rs = pst.executeQuery();
-        rs.first();
-        return rs.getInt(1);
+        int agentID;
+        try {
+            PreparedStatement pst = this.conn.prepareStatement(sql);
+            pst.setString(1, agentName);
+            ResultSet rs = pst.executeQuery();
+            rs.first();
+            agentID = rs.getInt(1);
+        }
+        catch(SQLException e){
+            agentID = 0;
+        }
+
+        return agentID;
 
     }
-    
-    public int getSubscriberTyeID(int subscriberID){
+
+    public int getSubscriberTyeID(int subscriberID) {
         int subtypeID;
         String sql = "select subtype from subscriber where id=?";
-        
+
         try {
             PreparedStatement pst = this.conn.prepareStatement(sql);
             pst.setInt(1, subscriberID);
             ResultSet rs = pst.executeQuery();
             rs.first();
             subtypeID = rs.getInt(1);
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             subtypeID = 0;
         }
         return subtypeID;
-        
+
     }
 
     public int getJournalPriceGroupID(int journalGrpID, int subtypeID, int startYear, int endYear) throws SQLException {
@@ -198,8 +205,7 @@ public class MigrationBase implements IMigrate {
             ResultSet rs = pst.executeQuery();
             rs.first();
             priceGroupID = rs.getInt(1);
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             priceGroupID = 0;
         }
         return priceGroupID;

@@ -82,12 +82,12 @@ public class Subscription extends MigrationBase {
 //------------------------------------------------------------------------------------------------------------------------------
             //Insert Subscription
 //------------------------------------------------------------------------------------------------------------------------------
-            // check if start year is 2011 or 2012, else do not migrate the records
+            // check if end year is < 2012, else do not migrate the records
             int startYear = Integer.parseInt(datacolumns[31]);
             int endYear = Integer.parseInt(datacolumns[32]) > 0 ? Integer.parseInt(datacolumns[32]) : startYear;
             
-            if(startYear < 2011){
-                logger.error("Skipping record for subscriber " + datacolumns[0] + " subsription start year is " + datacolumns[31]);
+            if(endYear < 2012){
+                logger.error("Skipping record for subscriber " + datacolumns[0] + " subsription end year is " + endYear);
                 continue;
             }
             else if(endYear - startYear + 1 > 5 ){
