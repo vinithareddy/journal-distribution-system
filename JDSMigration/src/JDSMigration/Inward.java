@@ -6,7 +6,6 @@ package JDSMigration;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,18 +21,20 @@ import org.apache.log4j.Logger;
  */
 public class Inward extends MigrationBase {
 
-    private String dataFile = null;
     private static final Logger logger = Logger.getLogger(Inward.class);
 
-    public Inward() {
+    public Inward(String file) {
         //super(); // call the base class constructor
-        this.dataFile = this.dataFolder + "\\inward.txt";
+        this.dataFile = this.dataFolder + "\\inward\\" + file;        
     }
 
+    @Override
     public void Migrate() throws FileNotFoundException, IOException, ParseException, SQLException {
 
+        this.conn.setAutoCommit(false);
         int totalRows = 0;
         int insertedRows = 0;
+        int commitSize = 0;
         HashMap<String, String> cityMap = new HashMap<>();
         cityMap.put("Bang", "Bengaluru");
         cityMap.put("Banga", "Bengaluru");
@@ -59,16 +60,16 @@ public class Inward extends MigrationBase {
 
         Pattern r = Pattern.compile(pattern);
         //Format dtformat = new SimpleDateFormat("MM/dd/yyyy");
-        Connection conn = this.db.getConnection();
+        //Connection conn = this.db.getConnection();
         String sql_truncate = "truncate table inward";
         String sql = "select id from cities where city = ?";
-        String sql_distrcit = "select id from districts where district = ?";
-        String sql_state = "select id from states where state = ?";
-        String sql_country = "select id from countries where country = ?";
+        //String sql_distrcit = "select id from districts where district = ?";
+        //String sql_state = "select id from states where state = ?";
+        //String sql_country = "select id from countries where country = ?";
         String insert_sql = "insert into inward(inwardNumber,inward.from,country,state,district,city,email,inwardCreationDate,inwardPurpose,chqddNumber,currency,amount,remarks,completed) "
                 + "values (?,?,?,(select id from states where state = ?),(select id from districts where district = ?),?,?,?,(select id from inward_purpose where purpose=?),?,(select id from currency where currency = ?),?,?,true)";
 
-        db.executeUpdate(sql_truncate);
+        //db.executeUpdate(sql_truncate);
         PreparedStatement pst = conn.prepareStatement(sql);
         PreparedStatement pst_district = conn.prepareStatement(sql_distrcit);
         PreparedStatement pst_state = conn.prepareStatement(sql_state);
@@ -79,12 +80,18 @@ public class Inward extends MigrationBase {
         this.openFile(dataFile);
         String _line = null;
         while (true) {
-
+            
+            try{
+                
+            
             _line = this.getNextLine();
             if (_line == null) {
                 break;
             }
             totalRows++;
+            if(totalRows == 1){
+                continue;
+            }
             int cityId = 0;
             int districtId = 0;
             int countryId = 0;
@@ -95,13 +102,21 @@ public class Inward extends MigrationBase {
 
             java.sql.Date inwardDate = util.dateStringToSqlDate(columns[1], "MM/dd/yyyy");
 
-            String inwardNumber = columns[11] + "-" + String.format("%05d", Integer.parseInt(columns[0]));
+            
             String From = columns[2];
             String City = columns[3];
             String inwardPurpose = columns[4].toLowerCase();
             String Currency = "INR";
             String szchqddNumber = columns[5];
             String remarks = null;
+            
+            // if the from field is null skip the record
+            if(From == null || From.isEmpty()){
+                logger.error("From field is empty, record skipped, rownumber = " + totalRows);
+                continue;
+            }
+            
+            String inwardNumber = columns[11] + "-" + String.format("%05d", Integer.parseInt(columns[0]));
 
             // replace all non word characters
             City = City.replaceAll("'", "");
@@ -261,11 +276,20 @@ public class Inward extends MigrationBase {
 
             db.executeUpdatePreparedStatement(pst_insert);
             insertedRows++;
+            commitSize++;
+            if(commitSize == COMMIT_SIZE){
+                this.conn.commit();
+                commitSize = 0;
+            }
+            }catch(Exception e){
+                logger.error(e.getMessage());
+            }
 
         } // end of while
-
-        logger.debug("Total Records: " + totalRows);
-        logger.debug("Inserted Records: " + insertedRows);
+        this.conn.commit();
+        this.conn.setAutoCommit(true);
+        logger.error("Total Records: " + (totalRows - 1));
+        logger.error("Inserted Records: " + insertedRows);
 
     }   // migrate
 } // class

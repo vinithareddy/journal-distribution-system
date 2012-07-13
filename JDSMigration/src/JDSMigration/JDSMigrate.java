@@ -19,33 +19,45 @@ public class JDSMigrate {
 
     private static final Logger logger = Logger.getLogger(JDSMigrate.class);
     private boolean MIGRATE_INWARD = true;
-    private boolean MIGRATE_SUBSCRIBER = true;
-    private boolean MIGRATE_SUBSCRIPTION = true;
-    private boolean MIGRATE_CORR = true;
+    private boolean MIGRATE_SUBSCRIBER = false;
+    private boolean MIGRATE_SUBSCRIPTION = false;
+    private boolean MIGRATE_CORR = false;
 
-    public static void main(String[] args) throws   IOException, FileNotFoundException, 
-                                                    ParseException, SQLException, BiffException{
+    public static void main(String[] args) throws IOException, FileNotFoundException,
+            ParseException, SQLException, BiffException {
 
         JDSMigrate _jdsmigrate = new JDSMigrate();
         //IMigrate _migrate = null;
         //try {
 
-            if (_jdsmigrate.MIGRATE_INWARD) {
-                Inward _inward = new Inward();
+        if (_jdsmigrate.MIGRATE_INWARD) {
+            OldInward _oldinward = new OldInward("INW2009.txt");
+            _oldinward.Migrate();
+            String[] inwardFiles = {"INW2010.txt", "INW2011.txt", "NEWINW.txt"};
+            Inward _inward;
+            for (int i = 0; i < inwardFiles.length; i++) {
+                _inward = new Inward(inwardFiles[i]);
                 _inward.Migrate();
             }
-            if (_jdsmigrate.MIGRATE_SUBSCRIBER) {
-                Subscriber _subscriber = new Subscriber();
-                _subscriber.Migrate();
-            }
-            if (_jdsmigrate.MIGRATE_SUBSCRIPTION) {
-                Subscription _subscription = new Subscription();
-                _subscription.Migrate();
-            }
-            if (_jdsmigrate.MIGRATE_CORR) {
-                Corr _corr = new Corr();
-                _corr.Migrate();
-            }
+
+        }
+        if (_jdsmigrate.MIGRATE_SUBSCRIBER) {
+            // the subscriber table will be truncated here
+            //IndTemp _subscriber = new IndTemp();
+            //_subscriber.Migrate();
+
+            // the subscriber table will ***NOT** be truncated here
+            Temp _subscriber2 = new Temp();
+            _subscriber2.Migrate();
+        }
+        if (_jdsmigrate.MIGRATE_SUBSCRIPTION) {
+            Subscription _subscription = new Subscription();
+            _subscription.Migrate();
+        }
+        if (_jdsmigrate.MIGRATE_CORR) {
+            Corr _corr = new Corr();
+            _corr.Migrate();
+        }
 //        } catch (IOException | ParseException | SQLException e) {
 //
 //            logger.fatal(e.getMessage());

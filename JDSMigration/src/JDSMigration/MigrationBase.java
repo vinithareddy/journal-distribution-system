@@ -4,11 +4,7 @@
  */
 package JDSMigration;
 
-import java.io.BufferedReader;
-import java.io.EOFException;
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
