@@ -5,10 +5,13 @@
 package JDSMigration;
 
 import java.io.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 import jxl.*;
 import jxl.read.biff.BiffException;
-import java.util.ArrayList;
 
 public class ExcelReader {
 
@@ -32,30 +35,40 @@ public class ExcelReader {
     }
 
     public String[] getNextRow() throws IOException, BiffException {
-        
+
         String[] Data = new String[columnCount];
-        String[] finalData = new String[columnCount];
-        if(this.currentRow == this.rowCount){
+        if (this.currentRow == this.rowCount) {
             return null;
         }
-        Cell rowData[] = s.getRow(this.currentRow);        
+        Cell rowData[] = s.getRow(this.currentRow);
         for (int j = 0; j < rowData.length; j++) {
-            Data[j] = rowData[j].getContents();
+            if (rowData[j].getType() == CellType.DATE) {
+                DateCell dCell = (DateCell) rowData[j];
+                TimeZone gmtZone = TimeZone.getTimeZone("GMT");
+                DateFormat destFormat = new SimpleDateFormat("MM/dd/yyyy");
+                destFormat.setTimeZone(gmtZone);
+                String datecell = destFormat.format(dCell.getDate());
+                Data[j] = datecell;
+
+            }else{
+                Data[j] = rowData[j].getContents();
+            }
+            
         }
-        
+
         this.currentRow++;
         return Data;
     }
 
     public String[] contentReading(InputStream fileInputStream) throws IOException, BiffException {
-        WorkbookSettings ws = null;
-        Workbook workbook = null;
-        Sheet s = null;
-        Cell rowData[] = null;
-        int rowCount = 0;
-        int columnCount = 0;
-        DateCell dc = null;
-        int totalSheet = 0;
+        WorkbookSettings ws;
+        Workbook workbook;
+        Sheet s;
+        Cell rowData[];
+        int rowCount0;
+        int columnCount0;
+        DateCell dc;
+        int totalSheet;
 
         ws = new WorkbookSettings();
         ws.setLocale(new Locale("en", "EN"));

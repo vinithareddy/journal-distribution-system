@@ -45,7 +45,7 @@ public final class util {
     public static java.sql.Date dateStringToSqlDate(String stringDate) throws ParseException {
 
         if (stringDate == null || stringDate.length() == 0) {
-            return null;
+            stringDate = "00/00/0000";
         }
         DateFormat formater = new SimpleDateFormat("dd/MM/yyyy");
         java.util.Date parsedUtilDate = formater.parse(stringDate);

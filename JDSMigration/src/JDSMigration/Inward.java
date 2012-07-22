@@ -23,7 +23,7 @@ public class Inward extends MigrationBase {
 
     private static final Logger logger = Logger.getLogger(Inward.class);
 
-    public Inward(String file) {
+    public Inward(String file) throws SQLException{
         //super(); // call the base class constructor
         this.dataFile = this.dataFolder + "\\inward\\" + file;        
     }
@@ -66,8 +66,8 @@ public class Inward extends MigrationBase {
         //String sql_distrcit = "select id from districts where district = ?";
         //String sql_state = "select id from states where state = ?";
         //String sql_country = "select id from countries where country = ?";
-        String insert_sql = "insert into inward(inwardNumber,inward.from,country,state,district,city,email,inwardCreationDate,inwardPurpose,chqddNumber,currency,amount,remarks,completed) "
-                + "values (?,?,?,(select id from states where state = ?),(select id from districts where district = ?),?,?,?,(select id from inward_purpose where purpose=?),?,(select id from currency where currency = ?),?,?,true)";
+        String insert_sql = "insert into inward(inwardNumber,inward.from,country,state,district,city,email,inwardCreationDate,inwardPurpose,chqddNumber,paymentmode,currency,amount,remarks,completed) "
+                + "values (?,?,?,(select id from states where state = ?),(select id from districts where district = ?),?,?,?,(select id from inward_purpose where purpose=?),?,?,(select id from currency where currency = ?),?,?,true)";
 
         //db.executeUpdate(sql_truncate);
         PreparedStatement pst = conn.prepareStatement(sql);
@@ -244,10 +244,13 @@ public class Inward extends MigrationBase {
 
             // chq dd number
             int chqddNumber = 0;
+            int paymentmode  = 0;
             if (szchqddNumber.matches("^\\d+")) {
                 chqddNumber = Integer.parseInt(columns[5]);
+                paymentmode = 1;
             }
             pst_insert.setInt(++paramIndex, chqddNumber);
+            pst_insert.setInt(++paramIndex, paymentmode);
 
             if (columns[7].equals("$")) {
                 Currency = "USD";

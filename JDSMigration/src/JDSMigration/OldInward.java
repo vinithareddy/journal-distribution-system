@@ -23,7 +23,7 @@ public class OldInward extends MigrationBase {
 
     private static final Logger logger = Logger.getLogger(OldInward.class);
 
-    public OldInward(String file) {
+    public OldInward(String file) throws SQLException{
         //super(); // call the base class constructor
         this.dataFile = this.dataFolder + "\\inward\\" + file;
     }

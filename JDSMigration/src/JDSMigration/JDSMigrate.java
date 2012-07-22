@@ -18,9 +18,9 @@ import org.apache.log4j.Logger;
 public class JDSMigrate {
 
     private static final Logger logger = Logger.getLogger(JDSMigrate.class);
-    private boolean MIGRATE_INWARD = true;
+    private boolean MIGRATE_INWARD = false;
     private boolean MIGRATE_SUBSCRIBER = false;
-    private boolean MIGRATE_SUBSCRIPTION = false;
+    private boolean MIGRATE_SUBSCRIPTION = true;
     private boolean MIGRATE_CORR = false;
 
     public static void main(String[] args) throws IOException, FileNotFoundException,
@@ -43,8 +43,8 @@ public class JDSMigrate {
         }
         if (_jdsmigrate.MIGRATE_SUBSCRIBER) {
             // the subscriber table will be truncated here
-            //IndTemp _subscriber = new IndTemp();
-            //_subscriber.Migrate();
+            IndTemp _subscriber = new IndTemp();
+            _subscriber.Migrate();
 
             // the subscriber table will ***NOT** be truncated here
             Temp _subscriber2 = new Temp();

@@ -29,7 +29,7 @@ public class Temp extends MigrationBase {
     int duplicateRows = 0;
     private String sql_insert = "insert IGNORE into subscriber(subtype, subscriberNumber"
             + ",subscriberName, department"
-            + ",institution, subscriberAddress"
+            + ",institution, shippingAddress"
             + ",city, state, pincode, country, deactive, email)values"
             + "((select id from subscriber_type where subtypecode = ?),?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     PreparedStatement pst_insert = null;
@@ -92,10 +92,10 @@ public class Temp extends MigrationBase {
             String email = datacolumns[55];
             
             //skip foreign suscribers
-            if(subscribercode.equalsIgnoreCase("FP") || subscribercode.equalsIgnoreCase("FI")){
+            /*if(subscribercode.equalsIgnoreCase("FP") || subscribercode.equalsIgnoreCase("FI")){
                 logger.debug("Skipping foreign subscriber:" + subscriberNumber);
                 continue;
-            }
+            }*/
 
             if(subscriberNumber.isEmpty() || Integer.parseInt(subscriberNumber) == 0){
                 logger.error("No Subscriber Number found for:" + subscriberName + " at line number:" + lineNum);

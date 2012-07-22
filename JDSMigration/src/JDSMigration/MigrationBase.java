@@ -36,8 +36,9 @@ public class MigrationBase implements IMigrate {
     public String dataFile = null;
     private ExcelReader excelReader = null;
     public static final int COMMIT_SIZE = 1000;
+    private PreparedStatement pst_pgid;
 
-    public MigrationBase() {
+    public MigrationBase() throws SQLException{
 
         try {
             PropertyConfigurator.configure("log4j.properties");
@@ -54,6 +55,12 @@ public class MigrationBase implements IMigrate {
         stateMap.put("H.P.", "Himachal Pradesh");
         stateMap.put("W.B.", "West Bengal");
         stateMap.put("Orissa", "Odisha");
+        
+        String sql = "select id from subscription_rates t1 "
+                + "where journalGroupID=? and t1.subtypeid=? "
+                + "and year=? and period=?";
+
+        pst_pgid = this.conn.prepareStatement(sql);
 
     }
 
@@ -166,6 +173,23 @@ public class MigrationBase implements IMigrate {
         return agentID;
 
     }
+    
+    public int getSubscriberID(int subscriberNumber) {
+        int subID;
+        String sql = "select id from subscriber where subscribernumber=?";
+
+        try {
+            PreparedStatement pst = this.conn.prepareStatement(sql);
+            pst.setInt(1, subscriberNumber);
+            ResultSet rs = pst.executeQuery();
+            rs.first();
+            subID = rs.getInt(1);
+        } catch (SQLException e) {
+            subID = 0;
+        }
+        return subID;
+
+    }
 
     public int getSubscriberTyeID(int subscriberID) {
         int subtypeID;
@@ -188,17 +212,13 @@ public class MigrationBase implements IMigrate {
         int priceGroupID;
         int period = endYear - startYear + 1;
 
-        String sql = "select id from subscription_rates t1 "
-                + "where journalGroupID=? and t1.subtypeid=? "
-                + "and year=? and period=?";
-
-        PreparedStatement pst = this.conn.prepareStatement(sql);
-        pst.setInt(1, journalGrpID);
-        pst.setInt(2, subtypeID);
-        pst.setInt(3, startYear);
-        pst.setInt(4, period);
+        
+        pst_pgid.setInt(1, journalGrpID);
+        pst_pgid.setInt(2, subtypeID);
+        pst_pgid.setInt(3, startYear);
+        pst_pgid.setInt(4, period);
         try {
-            ResultSet rs = pst.executeQuery();
+            ResultSet rs = pst_pgid.executeQuery();
             rs.first();
             priceGroupID = rs.getInt(1);
         } catch (SQLException e) {
