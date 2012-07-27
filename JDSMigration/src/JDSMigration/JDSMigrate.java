@@ -21,7 +21,7 @@ public class JDSMigrate {
     private boolean MIGRATE_INWARD = false;
     private boolean MIGRATE_SUBSCRIBER = false;
     private boolean MIGRATE_SUBSCRIPTION = true;
-    private boolean MIGRATE_CORR = false;
+    private boolean MIGRATE_CORR = true;
 
     public static void main(String[] args) throws IOException, FileNotFoundException,
             ParseException, SQLException, BiffException {
