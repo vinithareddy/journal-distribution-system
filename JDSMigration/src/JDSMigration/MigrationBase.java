@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.Calendar;
 import java.util.HashMap;
 import jxl.read.biff.BiffException;
 import org.apache.log4j.Logger;
@@ -137,6 +139,9 @@ public class MigrationBase implements IMigrate {
 
     public int getStateID(String stateName) throws SQLException {
 
+        if(this.stateMap.containsKey(stateName)){
+            stateName = this.stateMap.get(stateName);
+        }
         PreparedStatement pst = this.conn.prepareStatement(sql_state);
         pst.setString(1, stateName);
         ResultSet rs = db.executeQueryPreparedStatement(pst);
@@ -226,5 +231,44 @@ public class MigrationBase implements IMigrate {
         }
         return priceGroupID;
 
+    }
+    
+    public String getNextSubscriberNumber() throws SQLException, ParseException,
+            java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException {
+
+        String nextSubscriber;
+        // Identify the subscriber type i.e.Free or Paid
+        String subtype = "S";
+        //get the last subscriber number from subscriber table
+        String lastSubscriberSql = "SELECT subscriberNumber FROM subscriber where YEAR(subscriberCreationDate)=YEAR(CURDATE()) ORDER BY id DESC LIMIT 1";
+        ResultSet rs = db.executeQuery(lastSubscriberSql);
+        //java.sql.ResultSetMetaData metaData = rs.getMetaData();
+        Calendar calendar = Calendar.getInstance();
+        String lastSubscriber;
+
+        //if true there exists a previous subscriber for the year, so just increment the subscriber number.
+        if (rs.first()) {
+
+            lastSubscriber = rs.getString(1);
+
+            // get the last subscriber number after the split
+            int subscriber = Integer.parseInt(lastSubscriber.substring(6));
+            //increment
+            ++subscriber;
+            //apend the year, month character and new subscriber number.
+            nextSubscriber = lastSubscriber.substring(0, 2) + getMonthToCharacterMap(calendar.get(Calendar.MONTH)) + "-" + subtype + "-" + String.format("%05d", subscriber);
+        } else {
+            // there is no previous record for the year, so start the numbering afresh
+            String year = String.valueOf(calendar.get(Calendar.YEAR)).substring(2);
+            nextSubscriber = year + getMonthToCharacterMap(calendar.get(Calendar.MONTH)) + "-" + subtype + "-" + String.format("%05d", 1);
+        }
+        return nextSubscriber;
+    }
+    
+    public String getMonthToCharacterMap(int _month) {
+        char[] alphabet = "abcdefghijkl".toCharArray();
+        // the calendar objects month starts from 0
+        String monthChar = Character.toString(alphabet[_month]);
+        return monthChar.toUpperCase();
     }
 }
