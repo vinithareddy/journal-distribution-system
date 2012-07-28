@@ -26,24 +26,7 @@ public class Subscription extends MigrationBase {
     int subscriberID;
     String subscriberNumber;
     Map<String, String> invalidSubRates = new HashMap<>();
-//--------------------------------------------------------------------------------------------    
-    //Select Statement for Inward Id
-    private String sql_select_inward = "Select id from inward where inwardNumber = ?";
-//--------------------------------------------------------------------------------------------    
-    //Select Statement for Subscriber Id
-    private String sql_select_subscriber = "Select id from subscriber where subscriberNumber = ?";
-//--------------------------------------------------------------------------------------------    
-    //Select Statement for Journal Group
-    private String sql_select_journalGrp = "Select id from journal_groups where journalGroupName = ?";
-//--------------------------------------------------------------------------------------------    
-    //Insert Statement for Subscription
-    private String sql_insert_subscription = "insert into subscription(subscriberID,inwardID,remarks,legacy,legacy_amount,subscriptiondate,legacy_balance)"
-            + "values(?,?,?,?,?,?,?)";
-//--------------------------------------------------------------------------------------------
-    //Insert Statement for Subscription Details
-    private String sql_insert_subscriptiondetails = "insert into subscriptiondetails(subscriptionID, "
-            + "journalGroupID, copies, startYear, startMonth, endYear, journalPriceGroupID)values(?,?,?,?,?,?,?)";
-//--------------------------------------------------------------------------------------------    
+
     //Prepared Statements
     PreparedStatement pst_insert_subscription = null;
     PreparedStatement pst_select_inward = null;
@@ -72,7 +55,6 @@ public class Subscription extends MigrationBase {
         pst_select_inward = this.conn.prepareStatement(sql_select_inward);
         pst_select_subscriber = this.conn.prepareStatement(sql_select_subscriber);
         pst_insert_subscription = this.conn.prepareStatement(sql_insert_subscription, Statement.RETURN_GENERATED_KEYS);
-
 
 
         // truncate the old data
@@ -161,7 +143,7 @@ public class Subscription extends MigrationBase {
                 logger.fatal(e.toString());
                 logger.fatal("cannot update subscription date and balance for subscriber: " + this.subscriberNumber);
                 logger.fatal("subscriber in corr:" + corr_subscriber);
-                
+
                 corr_balance = (float) 0;
             }
 
@@ -202,7 +184,7 @@ public class Subscription extends MigrationBase {
             //Insert Subscription Details
 //------------------------------------------------------------------------------------------------------------------------------
 
-            //Start year 
+            //Start year
             // if datacoloumn[31] = 0
             int startYr = Integer.parseInt(datacolumns[31]);
             //int _tempStrtYr = Integer.parseInt(datacolumns[31]);
@@ -223,7 +205,7 @@ public class Subscription extends MigrationBase {
              */
 
 
-            //End year 
+            //End year
             int _tempEndYr = Integer.parseInt(datacolumns[32]);
             int endYr = _tempEndYr;
 
@@ -264,7 +246,7 @@ public class Subscription extends MigrationBase {
 
             int[] jrnlArr = {4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 27}; //Data Columns frm excel
             //int[] jrnlArr = {4}; //Data Columns frm excel
-            int[] jrnlGrpIDArr = {1, 2, 3, 4, 6, 5, 7, 8, 9, 10, 11, 12, 13}; //Journal Group IDs 
+            int[] jrnlGrpIDArr = {1, 2, 3, 4, 6, 5, 7, 8, 9, 10, 11, 12, 13}; //Journal Group IDs
             int allGrpFlag = 0;
             int noCopies = 0;
             if (!datacolumns[4].isEmpty()) {

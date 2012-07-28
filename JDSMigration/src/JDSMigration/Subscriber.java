@@ -30,11 +30,7 @@ public class Subscriber extends MigrationBase {
     int insertedRows = 0;
     int duplicateRows = 0;
     Connection conn = null;
-    private String sql_insert = "insert IGNORE into subscriber(subtype, subscriberNumber"
-            + ",subscriberName, department"
-            + ",institution, subscriberAddress"
-            + ",city, state, pincode, country, deactive, email)values"
-            + "((select id from subscriber_type where subtypecode = ?),?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
     PreparedStatement pst_insert = null;
 
     public Subscriber() throws SQLException{
@@ -57,10 +53,10 @@ public class Subscriber extends MigrationBase {
         List DuplicateList = new ArrayList();
 
         String[] datacolumns = new String[numOfCols];
-        pst_insert = this.conn.prepareStatement(sql_insert);
+        pst_insert = this.conn.prepareStatement(sql_insert_subscriber);
 
         //conn.setAutoCommit(false);
-        
+
         // truncate the old data
         //this.truncateTable("Subscriber");
 
@@ -93,7 +89,7 @@ public class Subscriber extends MigrationBase {
             String cityAndPin = datacolumns[11];
             String country = datacolumns[13];
             String email = datacolumns[55];
-            
+
             //skip foreign suscribers
             if(subscribercode.equalsIgnoreCase("FP") || subscribercode.equalsIgnoreCase("FI")){
                 logger.error("Skipping foreign subscriber:" + subscriberNumber);
@@ -172,25 +168,21 @@ public class Subscriber extends MigrationBase {
             pst_insert.setString(++paramIndex, email);
             pst_insert.addBatch();
             recordCounter++;
-            
-            
-            
+
             int ret = this.db.executeUpdatePreparedStatement(pst_insert);
             if (ret == 0) {
                 logger.error("Skipping Duplicate Subscriber : " + subscriberNumber + " Name: " + subscriberName);
-                DuplicateList.add(subscriberNumber);
+                DuplicateList.add(subscriberName);
                 duplicateRows++;
             } else {
                 insertedRows++;
             }
-            
+
             if(recordCounter == COMMIT_BATCH_SIZE){
                 logger.debug("commiting database after " + String.valueOf(insertedRows) + " rows");
                 conn.commit();
                 recordCounter = 0;
             }
-
-
         }
         conn.commit();
         logger.debug("Total Rows: " + totalRows);

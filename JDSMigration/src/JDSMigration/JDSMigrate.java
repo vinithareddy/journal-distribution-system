@@ -20,8 +20,16 @@ public class JDSMigrate {
     private static final Logger logger = Logger.getLogger(JDSMigrate.class);
     private boolean MIGRATE_INWARD = false;
     private boolean MIGRATE_SUBSCRIBER = false;
-    private boolean MIGRATE_SUBSCRIPTION = true;
-    private boolean MIGRATE_CORR = true;
+    private boolean MIGRATE_SUBSCRIPTION = false;
+    private boolean MIGRATE_CORR = false;
+    private boolean MIGRATE_FELLOWS = true;
+    private boolean MIGRATE_ASSOCIATES = true;
+    private boolean MIGRATE_EBALL = true;
+    private boolean MIGRATE_HONFEL = true;
+    private boolean MIGRATE_JGRANT = true;
+    private boolean MIGRATE_EXCHANGE = true;
+    private boolean CIRCULATION_FIGURES = false;
+
 
     public static void main(String[] args) throws IOException, FileNotFoundException,
             ParseException, SQLException, BiffException {
@@ -57,6 +65,34 @@ public class JDSMigrate {
         if (_jdsmigrate.MIGRATE_CORR) {
             Corr _corr = new Corr();
             _corr.Migrate();
+        }
+        if (_jdsmigrate.MIGRATE_FELLOWS) {
+            migrateFellows _fellows = new migrateFellows();
+            _fellows.Migrate();
+        }
+        if (_jdsmigrate.MIGRATE_ASSOCIATES) {
+            migrateAssociates _associates = new migrateAssociates();
+            _associates.Migrate();
+        }
+        if (_jdsmigrate.MIGRATE_EBALL) {
+            migrateEBALL _editorialBoardMembers = new migrateEBALL();
+            _editorialBoardMembers.Migrate();
+        }
+        if (_jdsmigrate.MIGRATE_HONFEL) {
+            migrateHONFEL _honfel = new migrateHONFEL();
+            _honfel.Migrate();
+        }
+        if (_jdsmigrate.MIGRATE_JGRANT) {
+            migrateJGRANT _jgrant = new migrateJGRANT();
+            _jgrant.Migrate();
+        }
+        if (_jdsmigrate.MIGRATE_EXCHANGE) {
+            migrateExchange _exchange = new migrateExchange();
+            _exchange.Migrate();
+        }
+        if (_jdsmigrate.CIRCULATION_FIGURES) {
+            circulationFigures _circulationFigures = new circulationFigures();
+            _circulationFigures.getCount();
         }
 //        } catch (IOException | ParseException | SQLException e) {
 //

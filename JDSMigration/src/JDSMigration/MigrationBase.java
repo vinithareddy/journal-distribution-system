@@ -31,6 +31,8 @@ public class MigrationBase implements IMigrate {
     public Connection conn = null;
     private static final Logger logger = Logger.getLogger(MigrationBase.class);
     public HashMap<String, String> stateMap = new HashMap<>();
+    public HashMap<String, String> cityMap = new HashMap<>();
+    public HashMap<String, String> countryMap = new HashMap<>();
     public String sql_city = "select id from cities where city = ?";
     public String sql_distrcit = "select id from districts where district = ?";
     public String sql_state = "select id from states where state = ?";
@@ -40,7 +42,36 @@ public class MigrationBase implements IMigrate {
     public static final int COMMIT_SIZE = 1000;
     private PreparedStatement pst_pgid;
 
-    public MigrationBase() throws SQLException{
+//--------------------------------------------------------------------------------------------
+    //Select Statement for Inward Id
+    public String sql_select_inward = "Select id from inward where inwardNumber = ?";
+//--------------------------------------------------------------------------------------------
+    //Select Statement for Subscriber Id
+    public String sql_select_subscriber = "Select id from subscriber where subscriberNumber = ?";
+//--------------------------------------------------------------------------------------------
+    //Select Statement for Journal Group
+    public String sql_select_journalGrp = "Select id from journal_groups where journalGroupName = ?";
+//--------------------------------------------------------------------------------------------
+    //Insert Statement for Subscription
+    public String sql_insert_subscription = "insert into subscription(subscriberID,inwardID,remarks,legacy,legacy_amount,subscriptiondate,legacy_balance)"
+            + "values(?,?,?,?,?,?,?)";
+
+    public String sql_insert_subscription_free_subs = "insert into subscription(subscriberID,inwardID,legacy) values(?,?,?)";
+//--------------------------------------------------------------------------------------------
+    //Insert Statement for Subscription Details
+    public String sql_insert_subscriptiondetails = "insert into subscriptiondetails(subscriptionID, "
+            + "journalGroupID, copies, startYear, startMonth, endYear, journalPriceGroupID)values(?,?,?,?,?,?,?)";
+//--------------------------------------------------------------------------------------------
+    public String sql_insert_subscriber = "insert IGNORE into subscriber(subtype, subscriberNumber"
+            + ",subscriberName, department"
+            + ",institution, shippingAddress"
+            + ",city, state, pincode, country, deactive, email)values"
+            + "((select id from subscriber_type where subtypecode = ?),?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+    public String sql_getLastSubscriberId = "SELECT id from subscriber order by id desc LIMIT 1";
+//--------------------------------------------------------------------------------------------
+
+    public MigrationBase() {
 
         try {
             PropertyConfigurator.configure("log4j.properties");
@@ -57,12 +88,52 @@ public class MigrationBase implements IMigrate {
         stateMap.put("H.P.", "Himachal Pradesh");
         stateMap.put("W.B.", "West Bengal");
         stateMap.put("Orissa", "Odisha");
-        
+
         String sql = "select id from subscription_rates t1 "
                 + "where journalGroupID=? and t1.subtypeid=? "
                 + "and year=? and period=?";
 
-        pst_pgid = this.conn.prepareStatement(sql);
+        //Added for fellows data migration
+        cityMap.put("Bangalore", "Bengaluru");
+        cityMap.put("Dehra Dun", "Dehradun");
+        cityMap.put("Baroda", "Vadodara");
+        cityMap.put("Krishangarh", "Kishangarh");
+        cityMap.put("Calicut", "Kozhikode (Calicut)");
+        cityMap.put("Pudicherry", "Puducherry");
+        cityMap.put("Bangalore ", "Bengaluru");
+        cityMap.put("Karaikudi ", "Karaikkudi");
+        cityMap.put("Bangalroe ", "Bengaluru");
+        cityMap.put("Vellroe ", "Vellore");
+        cityMap.put("Thirvananthapuram ", "Thiruvananthapuram");
+        cityMap.put("Pondicherry", "Puducherry");
+        cityMap.put("Dehra Dun ", "Dehradun");
+        cityMap.put("Baroda ", "Vadodara");
+        cityMap.put("Pondicherry ", "Puducherry");
+        cityMap.put("Pudicherry ", "Puducherry");
+        cityMap.put("Calicut ", "Kozhikode (Calicut)");
+        cityMap.put("Trivandrum ", "Thiruvananthapuram");
+        cityMap.put("Ahmedabad ,", "Ahmedabad");
+        cityMap.put("Bengalooru ", "Bengaluru");
+        cityMap.put("Palkkad ", "Palakkad");
+
+        stateMap.put("Delhi", "New Delhi");
+        stateMap.put("UP", "Uttar Pradesh");
+        stateMap.put("Kashmir", "Jammu & Kashmir");
+        stateMap.put("Karnatakia", "Karnataka");
+        stateMap.put("Karnatka", "Karnataka");
+        stateMap.put("Panjab", "Punjab");
+        stateMap.put("Puducherry", "Pondicherry");
+        stateMap.put("Karnataaka", "Karnataka");
+        stateMap.put("Karnataka ************************", "Karnataka");
+
+        countryMap.put("U.S.A", "USA");
+        countryMap.put("U.S.A.", "USA");
+        countryMap.put("U.K.", "UK");
+        countryMap.put("The Netherlands", "Netherlands");
+        countryMap.put("Czechoslovakia", "Czech Republic");
+        countryMap.put("Yugoslavia", "Macedonia");
+        countryMap.put("Nepal*****************************", "Nepal");
+        countryMap.put("Belgique", "Belgium");
 
     }
 
@@ -103,8 +174,9 @@ public class MigrationBase implements IMigrate {
         return line;
     }
 
-    private void CloseFile() throws java.io.IOException {
+    public void CloseFile() throws java.io.IOException {
         this.br.close();
+        this.fr.close();
     }
 
     public int getCityID(String cityName) throws SQLException {
@@ -155,6 +227,18 @@ public class MigrationBase implements IMigrate {
 
     }
 
+    public int getLastSubscriberId() throws SQLException {
+
+        PreparedStatement pst = this.conn.prepareStatement(sql_getLastSubscriberId);
+        ResultSet rs = db.executeQueryPreparedStatement(pst);
+        if (rs.isBeforeFirst()) {
+            rs.first();
+            return rs.getInt(1);
+        } else {
+            return 0;
+        }
+    }
+
     public void truncateTable(String table) throws SQLException {
 
         String sql = "delete from " + table;
@@ -178,7 +262,7 @@ public class MigrationBase implements IMigrate {
         return agentID;
 
     }
-    
+
     public int getSubscriberID(int subscriberNumber) {
         int subID;
         String sql = "select id from subscriber where subscribernumber=?";
@@ -217,7 +301,7 @@ public class MigrationBase implements IMigrate {
         int priceGroupID;
         int period = endYear - startYear + 1;
 
-        
+
         pst_pgid.setInt(1, journalGrpID);
         pst_pgid.setInt(2, subtypeID);
         pst_pgid.setInt(3, startYear);
@@ -270,5 +354,21 @@ public class MigrationBase implements IMigrate {
         // the calendar objects month starts from 0
         String monthChar = Character.toString(alphabet[_month]);
         return monthChar.toUpperCase();
+    }
+
+    public int getEndYear() {
+        int endYear;
+        String sql = "SELECT year FROM `year` ORDER BY yearId DESC LIMIT 1";
+
+        try {
+            PreparedStatement pst = this.conn.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+            rs.first();
+            endYear = rs.getInt(1);
+        } catch (SQLException e) {
+            endYear = 0;
+        }
+        return endYear;
+
     }
 }
