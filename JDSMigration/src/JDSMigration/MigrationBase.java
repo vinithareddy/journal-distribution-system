@@ -60,7 +60,7 @@ public class MigrationBase implements IMigrate {
 //--------------------------------------------------------------------------------------------
     //Insert Statement for Subscription Details
     public String sql_insert_subscriptiondetails = "insert into subscriptiondetails(subscriptionID, "
-            + "journalGroupID, copies, startYear, startMonth, endYear, journalPriceGroupID)values(?,?,?,?,?,?,?)";
+            + "journalGroupID, copies, startYear, startMonth, endYear, endMonth, journalPriceGroupID)values(?,?,?,?,?,?,?,?)";
 //--------------------------------------------------------------------------------------------
     public String sql_insert_subscriber = "insert IGNORE into subscriber(subtype, subscriberNumber"
             + ",subscriberName, department"
@@ -316,7 +316,7 @@ public class MigrationBase implements IMigrate {
         return priceGroupID;
 
     }
-    
+
     public String getNextSubscriberNumber() throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException {
 
@@ -348,7 +348,7 @@ public class MigrationBase implements IMigrate {
         }
         return nextSubscriber;
     }
-    
+
     public String getMonthToCharacterMap(int _month) {
         char[] alphabet = "abcdefghijkl".toCharArray();
         // the calendar objects month starts from 0

@@ -18,10 +18,10 @@ import org.apache.log4j.Logger;
 public class JDSMigrate {
 
     private static final Logger logger = Logger.getLogger(JDSMigrate.class);
-    private boolean MIGRATE_INWARD = false;
-    private boolean MIGRATE_SUBSCRIBER = false;
-    private boolean MIGRATE_SUBSCRIPTION = false;
-    private boolean MIGRATE_CORR = false;
+    private boolean MIGRATE_INWARD = true;
+    private boolean MIGRATE_SUBSCRIBER = true;
+    private boolean MIGRATE_SUBSCRIPTION = true;
+    private boolean MIGRATE_CORR = true;
     private boolean MIGRATE_FELLOWS = true;
     private boolean MIGRATE_ASSOCIATES = true;
     private boolean MIGRATE_EBALL = true;

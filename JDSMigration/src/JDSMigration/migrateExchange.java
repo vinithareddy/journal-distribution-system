@@ -254,8 +254,9 @@ public class migrateExchange extends MigrationBase{
                     else
                         noCopies = Integer.parseInt(datacolumns[jrnlArr[j]]);
                     int startMonth = 1;
-                    int startYr = 0;
-                    int endYr = 0;
+                    int endMonth = 12;
+                    int startYr = 2012;
+                    int endYr = 2050;
                     int priceGroupID = 1;
                     pst_insert_subscription_dtls.setInt(++paramIndex, subscriptionID);
                     pst_insert_subscription_dtls.setInt(++paramIndex, jrnlGrpIDArr[j]);
@@ -263,6 +264,7 @@ public class migrateExchange extends MigrationBase{
                     pst_insert_subscription_dtls.setInt(++paramIndex, startYr);
                     pst_insert_subscription_dtls.setInt(++paramIndex, startMonth);
                     pst_insert_subscription_dtls.setInt(++paramIndex, endYr);
+                    pst_insert_subscription_dtls.setInt(++paramIndex, endMonth);
                     pst_insert_subscription_dtls.setInt(++paramIndex, priceGroupID);
 
                     //Inserting the record in Subscription Table
