@@ -81,6 +81,7 @@ public class MigrationBase implements IMigrate {
             System.out.println(e.getMessage());
         }
         stateMap.put("T.N.", "Tamil Nadu");
+        stateMap.put("T.N", "Tamil Nadu");
         stateMap.put("A.P.", "Andhra Pradesh");
         stateMap.put("M.S.", "Maharashtra");
         stateMap.put("U.P.", "Uttar Pradesh");
@@ -88,6 +89,9 @@ public class MigrationBase implements IMigrate {
         stateMap.put("H.P.", "Himachal Pradesh");
         stateMap.put("W.B.", "West Bengal");
         stateMap.put("Orissa", "Odisha");
+        stateMap.put("J&K","Jammu & Kashmir");
+        stateMap.put("A&N Islands","Andaman & Nicobar");
+        
 
         String sql = "select id from subscription_rates t1 "
                 + "where journalGroupID=? and t1.subtypeid=? "

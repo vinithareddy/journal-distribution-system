@@ -6,6 +6,7 @@ package JDSMigration;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import jxl.read.biff.BiffException;
@@ -22,17 +23,19 @@ public class JDSMigrate {
     private boolean MIGRATE_SUBSCRIBER = true;
     private boolean MIGRATE_SUBSCRIPTION = true;
     private boolean MIGRATE_CORR = true;
-    private boolean MIGRATE_FELLOWS = true;
-    private boolean MIGRATE_ASSOCIATES = true;
-    private boolean MIGRATE_EBALL = true;
-    private boolean MIGRATE_HONFEL = true;
-    private boolean MIGRATE_JGRANT = true;
-    private boolean MIGRATE_EXCHANGE = true;
+    private boolean MIGRATE_FELLOWS = false;
+    private boolean MIGRATE_ASSOCIATES = false;
+    private boolean MIGRATE_EBALL = false;
+    private boolean MIGRATE_HONFEL = false;
+    private boolean MIGRATE_JGRANT = false;
+    private boolean MIGRATE_EXCHANGE = false;
     private boolean CIRCULATION_FIGURES = false;
+    private boolean CURRMEM = true;
 
 
     public static void main(String[] args) throws IOException, FileNotFoundException,
-            ParseException, SQLException, BiffException {
+            ParseException, SQLException, BiffException, InvocationTargetException,
+            IllegalAccessException{
 
         JDSMigrate _jdsmigrate = new JDSMigrate();
         //IMigrate _migrate = null;
@@ -90,10 +93,15 @@ public class JDSMigrate {
             migrateExchange _exchange = new migrateExchange();
             _exchange.Migrate();
         }
+        if(_jdsmigrate.CURRMEM){
+            CurrMem _currmem = new CurrMem();
+            _currmem.Migrate();
+        }
         if (_jdsmigrate.CIRCULATION_FIGURES) {
             circulationFigures _circulationFigures = new circulationFigures();
             _circulationFigures.getCount();
         }
+        
 //        } catch (IOException | ParseException | SQLException e) {
 //
 //            logger.fatal(e.getMessage());

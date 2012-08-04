@@ -23,14 +23,21 @@ public class CurrMem extends MigrationBase{
     
     private static final Logger logger = Logger.getLogger(CurrMem.class.getName());
     private String insert_subscriber_sql;
+    private String insert_subscription_sql;
+    private String insert_subscription_detail_sql;
     public CurrMem() throws SQLException, IOException, BiffException{
         this.dataFile = this.dataFolder + "\\CURRMEM.xls";
         this.openExcel(this.dataFile);
-        insert_subscriber_sql = "insert into subscriber(subscriberNumber,subscriberName,"
-                + "department,institution,shippingaddress,city,state,pincode,subtype)values("
-                + "?,?,?,?,?,?,?,?,?)";
-                
+        insert_subscriber_sql = "insert into subscriber(subscriberNumber,subscriberCreationDate,subscriberName,"
+                + "department,institution,shippingaddress,invoiceAddress,city,state,pincode,subtype)values("
+                + "?,?,?,?,?,?,?,?,?,?,?)";
         
+        insert_subscription_sql = "insert into subscription(subscriberID,inwardID,legacy,legacy_amount) values "
+                + "(?, ?, ?, ?)";
+        
+        insert_subscription_detail_sql = "insert into subscriptiondetails(subscriptionID,journalGroupID,copies,startYear,startMonth,endMonth,endYear,journalPriceGroupID) "
+                + "values (?, ?, ?, ?, ?, ?, ?, ?)";
+ 
     }
     
     @Override
@@ -47,19 +54,21 @@ public class CurrMem extends MigrationBase{
                 break;
             }
             rownum++;
-            String state = datacolumns[7];
+            String state = datacolumns[8];
             //skip if state contains STOP
             if(state.contains("STOP")){
                 logger.debug("STOP flag found at row num:" + rownum);
                 continue;
             }
             
-            String name = datacolumns[0];
-            String department = datacolumns[1];
-            String institute = datacolumns[2];
-            String address = datacolumns[3] + "\n" + datacolumns[4];
-            String cityAndPin = datacolumns[5];
-            String pin = datacolumns[6].replaceAll(" ", "");
+            String name = datacolumns[1];
+            String department = datacolumns[2];
+            String institute = datacolumns[3];
+            String address = datacolumns[4] + "\n" + datacolumns[4];
+            String cityAndPin = datacolumns[6];
+            String pin = datacolumns[7].replaceAll(" ", "");
+            pin = pin.isEmpty() ? "0" : pin;
+            float amount = datacolumns[11].isEmpty() || datacolumns[11] == null || datacolumns[11].equalsIgnoreCase("null") ? 0 : Float.parseFloat(datacolumns[11]);
             
             int cityid = 0;
             int stateid;
@@ -81,9 +90,11 @@ public class CurrMem extends MigrationBase{
             PreparedStatement pst = conn.prepareStatement(insert_subscriber_sql, Statement.RETURN_GENERATED_KEYS);
             
             pst.setString(++paramindex, this.getNextSubscriberNumber());
+            pst.setDate(++paramindex, util.dateStringToSqlDate(util.getDateString()));
             pst.setString(++paramindex, name);
             pst.setString(++paramindex, department);
             pst.setString(++paramindex, institute);
+            pst.setString(++paramindex, address);
             pst.setString(++paramindex, address);
             pst.setInt(++paramindex, cityid);
             pst.setInt(++paramindex, stateid);
@@ -94,6 +105,35 @@ public class CurrMem extends MigrationBase{
                 ResultSet rs = pst.getGeneratedKeys();
                 rs.first();
                 int subscriberId = rs.getInt(1);
+                
+                this.conn.setAutoCommit(false);
+                paramindex = 0;
+                PreparedStatement pst_sub = conn.prepareStatement(insert_subscription_sql, Statement.RETURN_GENERATED_KEYS);
+                pst_sub.setInt(++paramindex, subscriberId);
+                pst_sub.setInt(++paramindex, 0);
+                pst_sub.setBoolean(++paramindex, true);
+                pst_sub.setFloat(++paramindex, amount);
+                
+                upd_count = pst_sub.executeUpdate();
+                if(upd_count == 1){
+                    ResultSet rs1 = pst_sub.getGeneratedKeys();
+                    rs1.first();
+                    int subscriptionID = rs1.getInt(1);
+                    paramindex = 0;
+                    PreparedStatement pst_sub_detail = conn.prepareStatement(insert_subscription_detail_sql);
+                    pst_sub_detail.setInt(++paramindex, subscriptionID);
+                    pst_sub_detail.setInt(++paramindex, 11);
+                    pst_sub_detail.setInt(++paramindex, 1);
+                    pst_sub_detail.setInt(++paramindex, 2012);
+                    pst_sub_detail.setInt(++paramindex, 1);
+                    pst_sub_detail.setInt(++paramindex, 12);
+                    pst_sub_detail.setInt(++paramindex, 2050);
+                    pst_sub_detail.setInt(++paramindex, 1);
+                    pst_sub_detail.executeUpdate();
+                    this.conn.commit();
+                    logger.debug("subscriber migrated for row: " + rownum);
+                }
+            
             }
             
         }

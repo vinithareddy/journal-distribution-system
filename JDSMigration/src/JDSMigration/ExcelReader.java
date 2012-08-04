@@ -37,6 +37,9 @@ public class ExcelReader {
     public String[] getNextRow() throws IOException, BiffException {
 
         String[] Data = new String[columnCount];
+        for(int i=0; i<columnCount; i++){
+            Data[i] = "";
+        }
         if (this.currentRow == this.rowCount) {
             return null;
         }
