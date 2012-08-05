@@ -159,6 +159,7 @@ public class Subscriber extends MigrationBase {
             pst_insert.setString(++paramIndex, department);
             pst_insert.setString(++paramIndex, institute);
             pst_insert.setString(++paramIndex, address);
+            pst_insert.setString(++paramIndex, address);
             pst_insert.setInt(++paramIndex, cityID);
             pst_insert.setInt(++paramIndex, stateID);
             pst_insert.setInt(++paramIndex, pin);

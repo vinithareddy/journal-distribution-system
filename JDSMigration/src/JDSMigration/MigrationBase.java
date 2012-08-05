@@ -64,9 +64,9 @@ public class MigrationBase implements IMigrate {
 //--------------------------------------------------------------------------------------------
     public String sql_insert_subscriber = "insert IGNORE into subscriber(subtype, subscriberNumber"
             + ",subscriberName, department"
-            + ",institution, shippingAddress"
+            + ",institution, shippingAddress, invoiceAddress"
             + ",city, state, pincode, country, deactive, email)values"
-            + "((select id from subscriber_type where subtypecode = ?),?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            + "((select id from subscriber_type where subtypecode = ?),?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     public String sql_getLastSubscriberId = "SELECT id from subscriber order by id desc LIMIT 1";
 //--------------------------------------------------------------------------------------------
