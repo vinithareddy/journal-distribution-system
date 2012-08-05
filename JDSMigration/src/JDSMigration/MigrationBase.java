@@ -53,8 +53,8 @@ public class MigrationBase implements IMigrate {
     public String sql_select_journalGrp = "Select id from journal_groups where journalGroupName = ?";
 //--------------------------------------------------------------------------------------------
     //Insert Statement for Subscription
-    public String sql_insert_subscription = "insert into subscription(subscriberID,inwardID,remarks,legacy,legacy_amount,subscriptiondate,legacy_balance)"
-            + "values(?,?,?,?,?,?,?)";
+    public String sql_insert_subscription = "insert into subscription(subscriberID,inwardID,legacy,legacy_amount,subscriptiondate,legacy_balance)"
+            + "values(?,?,?,?,?,?)";
 
     public String sql_insert_subscription_free_subs = "insert into subscription(subscriberID,inwardID,legacy) values(?,?,?)";
 //--------------------------------------------------------------------------------------------
@@ -71,7 +71,7 @@ public class MigrationBase implements IMigrate {
     public String sql_getLastSubscriberId = "SELECT id from subscriber order by id desc LIMIT 1";
 //--------------------------------------------------------------------------------------------
 
-    public MigrationBase() {
+    public MigrationBase() throws SQLException{
 
         try {
             PropertyConfigurator.configure("log4j.properties");
@@ -96,6 +96,7 @@ public class MigrationBase implements IMigrate {
         String sql = "select id from subscription_rates t1 "
                 + "where journalGroupID=? and t1.subtypeid=? "
                 + "and year=? and period=?";
+        pst_pgid = this.conn.prepareStatement(sql);
 
         //Added for fellows data migration
         cityMap.put("Bangalore", "Bengaluru");
@@ -138,6 +139,10 @@ public class MigrationBase implements IMigrate {
         countryMap.put("Yugoslavia", "Macedonia");
         countryMap.put("Nepal*****************************", "Nepal");
         countryMap.put("Belgique", "Belgium");
+        countryMap.put("THE NETHERLANDS", "Netherlands");
+        countryMap.put("REPUBLIC OF MOLDAVA", "Moldava");
+        
+        
 
     }
 
@@ -199,7 +204,9 @@ public class MigrationBase implements IMigrate {
     }
 
     public int getCountryID(String countryName) throws SQLException {
-
+        if(this.countryMap.containsKey(countryName)){
+            countryName = this.countryMap.get(countryName);
+        }
         PreparedStatement pst = this.conn.prepareStatement(sql_country);
         pst.setString(1, countryName);
         ResultSet rs = db.executeQueryPreparedStatement(pst);
@@ -304,8 +311,6 @@ public class MigrationBase implements IMigrate {
     public int getJournalPriceGroupID(int journalGrpID, int subtypeID, int startYear, int endYear) throws SQLException {
         int priceGroupID;
         int period = endYear - startYear + 1;
-
-
         pst_pgid.setInt(1, journalGrpID);
         pst_pgid.setInt(2, subtypeID);
         pst_pgid.setInt(3, startYear);

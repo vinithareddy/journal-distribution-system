@@ -19,10 +19,10 @@ import org.apache.log4j.Logger;
 public class JDSMigrate {
 
     private static final Logger logger = Logger.getLogger(JDSMigrate.class);
-    private boolean MIGRATE_INWARD = true;
-    private boolean MIGRATE_SUBSCRIBER = true;
+    private boolean MIGRATE_INWARD = false;
+    private boolean MIGRATE_SUBSCRIBER = false;
     private boolean MIGRATE_SUBSCRIPTION = true;
-    private boolean MIGRATE_CORR = true;
+    private boolean MIGRATE_CORR = false;
     private boolean MIGRATE_FELLOWS = false;
     private boolean MIGRATE_ASSOCIATES = false;
     private boolean MIGRATE_EBALL = false;
@@ -30,7 +30,8 @@ public class JDSMigrate {
     private boolean MIGRATE_JGRANT = false;
     private boolean MIGRATE_EXCHANGE = false;
     private boolean CIRCULATION_FIGURES = false;
-    private boolean CURRMEM = true;
+    private boolean CURRMEM = false;
+    private boolean CURTWAS = false;
 
 
     public static void main(String[] args) throws IOException, FileNotFoundException,
@@ -96,6 +97,10 @@ public class JDSMigrate {
         if(_jdsmigrate.CURRMEM){
             CurrMem _currmem = new CurrMem();
             _currmem.Migrate();
+        }
+        if(_jdsmigrate.CURTWAS){
+            CurtWas _curtwas = new CurtWas();
+            _curtwas.Migrate();
         }
         if (_jdsmigrate.CIRCULATION_FIGURES) {
             circulationFigures _circulationFigures = new circulationFigures();

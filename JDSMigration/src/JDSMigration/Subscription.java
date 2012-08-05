@@ -127,7 +127,7 @@ public class Subscription extends MigrationBase {
 
             float amount = Float.parseFloat(datacolumns[29]);
             //Current Date, Amount and Paid Flag is mapped to Remarks currently
-            String remarks = ""; //"DATE_CURR = " + datacolumns[28] + "\n" + "AMOUNT = " + datacolumns[29] + "\n" + "PAID_FLAG = " + datacolumns[30];
+            //String remarks = ""; //"DATE_CURR = " + datacolumns[28] + "\n" + "AMOUNT = " + datacolumns[29] + "\n" + "PAID_FLAG = " + datacolumns[30];
 
             Date subdate = util.dateStringToSqlDate(null);
             // handle invalid subscriber ids
@@ -152,7 +152,7 @@ public class Subscription extends MigrationBase {
             int paramIndex = 0;
             pst_insert_subscription.setInt(++paramIndex, subscriberId);
             pst_insert_subscription.setInt(++paramIndex, inwardId);
-            pst_insert_subscription.setString(++paramIndex, remarks);
+            //pst_insert_subscription.setString(++paramIndex, remarks);
             pst_insert_subscription.setBoolean(++paramIndex, true);
             pst_insert_subscription.setFloat(++paramIndex, amount);
             pst_insert_subscription.setDate(++paramIndex, subdate);
@@ -187,22 +187,22 @@ public class Subscription extends MigrationBase {
             //Start year
             // if datacoloumn[31] = 0
             int startYr = Integer.parseInt(datacolumns[31]);
-            //int _tempStrtYr = Integer.parseInt(datacolumns[31]);
+            int _tempStrtYr = Integer.parseInt(datacolumns[31]);
 
-            /*
-             * if (_tempStrtYr > 100) { // start year is rightly filled with 4
-             * digit year
-             *
-             * if (_tempStrtYr > 100 && _tempStrtYr < 1000) { //Many records
-             * have 3 digit year logger.error("Start year for subscription " +
-             * subscriptionID + " is 3 digit " + datacolumns[31] + " but it is
-             * updated in the table"); } startYr = _tempStrtYr; } else {
-             *
-             * if (_tempStrtYr > 50 && _tempStrtYr < 100) { // start year is
-             * filled with 2 digit such as 79, which means it is 1979 startYr =
-             * 1900 + _tempStrtYr; } else if (_tempStrtYr <= 50 && _tempStrtYr >
-             * 0) { startYr = 2000 + _tempStrtYr; } }
-             */
+            if (_tempStrtYr > 100) { // start year is rightly filled with 4 digit year
+
+             if (_tempStrtYr > 100 && _tempStrtYr < 1000) { 
+                 //Many recordshave 3 digit year 
+                 logger.error("Start year for subscription " + 
+                         subscriptionID + " is 3 digit " + datacolumns[31] + " but it is updated in the table"); } startYr = _tempStrtYr; } 
+            else {
+             if (_tempStrtYr > 50 && _tempStrtYr < 100) { 
+                 // start year is filled with 2 digit such as 79, which means it is 1979 
+                 startYr = 1900 + _tempStrtYr; 
+             } else if (_tempStrtYr <= 50 && _tempStrtYr > 0){ 
+                 startYr = 2000 + _tempStrtYr; 
+             } }
+
 
 
             //End year
@@ -332,10 +332,20 @@ public class Subscription extends MigrationBase {
             throws FileNotFoundException, IOException, ParseException, SQLException {
         endYr = endYr > 0 ? endYr : startYr;
         int paramIndex1 = 0;
+        int endMonth;
+        
+        if(startMonth==1){
+            endMonth = 12;
+        }else{
+            endMonth = startMonth - 1;
+        }
+        
+        
         int subtypeID = this.getSubscriberTyeID(this.subscriberID);
         if (subtypeID == 0) {
             logger.fatal("Subscriber type id = " + subtypeID + " for subscriber : " + this.subscriberNumber);
         }
+        logger.debug("Journal grp id is " + jrnlGrpId);
         int priceGroupID = this.getJournalPriceGroupID(jrnlGrpId, subtypeID, startYr, endYr);
         logger.debug("Price group id is: " + priceGroupID);
         if (priceGroupID == 0) {
@@ -370,6 +380,7 @@ public class Subscription extends MigrationBase {
         pst_insert_subscription_dtls.setInt(++paramIndex1, startYr);
         pst_insert_subscription_dtls.setInt(++paramIndex1, startMonth);
         pst_insert_subscription_dtls.setInt(++paramIndex1, endYr);
+        pst_insert_subscription_dtls.setInt(++paramIndex1, endMonth);
         pst_insert_subscription_dtls.setInt(++paramIndex1, priceGroupID);
 
         //Inserting the record in Subscription Table
