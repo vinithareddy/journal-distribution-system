@@ -172,6 +172,7 @@ public class migrateJGRANT extends MigrationBase{
             pst_insert_subscriber.setString(++paramIndex, department);
             pst_insert_subscriber.setString(++paramIndex, institution);
             pst_insert_subscriber.setString(++paramIndex, shippingAddress);
+            pst_insert_subscriber.setString(++paramIndex, shippingAddress);
             pst_insert_subscriber.setInt(++paramIndex, cityID);
             pst_insert_subscriber.setInt(++paramIndex, stateID);
             pst_insert_subscriber.setInt(++paramIndex, pin);
