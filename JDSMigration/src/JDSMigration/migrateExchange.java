@@ -41,7 +41,7 @@ public class migrateExchange extends MigrationBase{
     public void Migrate() throws FileNotFoundException, IOException, BiffException, SQLException {
 
         this.openExcel(dataFile);
-        System.out.println("able to open file" + dataFile.toString());
+        logger.debug("able to open file" + dataFile.toString());
 
         String[] datacolumns = null;
         int totalRows = 0;
@@ -83,7 +83,7 @@ public class migrateExchange extends MigrationBase{
             else if(datacolumns[10].equalsIgnoreCase("F"))
                 subtype = "EF";
             else {
-                System.out.println("Subscriber " + subscriberName + "on row " + totalRows + " does not have a marking if he is foreign or indian");
+                logger.fatal("Subscriber " + subscriberName + "on row " + totalRows + " does not have a marking if he is foreign or indian");
                 break;
             }
 
@@ -119,11 +119,11 @@ public class migrateExchange extends MigrationBase{
 
                     if(cityID == 0)
                     {
-                        System.out.println("Found city " + city + " which does not have a entry in the database");
+                        logger.fatal("Found city " + city + " which does not have a entry in the database");
                         shippingAddress = shippingAddress + " " + cityAndPin;
                     }
                 }catch(NumberFormatException e){
-                    System.out.println("Exception: " + e.getMessage() + " for cityAndPin " + cityAndPin);
+                    logger.fatal("Exception: " + e.getMessage() + " for cityAndPin " + cityAndPin);
                 }
             }
             else
@@ -141,7 +141,7 @@ public class migrateExchange extends MigrationBase{
                 stateID = this.getStateID(state);
                 if(stateID == 0)
                 {
-                    System.out.println("Found state " + state + " which does not have a entry in the database");
+                    logger.fatal("Found state " + state + " which does not have a entry in the database");
                     shippingAddress = shippingAddress + " " + state;
                 }
             }
@@ -156,7 +156,7 @@ public class migrateExchange extends MigrationBase{
                 countryID = this.getCountryID(country);
                 if(countryID == 0)
                 {
-                    System.out.println("Found country " + country + " which does not have a entry in the database");
+                    logger.fatal("Found country " + country + " which does not have a entry in the database");
                     shippingAddress = country + " " + country;
                 }
             }
@@ -168,7 +168,7 @@ public class migrateExchange extends MigrationBase{
                 try{
                     pin = Integer.parseInt(pincode.replaceAll(" ", ""));
                 }catch(NumberFormatException e){
-                    System.out.println("Exception: " + e.getMessage() + " for pincode " + pincode);
+                    logger.fatal("Exception: " + e.getMessage() + " for pincode " + pincode);
                     pin = 0;
                     shippingAddress = shippingAddress + " " + pincode;
                 }
@@ -193,7 +193,7 @@ public class migrateExchange extends MigrationBase{
 
             int ret = this.db.executeUpdatePreparedStatement(pst_insert_subscriber);
             if (ret == 0) {
-                System.out.println("Failed to insert subscriber: " + subscriberNumber + " Name: " + subscriberName);
+                logger.fatal("Failed to insert subscriber: " + subscriberNumber + " Name: " + subscriberName);
                 break;
             } else {
                 recordCounter++;
@@ -217,7 +217,7 @@ public class migrateExchange extends MigrationBase{
                 recordCounter++;
                 insertedSubscriptions++;
             } else {
-                System.out.println("Failed to insert subscription for: " + subscriberNumber + " Name: " + subscriberName);
+                logger.fatal("Failed to insert subscription for: " + subscriberNumber + " Name: " + subscriberName);
                 break;
             }
 
@@ -232,15 +232,15 @@ public class migrateExchange extends MigrationBase{
             int[] jrnlArr = {19, 21, 25, 26, 27, 28, 29, 30, 31, 32, 33};   //Data Columns frm excel
             int[] jrnlGrpIDArr = {11, 10, 1, 2, 3, 4, 6, 5, 7, 8, 9};       //Journal Group IDs
 
-            //System.out.println("Migrating row: " + totalRows);
+            //logger.debug("Migrating row: " + totalRows);
 
             for (int j = 0; j < jrnlArr.length; j++) {
                 /*
                 if(totalRows == 96)
                 {
-                    System.out.println("Subscriber: " + subscriberName + "->journal list: " + j);
-                    //System.out.println("try equals 0: " + datacolumns[jrnlArr[j]].equalsIgnoreCase("0"));
-                    //System.out.println("try equals empty: " + datacolumns[jrnlArr[j]].isEmpty());
+                    logger.debug("Subscriber: " + subscriberName + "->journal list: " + j);
+                    //logger.debug("try equals 0: " + datacolumns[jrnlArr[j]].equalsIgnoreCase("0"));
+                    //logger.debug("try equals empty: " + datacolumns[jrnlArr[j]].isEmpty());
                 }
                  *
                  */
@@ -275,26 +275,26 @@ public class migrateExchange extends MigrationBase{
                         recordCounter++;
                         jrnlNoOfCopies[jrnlGrpIDArr[j] - 1] = jrnlNoOfCopies[jrnlGrpIDArr[j] - 1] + noCopies;
                     } else {
-                        System.out.println("Failed to insert subscription deatils for: " + subscriberNumber + " Name: " + subscriberName);
+                        logger.fatal("Failed to insert subscription deatils for: " + subscriberNumber + " Name: " + subscriberName);
                         break;
                     }
                 }
                 }
                 else
-                    System.out.println("Found row: " + totalRows + " column" + jrnlArr[j] + " to be null");
+                    logger.fatal("Found row: " + totalRows + " column" + jrnlArr[j] + " to be null");
             }
             /*----------------------------------------------------------------*/
             if(recordCounter >= COMMIT_BATCH_SIZE){
-                System.out.println("Commiting database after " + String.valueOf(insertedSubscribers) + " rows");
+                logger.debug("Commiting database after " + String.valueOf(insertedSubscribers) + " rows");
                 conn.commit();
                 recordCounter = 0;
             }
         }
         conn.commit();
-        System.out.println("Total Rows: " + totalRows);
-        System.out.println("Subscribers Inserted: " + insertedSubscribers);
+        logger.debug("Total Rows: " + totalRows);
+        logger.fatal("Subscribers Inserted: " + insertedSubscribers);
         for (int j = 0; j < jrnlNoOfCopies.length; j++) {
-            System.out.println("Journal " + j + " no of copies " + jrnlNoOfCopies[j]);
+            logger.fatal("Journal " + j + " no of copies " + jrnlNoOfCopies[j]);
         }
 
         //this.CloseFile();

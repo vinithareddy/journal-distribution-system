@@ -41,7 +41,7 @@ public class migrateEBALL extends MigrationBase{
     public void Migrate() throws FileNotFoundException, IOException, BiffException, SQLException {
 
         this.openExcel(dataFile);
-        System.out.println("able to open file" + dataFile.toString());
+        logger.debug("able to open file" + dataFile.toString());
 
         String[] datacolumns = null;
         int totalRows = 0;
@@ -109,11 +109,11 @@ public class migrateEBALL extends MigrationBase{
 
                     if(cityID == 0)
                     {
-                        System.out.println("Found city " + city + " which does not have a entry in the database");
+                        logger.debug("Found city " + city + " which does not have a entry in the database");
                         shippingAddress = shippingAddress + " " + cityAndPin;
                     }
                 }catch(NumberFormatException e){
-                    System.out.println("Exception: " + e.getMessage() + " for cityAndPin " + cityAndPin);
+                    logger.fatal("Exception: " + e.getMessage() + " for cityAndPin " + cityAndPin);
                 }
             }
             else
@@ -131,7 +131,7 @@ public class migrateEBALL extends MigrationBase{
                 stateID = this.getStateID(state);
                 if(stateID == 0)
                 {
-                    System.out.println("Found state " + state + " which does not have a entry in the database");
+                    logger.fatal("Found state " + state + " which does not have a entry in the database");
                     shippingAddress = shippingAddress + " " + state;
                 }
             }
@@ -146,7 +146,7 @@ public class migrateEBALL extends MigrationBase{
                 countryID = this.getCountryID(country);
                 if(countryID == 0)
                 {
-                    System.out.println("Found country " + country + " which does not have a entry in the database");
+                    logger.fatal("Found country " + country + " which does not have a entry in the database");
                     shippingAddress = country + " " + country;
                 }
             }
@@ -158,7 +158,7 @@ public class migrateEBALL extends MigrationBase{
                 try{
                     pin = Integer.parseInt(pincode.replaceAll(" ", ""));
                 }catch(NumberFormatException e){
-                    System.out.println("Exception: " + e.getMessage() + " for pincode " + pincode);
+                    logger.fatal("Exception: " + e.getMessage() + " for pincode " + pincode);
                     pin = 0;
                     shippingAddress = shippingAddress + " " + pincode;
                 }
@@ -183,7 +183,7 @@ public class migrateEBALL extends MigrationBase{
 
             int ret = this.db.executeUpdatePreparedStatement(pst_insert_subscriber);
             if (ret == 0) {
-                System.out.println("Failed to insert subscriber: " + subscriberNumber + " Name: " + subscriberName);
+                logger.fatal("Failed to insert subscriber: " + subscriberNumber + " Name: " + subscriberName);
                 break;
             } else {
                 recordCounter++;
@@ -207,7 +207,7 @@ public class migrateEBALL extends MigrationBase{
                 recordCounter++;
                 insertedSubscriptions++;
             } else {
-                System.out.println("Failed to insert subscription for: " + subscriberNumber + " Name: " + subscriberName);
+                logger.fatal("Failed to insert subscription for: " + subscriberNumber + " Name: " + subscriberName);
                 break;
             }
 
@@ -247,23 +247,23 @@ public class migrateEBALL extends MigrationBase{
                         recordCounter++;
                         jrnlNoOfCopies[j] = jrnlNoOfCopies[j] + noCopies;
                     } else {
-                        System.out.println("Failed to insert subscription deatils for: " + subscriberNumber + " Name: " + subscriberName);
+                        logger.fatal("Failed to insert subscription deatils for: " + subscriberNumber + " Name: " + subscriberName);
                         break;
                     }
                 }
             }
             /*----------------------------------------------------------------*/
             if(recordCounter >= COMMIT_BATCH_SIZE){
-                System.out.println("Commiting database after " + String.valueOf(insertedSubscribers) + " rows");
+                logger.debug("Commiting database after " + String.valueOf(insertedSubscribers) + " rows");
                 conn.commit();
                 recordCounter = 0;
             }
         }
         conn.commit();
-        System.out.println("Total Rows: " + totalRows);
-        System.out.println("Subscribers Inserted: " + insertedSubscribers);
+        logger.debug("Total Rows: " + totalRows);
+        logger.fatal("Subscribers Inserted: " + insertedSubscribers);
         for (int j = 0; j < jrnlNoOfCopies.length; j++) {
-            System.out.println("Journal " + j + " no of copies " + jrnlNoOfCopies[j]);
+            logger.fatal("Journal " + j + " no of copies " + jrnlNoOfCopies[j]);
         }
 
         //this.CloseFile();

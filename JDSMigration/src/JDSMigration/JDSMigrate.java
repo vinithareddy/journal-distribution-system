@@ -30,8 +30,10 @@ public class JDSMigrate {
     private boolean MIGRATE_JGRANT = true;
     private boolean MIGRATE_EXCHANGE = true;
     private boolean CIRCULATION_FIGURES = true;
-    private boolean CURRMEM = true;
-    private boolean CURTWAS = true;
+    private boolean CURRMEM = false;
+    private boolean CURTWAS = false;
+    private boolean MIGRATE_CURR = true;
+    private boolean MIGRATE_RES = true;
 
 
     public static void main(String[] args) throws IOException, FileNotFoundException,
@@ -106,7 +108,15 @@ public class JDSMigrate {
             circulationFigures _circulationFigures = new circulationFigures();
             _circulationFigures.getCount();
         }
-        
+        if (_jdsmigrate.MIGRATE_CURR) {
+            migrateCURR _migrateCURR = new migrateCURR();
+            _migrateCURR.migrate();
+        }
+        if (_jdsmigrate.MIGRATE_RES) {
+            migrateRES _migrateRES = new migrateRES();
+            _migrateRES.migrate();
+        }
+
 //        } catch (IOException | ParseException | SQLException e) {
 //
 //            logger.fatal(e.getMessage());
