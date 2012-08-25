@@ -19,11 +19,19 @@ public class circulationFigures extends MigrationBase{
 
     private String select_journals = "SELECT id, journalCode, journalName from journals";
     private String select_subscriberTypes = "select id, subtypecode from subscriber_type";
-    private String select_subscriber = "select id from subscriber where subtype = ? and deactive = False";
-    //private String select_journalGroups = "select"
-    private String select_subscription = "select id from subscription where subscriberID = ? and active = '1' and startYear = '2012' and endYear >= '2012'";
-    private String select_copies = "select copies from subscriptiondetails where subscriptionID = ? and journalGroupID = ?";
-    //select sum(copies) from subscriptiondetails where journalGroupID=3 and endYear>='2012' and active='1'
+    private String select_subscriptions = "select count(subscriber.subscriberNumber), sum(subscriptiondetails.copies)" +
+                                          " from" +
+                                          " subscriptiondetails left join subscription on subscriptiondetails.subscriptionID = subscription.id" + 
+                                          " left join subscriber on subscription.subscriberID = subscriber.id" + 
+                                          " left join subscriber_type on subscriber.subtype = subscriber_type.id" + 
+                                          " left join journal_groups on subscriptiondetails.journalGroupID = journal_groups.id" + 
+                                          " right join journal_group_contents on journal_group_contents.journalGroupId = journal_groups.id" + 
+                                          " left join journals on journal_group_contents.journalId = journals.id" +                   
+                                          " where subscriptiondetails.active = '1' and journals.journalCode = ? and subscriber_type.subtypecode = ?" + 
+                                          " and datediff(date_format(concat(subscriptiondetails.endYear,'-',subscriptiondetails.endMonth,'-30'),'%Y/%m/%d'), date_format(curdate(),'%Y/%m/%d'))>= 0" + 
+                                          " and datediff(date_format(concat(subscriptiondetails.startYear,'-',subscriptiondetails.startMonth,'-1'),'%Y/%m/%d'), date_format(curdate(),'%Y/%m/%d'))<= 0" + 
+                                          " group by journals.journalCode and subscriber_type.subtypecode";
+    
 
     public circulationFigures() throws SQLException{
         this.conn = this.db.getConnection();
@@ -32,7 +40,7 @@ public class circulationFigures extends MigrationBase{
 
     void getCount() throws FileNotFoundException, IOException, BiffException, SQLException
     {
-        /*
+        
         String[] datacolumns = null;
 
 
@@ -42,21 +50,31 @@ public class circulationFigures extends MigrationBase{
         {
             int journalId = rs1.getInt(1);
             String journalCode = rs1.getString(2);
+            //System.out.println("Journal Code: " + journalCode);
             String journalName = rs1.getString(3);
-            System.out.print(journalId);
-            System.out.print(" " + journalCode);
-            System.out.println(" " + journalName);
+            PreparedStatement pst2 = this.conn.prepareStatement(select_subscriberTypes);
+            ResultSet rs2 = db.executeQueryPreparedStatement(pst2);
+            while(rs2.next())
+            {
+                int subtypeId = rs2.getInt(1);
+                String subtypecode = rs2.getString(2);
+                int paramIndex = 1;
+                PreparedStatement pst3 = this.conn.prepareStatement(select_subscriptions);
+                pst3.setString(paramIndex, journalCode);
+                pst3.setString(++paramIndex, subtypecode);
+                ResultSet rs3 = db.executeQueryPreparedStatement(pst3);
+                int subscriberCount = 0;
+                int copies = 0;
+                if (rs3.next())
+                {
+                    subscriberCount = rs3.getInt(1);
+                    copies = rs3.getInt(2);  
+                }
+                System.out.println("Journal Code: " + journalCode + " -> subType Code: " + subtypecode + " -> Subscriber Count: " + subscriberCount + " -> Subscriber Copies: " + copies);
+            }
         }
 
-        PreparedStatement pst2 = this.conn.prepareStatement(select_subscriberTypes);
-        ResultSet rs2 = db.executeQueryPreparedStatement(pst2);
-        while(rs2.next())
-        {
-            int subtypeId = rs2.getInt(1);
-            String subtypecode = rs2.getString(2);
-            System.out.print(subtypeId);
-            System.out.println(" " + subtypecode);
-        }
-        */
+
+        
     }
 }
