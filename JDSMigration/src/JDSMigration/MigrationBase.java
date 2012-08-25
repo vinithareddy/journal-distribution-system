@@ -4,8 +4,10 @@
  */
 package JDSMigration;
 
+import com.mysql.jdbc.Statement;
 import java.io.*;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -41,7 +43,6 @@ public class MigrationBase implements IMigrate {
     private ExcelReader excelReader = null;
     public static final int COMMIT_SIZE = 1000;
     private PreparedStatement pst_pgid;
-
 //--------------------------------------------------------------------------------------------
     //Select Statement for Inward Id
     public String sql_select_inward = "Select id from inward where inwardNumber = ?";
@@ -55,7 +56,6 @@ public class MigrationBase implements IMigrate {
     //Insert Statement for Subscription
     public String sql_insert_subscription = "insert into subscription(subscriberID,inwardID,legacy,legacy_amount,subscriptiondate,legacy_balance)"
             + "values(?,?,?,?,?,?)";
-
     public String sql_insert_subscription_free_subs = "insert into subscription(subscriberID,inwardID,legacy) values(?,?,?)";
 //--------------------------------------------------------------------------------------------
     //Insert Statement for Subscription Details
@@ -67,11 +67,12 @@ public class MigrationBase implements IMigrate {
             + ",institution, shippingAddress, invoiceAddress"
             + ",city, state, pincode, country, deactive, email)values"
             + "((select id from subscriber_type where subtypecode = ?),?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
     public String sql_getLastSubscriberId = "SELECT id from subscriber order by id desc LIMIT 1";
 //--------------------------------------------------------------------------------------------
+    private PreparedStatement pst_insert_subscription = null;
+    private PreparedStatement pst_insert_subscription_dtls = null;
 
-    public MigrationBase() throws SQLException{
+    public MigrationBase() throws SQLException {
 
         try {
             PropertyConfigurator.configure("log4j.properties");
@@ -89,9 +90,9 @@ public class MigrationBase implements IMigrate {
         stateMap.put("H.P.", "Himachal Pradesh");
         stateMap.put("W.B.", "West Bengal");
         stateMap.put("Orissa", "Odisha");
-        stateMap.put("J&K","Jammu & Kashmir");
-        stateMap.put("A&N Islands","Andaman & Nicobar");
-        
+        stateMap.put("J&K", "Jammu & Kashmir");
+        stateMap.put("A&N Islands", "Andaman & Nicobar");
+
 
         String sql = "select id from subscription_rates t1 "
                 + "where journalGroupID=? and t1.subtypeid=? "
@@ -141,8 +142,11 @@ public class MigrationBase implements IMigrate {
         countryMap.put("Belgique", "Belgium");
         countryMap.put("THE NETHERLANDS", "Netherlands");
         countryMap.put("REPUBLIC OF MOLDAVA", "Moldava");
-        
-        
+
+        pst_insert_subscription = this.conn.prepareStatement(sql_insert_subscription, Statement.RETURN_GENERATED_KEYS);
+        pst_insert_subscription_dtls = this.conn.prepareStatement(sql_insert_subscriptiondetails);
+
+
 
     }
 
@@ -204,7 +208,7 @@ public class MigrationBase implements IMigrate {
     }
 
     public int getCountryID(String countryName) throws SQLException {
-        if(this.countryMap.containsKey(countryName)){
+        if (this.countryMap.containsKey(countryName)) {
             countryName = this.countryMap.get(countryName);
         }
         PreparedStatement pst = this.conn.prepareStatement(sql_country);
@@ -222,7 +226,7 @@ public class MigrationBase implements IMigrate {
 
     public int getStateID(String stateName) throws SQLException {
 
-        if(this.stateMap.containsKey(stateName)){
+        if (this.stateMap.containsKey(stateName)) {
             stateName = this.stateMap.get(stateName);
         }
         PreparedStatement pst = this.conn.prepareStatement(sql_state);
@@ -265,8 +269,7 @@ public class MigrationBase implements IMigrate {
             ResultSet rs = pst.executeQuery();
             rs.first();
             agentID = rs.getInt(1);
-        }
-        catch(SQLException e){
+        } catch (SQLException e) {
             agentID = 0;
         }
 
@@ -379,5 +382,52 @@ public class MigrationBase implements IMigrate {
         }
         return endYear;
 
+    }
+
+    public int insertSubscription(int subscriberId, int inwardId, float amount, Date subdate, float corr_balance) throws SQLException {
+        int paramIndex = 0;
+        pst_insert_subscription.setInt(++paramIndex, subscriberId);
+        pst_insert_subscription.setInt(++paramIndex, inwardId);
+        //pst_insert_subscription.setString(++paramIndex, remarks);
+        pst_insert_subscription.setBoolean(++paramIndex, true);
+        pst_insert_subscription.setFloat(++paramIndex, amount);
+        pst_insert_subscription.setDate(++paramIndex, subdate);
+        pst_insert_subscription.setFloat(++paramIndex, corr_balance);
+
+        //Inserting the record in Subscription Table
+        int ret = this.db.executeUpdatePreparedStatement(pst_insert_subscription);
+        if (ret == 1) {
+            //Getting back the subsciption Id
+            ResultSet rs_sub = pst_insert_subscription.getGeneratedKeys();
+            rs_sub.first();
+            return rs_sub.getInt(1);  //return subscription id
+        }else{
+            throw(new SQLException("Failed to add subscription"));
+        }
+
+
+    }
+    
+    public boolean insertSubscriptionDetails(int subscriptionID, int jrnlGrpId, int noCopies,
+            int startYr, int startMonth, int endYr, int endMonth, int priceGroupID) throws SQLException{
+        int paramIndex = 0;
+        pst_insert_subscription_dtls = this.conn.prepareStatement(sql_insert_subscriptiondetails);
+        pst_insert_subscription_dtls.setInt(++paramIndex, subscriptionID);
+        pst_insert_subscription_dtls.setInt(++paramIndex, jrnlGrpId);
+        pst_insert_subscription_dtls.setInt(++paramIndex, noCopies);
+        pst_insert_subscription_dtls.setInt(++paramIndex, startYr);
+        pst_insert_subscription_dtls.setInt(++paramIndex, startMonth);
+        pst_insert_subscription_dtls.setInt(++paramIndex, endYr);
+        pst_insert_subscription_dtls.setInt(++paramIndex, endMonth);
+        pst_insert_subscription_dtls.setInt(++paramIndex, priceGroupID);
+
+        //Inserting the record in Subscription Table
+        int retUpdStatus = this.db.executeUpdatePreparedStatement(pst_insert_subscription_dtls);
+
+        //Logging the inserting row
+        if (retUpdStatus == 1) {
+            return true;
+        }
+        throw(new SQLException("Failed to add subscription details"));
     }
 }

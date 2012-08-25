@@ -23,17 +23,17 @@ public class JDSMigrate {
     private boolean MIGRATE_SUBSCRIBER = false;
     private boolean MIGRATE_SUBSCRIPTION = false;
     private boolean MIGRATE_CORR = false;
-    private boolean MIGRATE_FELLOWS = true;
-    private boolean MIGRATE_ASSOCIATES = true;
-    private boolean MIGRATE_EBALL = true;
-    private boolean MIGRATE_HONFEL = true;
-    private boolean MIGRATE_JGRANT = true;
-    private boolean MIGRATE_EXCHANGE = true;    
+    private boolean MIGRATE_FELLOWS = false;
+    private boolean MIGRATE_ASSOCIATES = false;
+    private boolean MIGRATE_EBALL = false;
+    private boolean MIGRATE_HONFEL = false;
+    private boolean MIGRATE_JGRANT = false;
+    private boolean MIGRATE_EXCHANGE = false;    
     private boolean CURRMEM = false;
     private boolean CURTWAS = false;
-    private boolean MIGRATE_CURR = false;
+    private boolean MIGRATE_CURR = true;
     private boolean MIGRATE_RES = false;
-    private boolean CIRCULATION_FIGURES = true;    
+    private boolean CIRCULATION_FIGURES = false;    
 
 
     public static void main(String[] args) throws IOException, FileNotFoundException,

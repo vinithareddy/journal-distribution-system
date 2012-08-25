@@ -244,9 +244,9 @@ public class Subscription extends MigrationBase {
             //  Except MS  ------        GrpID -> 13
 //---------------------------------------------------------
 
-            int[] jrnlArr = {4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 27}; //Data Columns frm excel
+            int[] jrnlArr = {4, 6, 8, 10, 12, 14, 16, 18, 20}; //Data Columns frm excel
             //int[] jrnlArr = {4}; //Data Columns frm excel
-            int[] jrnlGrpIDArr = {1, 2, 3, 4, 6, 5, 7, 8, 9, 10, 11, 12, 13}; //Journal Group IDs
+            int[] jrnlGrpIDArr = {1, 2, 3, 4, 6, 5, 7, 8, 9, 12, 13}; //Journal Group IDs
             int allGrpFlag = 0;
             int noCopies = 0;
             if (!datacolumns[4].isEmpty()) {
