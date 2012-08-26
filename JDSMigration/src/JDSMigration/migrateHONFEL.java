@@ -75,7 +75,7 @@ public class migrateHONFEL extends MigrationBase{
             /*----------------------------------------------------------------*/
             // Extract data
             String agentCode    = "0";
-            String subtype      = "EBALL";
+            String subtype      = "HONFEL";
             String subscriberName   = datacolumns[1] + " " + datacolumns[2] + " " + datacolumns[3];
             String department       = datacolumns[4];
             String institution      = datacolumns[5];

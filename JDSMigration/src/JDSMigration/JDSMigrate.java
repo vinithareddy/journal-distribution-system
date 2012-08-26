@@ -19,21 +19,22 @@ import org.apache.log4j.Logger;
 public class JDSMigrate {
 
     private static final Logger logger = Logger.getLogger(JDSMigrate.class);
-    private boolean MIGRATE_INWARD = false;
-    private boolean MIGRATE_SUBSCRIBER = false;
-    private boolean MIGRATE_SUBSCRIPTION = false;
-    private boolean MIGRATE_CORR = false;
-    private boolean MIGRATE_FELLOWS = false;
-    private boolean MIGRATE_ASSOCIATES = false;
-    private boolean MIGRATE_EBALL = false;
-    private boolean MIGRATE_HONFEL = false;
-    private boolean MIGRATE_JGRANT = false;
-    private boolean MIGRATE_EXCHANGE = false;    
+    private boolean INIT_MASTER_DATA = true;
+    private boolean MIGRATE_INWARD = true;
+    private boolean MIGRATE_SUBSCRIBER = true;
+    private boolean MIGRATE_SUBSCRIPTION = true;
+    private boolean MIGRATE_CORR = true;
+    private boolean MIGRATE_FELLOWS = true;
+    private boolean MIGRATE_ASSOCIATES = true;
+    private boolean MIGRATE_EBALL = true;
+    private boolean MIGRATE_HONFEL = true;
+    private boolean MIGRATE_JGRANT = true;
+    private boolean MIGRATE_EXCHANGE = true;
     private boolean CURRMEM = false;
     private boolean CURTWAS = false;
     private boolean MIGRATE_CURR = true;
-    private boolean MIGRATE_RES = false;
-    private boolean CIRCULATION_FIGURES = false;    
+    private boolean MIGRATE_RES = true;
+    private boolean CIRCULATION_FIGURES = true;
 
 
     public static void main(String[] args) throws IOException, FileNotFoundException,
@@ -41,8 +42,13 @@ public class JDSMigrate {
             IllegalAccessException{
 
         JDSMigrate _jdsmigrate = new JDSMigrate();
-        //IMigrate _migrate = null;
-        //try {
+
+        // This function sets up the master data as well clear all the transaction data
+        if (_jdsmigrate.INIT_MASTER_DATA) {
+            MigrationBase _migrationBase = new MigrationBase();
+            _migrationBase.executeMasterDataScripts();
+            _jdsmigrate.logger.fatal("Setup master data and trucated transaction data");
+        }
 
         if (_jdsmigrate.MIGRATE_INWARD) {
             OldInward _oldinward = new OldInward("INW2009.txt");
@@ -115,7 +121,7 @@ public class JDSMigrate {
         if (_jdsmigrate.CIRCULATION_FIGURES) {
             circulationFigures _circulationFigures = new circulationFigures();
             _circulationFigures.getCount();
-        }        
+        }
 
 //        } catch (IOException | ParseException | SQLException e) {
 //

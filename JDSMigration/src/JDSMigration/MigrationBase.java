@@ -121,6 +121,9 @@ public class MigrationBase implements IMigrate {
         cityMap.put("Ahmedabad ,", "Ahmedabad");
         cityMap.put("Bengalooru ", "Bengaluru");
         cityMap.put("Palkkad ", "Palakkad");
+        cityMap.put("Kolkdata ", "Kolkata");
+        cityMap.put("Pune - ", "Pune");
+        cityMap.put("Goa ", "Goa");
 
         stateMap.put("Delhi", "New Delhi");
         stateMap.put("UP", "Uttar Pradesh");
@@ -131,6 +134,7 @@ public class MigrationBase implements IMigrate {
         stateMap.put("Puducherry", "Pondicherry");
         stateMap.put("Karnataaka", "Karnataka");
         stateMap.put("Karnataka ************************", "Karnataka");
+        stateMap.put("Gujrat", "Gujarat");
 
         countryMap.put("U.S.A", "USA");
         countryMap.put("U.S.A.", "USA");
@@ -142,6 +146,9 @@ public class MigrationBase implements IMigrate {
         countryMap.put("Belgique", "Belgium");
         countryMap.put("THE NETHERLANDS", "Netherlands");
         countryMap.put("REPUBLIC OF MOLDAVA", "Moldava");
+        countryMap.put("US", "USA");
+        countryMap.put("S. Afarica", "USA");
+        countryMap.put("Frnace", "France");
 
         pst_insert_subscription = this.conn.prepareStatement(sql_insert_subscription, Statement.RETURN_GENERATED_KEYS);
         pst_insert_subscription_dtls = this.conn.prepareStatement(sql_insert_subscriptiondetails);
@@ -407,7 +414,7 @@ public class MigrationBase implements IMigrate {
 
 
     }
-    
+
     public boolean insertSubscriptionDetails(int subscriptionID, int jrnlGrpId, int noCopies,
             int startYr, int startMonth, int endYr, int endMonth, int priceGroupID) throws SQLException{
         int paramIndex = 0;
@@ -429,5 +436,51 @@ public class MigrationBase implements IMigrate {
             return true;
         }
         throw(new SQLException("Failed to add subscription details"));
+    }
+
+    public void executeMasterDataScripts() throws IOException, SQLException
+    {
+        String files[] = new String[11];
+        files[0] = "data" + "\\masterdata\\1.journals.sql";
+        files[1] = "data" + "\\masterdata\\2.journal_groups.sql";
+        files[2] = "data" + "\\masterdata\\3.journal_group_contents.sql";
+        files[3] = "data" + "\\masterdata\\4.subscriber_types.sql";
+        files[4] = "data" + "\\masterdata\\5.subscription_rates.sql";
+        files[5] = "data" + "\\masterdata\\6.cities.sql";
+        files[6] = "data" + "\\masterdata\\7.countries.sql";
+        files[7] = "data" + "\\masterdata\\8.states.sql";
+        files[8] = "data" + "\\masterdata\\9.year.sql";
+        files[9] = "data" + "\\masterdata\\10.districts.sql";
+        files[10] = "data" + "\\masterdata\\truncate_transaction_data.sql";
+
+        for(int j = 0; j<files.length; j++)
+        {
+            String s            = new String();
+            StringBuffer sb = new StringBuffer();
+
+            FileReader fr = new FileReader(new File(files[j].toString()));
+            BufferedReader br = new BufferedReader(fr);
+
+            while((s = br.readLine()) != null)
+            {
+                sb.append(s);
+            }
+            br.close();
+
+            // here is our splitter ! We use ";" as a delimiter for each request
+            // then we are sure to have well formed statements
+            String[] inst = sb.toString().split(";");
+
+            for(int i = 0; i<inst.length; i++)
+            {
+                // we ensure that there is no spaces before or after the request string
+                // in order to not execute empty statements
+                if(!inst[i].trim().equals(""))
+                {
+                    this.db.executeUpdate(inst[i]);
+                    //System.out.println(">>"+inst[i]);
+                }
+            }
+        }
     }
 }

@@ -109,7 +109,7 @@ public class migrateEBALL extends MigrationBase{
 
                     if(cityID == 0)
                     {
-                        logger.debug("Found city " + city + " which does not have a entry in the database");
+                        logger.fatal("Found city " + city + " which does not have a entry in the database");
                         shippingAddress = shippingAddress + " " + cityAndPin;
                     }
                 }catch(NumberFormatException e){

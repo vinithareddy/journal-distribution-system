@@ -106,11 +106,11 @@ public class migrateFellows extends MigrationBase{
 
                     if(cityID == 0)
                     {
-                        logger.debug("Found city " + city + " which does not have a entry in the database");
+                        logger.fatal("Found city " + city + " which does not have a entry in the database");
                         shippingAddress = shippingAddress + " " + cityAndPin;
                     }
                 }catch(NumberFormatException e){
-                    logger.debug("Exception: " + e.getMessage() + " for cityAndPin " + cityAndPin);
+                    logger.fatal("Exception: " + e.getMessage() + " for cityAndPin " + cityAndPin);
                 }
             }
             else
@@ -128,7 +128,7 @@ public class migrateFellows extends MigrationBase{
                 stateID = this.getStateID(state);
                 if(stateID == 0)
                 {
-                    logger.debug("Found state " + state + " which does not have a entry in the database");
+                    logger.fatal("Found state " + state + " which does not have a entry in the database");
                     shippingAddress = shippingAddress + " " + state;
                 }
             }
@@ -143,7 +143,7 @@ public class migrateFellows extends MigrationBase{
                 countryID = this.getCountryID(country);
                 if(countryID == 0)
                 {
-                    logger.debug("Found country " + country + " which does not have a entry in the database");
+                    logger.fatal("Found country " + country + " which does not have a entry in the database");
                     shippingAddress = country + " " + country;
                 }
             }
@@ -155,7 +155,7 @@ public class migrateFellows extends MigrationBase{
                 try{
                     pin = Integer.parseInt(pincode.replaceAll(" ", ""));
                 }catch(NumberFormatException e){
-                    logger.debug("Exception: " + e.getMessage() + " for pincode " + pincode);
+                    logger.fatal("Exception: " + e.getMessage() + " for pincode " + pincode);
                     pin = 0;
                     shippingAddress = shippingAddress + " " + pincode;
                 }
@@ -180,7 +180,7 @@ public class migrateFellows extends MigrationBase{
 
             int ret = this.db.executeUpdatePreparedStatement(pst_insert_subscriber);
             if (ret == 0) {
-                logger.debug("Failed to insert subscriber: " + subscriberNumber + " Name: " + subscriberName);
+                logger.fatal("Failed to insert subscriber: " + subscriberNumber + " Name: " + subscriberName);
                 break;
             } else {
                 recordCounter++;
@@ -204,7 +204,7 @@ public class migrateFellows extends MigrationBase{
                 recordCounter++;
                 insertedSubscriptions++;
             } else {
-                logger.debug("Failed to insert subscription for: " + subscriberNumber + " Name: " + subscriberName);
+                logger.fatal("Failed to insert subscription for: " + subscriberNumber + " Name: " + subscriberName);
                 break;
             }
 
@@ -244,7 +244,7 @@ public class migrateFellows extends MigrationBase{
                         recordCounter++;
                         jrnlNoOfCopies[j] = jrnlNoOfCopies[j] + noCopies;
                     } else {
-                        logger.debug("Failed to insert subscription deatils for: " + subscriberNumber + " Name: " + subscriberName);
+                        logger.fatal("Failed to insert subscription deatils for: " + subscriberNumber + " Name: " + subscriberName);
                         break;
                     }
                 }
@@ -258,9 +258,9 @@ public class migrateFellows extends MigrationBase{
         }
         conn.commit();
         logger.debug("Total Rows: " + totalRows);
-        logger.debug("Subscribers Inserted: " + insertedSubscribers);
+        logger.fatal("Subscribers Inserted: " + insertedSubscribers);
         for (int j = 0; j < jrnlNoOfCopies.length; j++) {
-            logger.debug("Journal " + j + " no of copies " + jrnlNoOfCopies[j]);
+            logger.fatal("Journal " + j + " no of copies " + jrnlNoOfCopies[j]);
         }
 
         //this.CloseFile();
