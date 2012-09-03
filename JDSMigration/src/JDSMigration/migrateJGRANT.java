@@ -109,11 +109,11 @@ public class migrateJGRANT extends MigrationBase{
 
                     if(cityID == 0)
                     {
-                        logger.fatal("Found city " + city + " which does not have a entry in the database");
+                        logger.warn("Found city " + city + " which does not have a entry in the database");
                         shippingAddress = shippingAddress + " " + cityAndPin;
                     }
                 }catch(NumberFormatException e){
-                    logger.fatal("Exception: " + e.getMessage() + " for cityAndPin " + cityAndPin);
+                    logger.warn("Exception: " + e.getMessage() + " for cityAndPin " + cityAndPin);
                 }
             }
             else
@@ -131,7 +131,7 @@ public class migrateJGRANT extends MigrationBase{
                 stateID = this.getStateID(state);
                 if(stateID == 0)
                 {
-                    logger.fatal("Found state " + state + " which does not have a entry in the database");
+                    logger.warn("Found state " + state + " which does not have a entry in the database");
                     shippingAddress = shippingAddress + " " + state;
                 }
             }
@@ -146,7 +146,7 @@ public class migrateJGRANT extends MigrationBase{
                 countryID = this.getCountryID(country);
                 if(countryID == 0)
                 {
-                    logger.fatal("Found country " + country + " which does not have a entry in the database");
+                    logger.warn("Found country " + country + " which does not have a entry in the database");
                     shippingAddress = country + " " + country;
                 }
             }
@@ -158,16 +158,16 @@ public class migrateJGRANT extends MigrationBase{
                 try{
                     pin = Integer.parseInt(pincode.replaceAll(" ", ""));
                 }catch(NumberFormatException e){
-                    logger.fatal("Exception: " + e.getMessage() + " for pincode " + pincode);
+                    logger.warn("Exception: " + e.getMessage() + " for pincode " + pincode);
                     pin = 0;
                     shippingAddress = shippingAddress + " " + pincode;
                 }
             }
 
-            // Insert into the database
+            // Insert into the database the subscriber
             int paramIndex = 0;
             pst_insert_subscriber.setString(++paramIndex, subtype);
-            pst_insert_subscriber.setString(++paramIndex, Integer.toString(subscriberNumber++));
+            pst_insert_subscriber.setString(++paramIndex, Integer.toString(subscriberNumber));
             pst_insert_subscriber.setString(++paramIndex, subscriberName);
             pst_insert_subscriber.setString(++paramIndex, department);
             pst_insert_subscriber.setString(++paramIndex, institution);
@@ -258,6 +258,7 @@ public class migrateJGRANT extends MigrationBase{
                 conn.commit();
                 recordCounter = 0;
             }
+            subscriberNumber++;
         }
         conn.commit();
         logger.debug("Total Rows: " + totalRows);

@@ -30,8 +30,8 @@ public class JDSMigrate {
     private boolean MIGRATE_HONFEL = true;
     private boolean MIGRATE_JGRANT = true;
     private boolean MIGRATE_EXCHANGE = true;
-    private boolean CURRMEM = false;
-    private boolean CURTWAS = false;
+    private boolean CURRMEM = true;
+    private boolean CURTWAS = true;
     private boolean MIGRATE_CURR = true;
     private boolean MIGRATE_RES = true;
     private boolean CIRCULATION_FIGURES = true;

@@ -49,6 +49,7 @@ public class circulationFigures extends MigrationBase{
 
         PreparedStatement pst1 = this.conn.prepareStatement(select_journals);
         ResultSet rs1 = db.executeQueryPreparedStatement(pst1);
+        // For each journal
         while(rs1.next())
         {
             int journalId = rs1.getInt(1);
@@ -57,6 +58,8 @@ public class circulationFigures extends MigrationBase{
             String journalName = rs1.getString(3);
             PreparedStatement pst2 = this.conn.prepareStatement(select_subscriberTypes);
             ResultSet rs2 = db.executeQueryPreparedStatement(pst2);
+            int totalCopies=0;
+            // For each subscriner type
             while(rs2.next())
             {
                 int subtypeId = rs2.getInt(1);
@@ -72,9 +75,11 @@ public class circulationFigures extends MigrationBase{
                 {
                     subscriberCount = rs3.getInt(1);
                     copies = rs3.getInt(2);
+                    totalCopies = totalCopies + copies;
                 }
                 logger.fatal("Journal Code: " + journalCode + "->subtype: " + subtypecode + "-> Subscriber Count: " + subscriberCount + "-> Subscriber Copies: " + copies);
             }
+            logger.fatal("Total copies: " + totalCopies);
         }
     }
 }
