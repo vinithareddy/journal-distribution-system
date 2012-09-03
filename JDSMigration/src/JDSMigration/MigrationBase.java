@@ -295,6 +295,7 @@ public class MigrationBase implements IMigrate {
             rs.first();
             subID = rs.getInt(1);
         } catch (SQLException e) {
+            logger.fatal("Invalid subscriber id: " + subscriberNumber);
             subID = 0;
         }
         return subID;
@@ -334,6 +335,21 @@ public class MigrationBase implements IMigrate {
         }
         return priceGroupID;
 
+    }
+
+    public int getPinCode(String _pinAsText) {
+        int pincode = 0;
+        if (_pinAsText.length() == 6) {
+            try {
+                pincode = Integer.parseInt(_pinAsText);
+            } catch (NumberFormatException e) {
+                logger.fatal("Invalid pincode: " + _pinAsText);
+                pincode = 0;
+            }
+        }else{
+            logger.fatal("Invalid pincode: " + _pinAsText);
+        }
+        return pincode;
     }
 
     public String getNextSubscriberNumber() throws SQLException, ParseException,
@@ -408,15 +424,15 @@ public class MigrationBase implements IMigrate {
             ResultSet rs_sub = pst_insert_subscription.getGeneratedKeys();
             rs_sub.first();
             return rs_sub.getInt(1);  //return subscription id
-        }else{
-            throw(new SQLException("Failed to add subscription"));
+        } else {
+            throw (new SQLException("Failed to add subscription"));
         }
 
 
     }
 
     public boolean insertSubscriptionDetails(int subscriptionID, int jrnlGrpId, int noCopies,
-            int startYr, int startMonth, int endYr, int endMonth, int priceGroupID) throws SQLException{
+            int startYr, int startMonth, int endYr, int endMonth, int priceGroupID) throws SQLException {
         int paramIndex = 0;
         pst_insert_subscription_dtls = this.conn.prepareStatement(sql_insert_subscriptiondetails);
         pst_insert_subscription_dtls.setInt(++paramIndex, subscriptionID);
@@ -435,11 +451,10 @@ public class MigrationBase implements IMigrate {
         if (retUpdStatus == 1) {
             return true;
         }
-        throw(new SQLException("Failed to add subscription details"));
+        throw (new SQLException("Failed to add subscription details"));
     }
 
-    public void executeMasterDataScripts() throws IOException, SQLException
-    {
+    public void executeMasterDataScripts() throws IOException, SQLException {
         String files[] = new String[11];
         files[0] = "data" + "\\masterdata\\1.journals.sql";
         files[1] = "data" + "\\masterdata\\2.journal_groups.sql";
@@ -453,30 +468,26 @@ public class MigrationBase implements IMigrate {
         files[9] = "data" + "\\masterdata\\10.districts.sql";
         files[10] = "data" + "\\masterdata\\truncate_transaction_data.sql";
 
-        for(int j = 0; j<files.length; j++)
-        {
-            String s            = new String();
-            StringBuffer sb = new StringBuffer();
+        for (int j = 0; j < files.length; j++) {
+            String s;
+            StringBuilder sb = new StringBuilder();
 
-            FileReader fr = new FileReader(new File(files[j].toString()));
-            BufferedReader br = new BufferedReader(fr);
+            FileReader _fr = new FileReader(new File(files[j].toString()));
+            BufferedReader _br = new BufferedReader(_fr);
 
-            while((s = br.readLine()) != null)
-            {
+            while ((s = _br.readLine()) != null) {
                 sb.append(s);
             }
-            br.close();
+            _br.close();
 
             // here is our splitter ! We use ";" as a delimiter for each request
             // then we are sure to have well formed statements
             String[] inst = sb.toString().split(";");
 
-            for(int i = 0; i<inst.length; i++)
-            {
+            for (int i = 0; i < inst.length; i++) {
                 // we ensure that there is no spaces before or after the request string
                 // in order to not execute empty statements
-                if(!inst[i].trim().equals(""))
-                {
+                if (!inst[i].trim().equals("")) {
                     this.db.executeUpdate(inst[i]);
                     //System.out.println(">>"+inst[i]);
                 }

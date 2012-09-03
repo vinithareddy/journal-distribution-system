@@ -66,7 +66,7 @@ public class migrateCURR extends MigrationBase {
 
                 String subno = datacolumns[0];
                 String CURRYR = datacolumns[26];
-                int copies = datacolumns[27].isEmpty() ? 0 :Integer.parseInt(datacolumns[27]);
+                int copies = datacolumns[27].isEmpty() ? 0 : Integer.parseInt(datacolumns[27]);
                 String DATE_CURR = datacolumns[28];
                 float amount = Float.parseFloat(datacolumns[29]);
 
@@ -115,8 +115,12 @@ public class migrateCURR extends MigrationBase {
                     //logger.info(subno);
 
                     // Add logic to migrate the subscribers here
-                    int subscription_id = this.insertSubscription(this.getSubscriberID(Integer.parseInt(subno)),
-                            0, amount, subdate, corr_balance);
+                    int subscriber_id = this.getSubscriberID(Integer.parseInt(subno));
+                    if(subscriber_id == 0){
+                        logger.fatal("Unable to update subscription for subscriber " + subno + " No subscriber id found in DB");
+                        continue;
+                    }
+                    int subscription_id = this.insertSubscription(subscriber_id, 0, amount, subdate, corr_balance);
 
                     logger.debug("Inserted Subscription with id: " + subscription_id);
                     Calendar cal = Calendar.getInstance();

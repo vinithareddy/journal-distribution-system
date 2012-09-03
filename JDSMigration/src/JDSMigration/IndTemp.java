@@ -105,13 +105,8 @@ public class IndTemp extends MigrationBase {
                 continue;
             }
 
-            int pin = 0;
-            try{
-                pin = Integer.parseInt(datacolumns[14].replaceAll(" ", ""));
-            }catch(NumberFormatException e){
-                logger.debug("Exception: " + e.getMessage() + " for pincode " + datacolumns[14]);
-                pin = 0;
-            }
+            int pin;
+            pin = this.getPinCode(datacolumns[14].replaceAll(" ", ""));            
             String remarks = "";//datacolumns[10];
             String city = "";
 

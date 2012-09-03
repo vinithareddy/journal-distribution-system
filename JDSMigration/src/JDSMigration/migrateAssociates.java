@@ -6,16 +6,13 @@ package JDSMigration;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import jxl.read.biff.BiffException;
 import org.apache.log4j.Logger;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
 
 /**
  *
@@ -156,7 +153,7 @@ public class migrateAssociates extends MigrationBase{
             if(!pincode.isEmpty())
             {
                 try{
-                    pin = Integer.parseInt(pincode.replaceAll(" ", ""));
+                    pin = this.getPinCode(pincode.replaceAll(" ", ""));
                 }catch(NumberFormatException e){
                     logger.warn("Exception: " + e.getMessage() + " for pincode " + pincode);
                     pin = 0;

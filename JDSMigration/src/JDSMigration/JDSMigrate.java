@@ -18,23 +18,29 @@ import org.apache.log4j.Logger;
  */
 public class JDSMigrate {
 
-    private static final Logger logger = Logger.getLogger(JDSMigrate.class);
-    private boolean INIT_MASTER_DATA = true;
-    private boolean MIGRATE_INWARD = true;
-    private boolean MIGRATE_SUBSCRIBER = true;
-    private boolean MIGRATE_SUBSCRIPTION = true;
-    private boolean MIGRATE_CORR = true;
-    private boolean MIGRATE_FELLOWS = true;
-    private boolean MIGRATE_ASSOCIATES = true;
-    private boolean MIGRATE_EBALL = true;
-    private boolean MIGRATE_HONFEL = true;
-    private boolean MIGRATE_JGRANT = true;
-    private boolean MIGRATE_EXCHANGE = true;
-    private boolean CURRMEM = true;
-    private boolean CURTWAS = true;
-    private boolean MIGRATE_CURR = true;
-    private boolean MIGRATE_RES = true;
-    private boolean CIRCULATION_FIGURES = true;
+    private static final Logger logger = Logger.getLogger(JDSMigrate.class);    
+    
+    // set this to override all other migration flags
+    private boolean MIGRATE_ALL = true;
+    
+    private boolean INIT_MASTER_DATA = MIGRATE_ALL || true;
+    private boolean MIGRATE_INWARD = MIGRATE_ALL || true;
+    private boolean MIGRATE_SUBSCRIBER = MIGRATE_ALL || true;
+    private boolean MIGRATE_SUBSCRIPTION = MIGRATE_ALL || true;
+    private boolean MIGRATE_CORR = MIGRATE_ALL || true;
+    private boolean MIGRATE_FELLOWS = MIGRATE_ALL || true;
+    private boolean MIGRATE_ASSOCIATES = MIGRATE_ALL || true;
+    private boolean MIGRATE_EBALL = MIGRATE_ALL || true;
+    private boolean MIGRATE_HONFEL = MIGRATE_ALL || true;
+    private boolean MIGRATE_JGRANT = MIGRATE_ALL || true;
+    private boolean MIGRATE_EXCHANGE = MIGRATE_ALL || true;
+    private boolean CURRMEM = MIGRATE_ALL || true;
+    private boolean CURTWAS = MIGRATE_ALL || true;
+    private boolean MIGRATE_CURR = MIGRATE_ALL || true;
+    private boolean MIGRATE_RES = MIGRATE_ALL || true;
+    private boolean CIRCULATION_FIGURES = MIGRATE_ALL || true;
+    
+    
 
 
     public static void main(String[] args) throws IOException, FileNotFoundException,
@@ -47,7 +53,7 @@ public class JDSMigrate {
         if (_jdsmigrate.INIT_MASTER_DATA) {
             MigrationBase _migrationBase = new MigrationBase();
             _migrationBase.executeMasterDataScripts();
-            _jdsmigrate.logger.fatal("Setup master data and trucated transaction data");
+            JDSMigrate.logger.fatal("Setup master data and trucated transaction data");
         }
 
         if (_jdsmigrate.MIGRATE_INWARD) {

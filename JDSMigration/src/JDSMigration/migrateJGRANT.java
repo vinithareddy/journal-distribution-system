@@ -156,7 +156,7 @@ public class migrateJGRANT extends MigrationBase{
             if(!pincode.isEmpty())
             {
                 try{
-                    pin = Integer.parseInt(pincode.replaceAll(" ", ""));
+                    pin = this.getPinCode(pincode.replaceAll(" ", ""));
                 }catch(NumberFormatException e){
                     logger.warn("Exception: " + e.getMessage() + " for pincode " + pincode);
                     pin = 0;
