@@ -63,9 +63,9 @@ public class migrateRES extends MigrationBase {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 
                 String subno = datacolumns[0];
-                String CURRYR = datacolumns[26];
-                int copies = datacolumns[27].isEmpty() ? 0 : Integer.parseInt(datacolumns[27]);
-                String DATE_CURR = datacolumns[28];
+                String CURRYR = datacolumns[21];
+                int copies = datacolumns[22].isEmpty() ? 0 : Integer.parseInt(datacolumns[22]);
+                String DATE_CURR = datacolumns[23];
                 float amount = Float.parseFloat(datacolumns[29]);
 
                 java.sql.Date subdate = util.dateStringToSqlDate(null);
@@ -109,7 +109,7 @@ public class migrateRES extends MigrationBase {
                 // Start year < 1st-Jan-2013 and End year > 31-July-2012
                 // csy.compareTo(dateFormat.parse("01/01/2013")) < 0 && cey.compareTo(dateFormat.parse("31/07/2012")) > 0
                 if (cey.compareTo(dateFormat.parse("01/01/2012")) > 0) {
-                    count = count + Integer.parseInt(datacolumns[27]);
+                    count = count + Integer.parseInt(datacolumns[22]);
                     //logger.info(subno);
 
                     // Add logic to migrate the subscribers here

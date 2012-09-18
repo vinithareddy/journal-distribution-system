@@ -38,6 +38,7 @@ public class migrateEBALL extends MigrationBase{
         subscriberNumberStart = getLastSubscriberId() + 1;
     }
 
+    @Override
     public void Migrate() throws FileNotFoundException, IOException, BiffException, SQLException {
 
         this.openExcel(dataFile);
@@ -225,6 +226,8 @@ public class migrateEBALL extends MigrationBase{
             for (int j = 0; j < jrnlArr.length; j++) {
                 if (!datacolumns[jrnlArr[j]].equalsIgnoreCase("0") && !datacolumns[jrnlArr[j]].isEmpty()) {
                     paramIndex = 0;
+                    logger.debug(j);
+                    logger.debug(datacolumns[jrnlArr[j]]);
                     int noCopies = Integer.parseInt(datacolumns[jrnlArr[j]]);
                     int startMonth = 1;
                     int endMonth = 12;
