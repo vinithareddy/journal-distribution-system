@@ -56,6 +56,10 @@ public class MigrationBase implements IMigrate {
     //Insert Statement for Subscription
     public String sql_insert_subscription = "insert into subscription(subscriberID,inwardID,legacy,legacy_amount,subscriptiondate,legacy_balance)"
             + "values(?,?,?,?,?,?)";
+    
+    public String sql_insert_subscription_no_dt = "insert into subscription(subscriberID,inwardID,legacy,legacy_amount,legacy_balance)"
+            + "values(?,?,?,?,?)";
+    
     public String sql_insert_subscription_free_subs = "insert into subscription(subscriberID,inwardID,legacy) values(?,?,?)";
 //--------------------------------------------------------------------------------------------
     //Insert Statement for Subscription Details
@@ -67,10 +71,18 @@ public class MigrationBase implements IMigrate {
             + ",institution, shippingAddress, invoiceAddress"
             + ",city, state, pincode, country, deactive, email)values"
             + "((select id from subscriber_type where subtypecode = ?),?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    
+    public String sql_insert_subscriber_dt = "insert IGNORE into subscriber(subtype, subscriberNumber"
+            + ",subscriberName, department"
+            + ",institution, shippingAddress, invoiceAddress"
+            + ",city, state, pincode, country, deactive, email,subscriberCreationDate)values"
+            + "((select id from subscriber_type where subtypecode = ?),?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
     public String sql_getLastSubscriberId = "SELECT id from subscriber order by id desc LIMIT 1";
 //--------------------------------------------------------------------------------------------
     private PreparedStatement pst_insert_subscription = null;
+    private PreparedStatement pst_insert_subscription_no_dt = null;
     private PreparedStatement pst_insert_subscription_dtls = null;
+    private PreparedStatement pst_insert_subscriber = null;
 
     public MigrationBase() throws SQLException {
 
@@ -151,7 +163,9 @@ public class MigrationBase implements IMigrate {
         countryMap.put("Frnace", "France");
 
         pst_insert_subscription = this.conn.prepareStatement(sql_insert_subscription, Statement.RETURN_GENERATED_KEYS);
+        pst_insert_subscription_no_dt = this.conn.prepareStatement(sql_insert_subscription_no_dt, Statement.RETURN_GENERATED_KEYS);
         pst_insert_subscription_dtls = this.conn.prepareStatement(sql_insert_subscriptiondetails);
+        pst_insert_subscriber = this.conn.prepareStatement(sql_insert_subscriber_dt, Statement.RETURN_GENERATED_KEYS);
 
 
 
@@ -169,8 +183,13 @@ public class MigrationBase implements IMigrate {
 
     }
 
-    public void openExcel(String fileName) throws java.io.FileNotFoundException, IOException, BiffException {
-        excelReader = new ExcelReader(fileName, 0);
+    public void openExcel(String fileName) throws java.io.FileNotFoundException {
+        try{
+            excelReader = new ExcelReader(fileName, 0);
+        }catch(IOException | BiffException ex){
+            logger.fatal("Failed to open excel file: " + fileName);
+            System.exit(1);
+        }
     }
 
     public String[] getNextRow() throws IOException, EOFException, BiffException {
@@ -200,7 +219,9 @@ public class MigrationBase implements IMigrate {
     }
 
     public int getCityID(String cityName) throws SQLException {
-
+        if (this.cityMap.containsKey(cityName)) {
+            cityName = this.cityMap.get(cityName);
+        }
         PreparedStatement pst = this.conn.prepareStatement(sql_city);
         pst.setString(1, cityName);
         ResultSet rs = db.executeQueryPreparedStatement(pst);
@@ -338,6 +359,7 @@ public class MigrationBase implements IMigrate {
     }
 
     public int getPinCode(String _pinAsText) {
+        _pinAsText = _pinAsText.replaceAll(" ", "");
         int pincode = 0;
         if (_pinAsText.length() == 6) {
             try {
@@ -406,6 +428,47 @@ public class MigrationBase implements IMigrate {
         return endYear;
 
     }
+    
+    public int insertSubscriber(String subtypeCode, String SubscriberName, String department,
+            String institution, String ShipAddress, String invAddress,
+            int city, int state, int pincode, int country, String email) throws SQLException, ParseException,
+            java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException{
+        
+        String nextSubscriberNumber = this.getNextSubscriberNumber();
+        int paramindex = 0;
+        
+        pst_insert_subscriber.setString(++paramindex, subtypeCode);
+        pst_insert_subscriber.setString(++paramindex, nextSubscriberNumber);
+        pst_insert_subscriber.setString(++paramindex, SubscriberName);
+        
+        pst_insert_subscriber.setString(++paramindex, department);
+        pst_insert_subscriber.setString(++paramindex, institution);
+        pst_insert_subscriber.setString(++paramindex, ShipAddress);
+        pst_insert_subscriber.setString(++paramindex, invAddress);
+        pst_insert_subscriber.setInt(++paramindex, city);
+        pst_insert_subscriber.setInt(++paramindex, state);
+        pst_insert_subscriber.setInt(++paramindex, pincode);
+        pst_insert_subscriber.setInt(++paramindex, country);
+        pst_insert_subscriber.setBoolean(++paramindex, false);
+        pst_insert_subscriber.setString(++paramindex, email);
+        pst_insert_subscriber.setDate(++paramindex, util.dateStringToSqlDate(util.getDateString()));
+        
+        int subscriberid = 0;
+        try{
+            if(pst_insert_subscriber.executeUpdate() == 1){
+                try(ResultSet rs = pst_insert_subscriber.getGeneratedKeys();){
+                    if(rs.first()){
+                        subscriberid = rs.getInt(1);
+                    }
+                }
+            }
+        }finally{
+            return subscriberid;
+        }
+         
+        
+        
+    }
 
     public int insertSubscription(int subscriberId, int inwardId, float amount, Date subdate, float corr_balance) throws SQLException {
         int paramIndex = 0;
@@ -428,6 +491,26 @@ public class MigrationBase implements IMigrate {
             throw (new SQLException("Failed to add subscription"));
         }
 
+    }
+    
+    public int insertSubscription(int subscriberId) throws SQLException {
+        int paramIndex = 0;
+        pst_insert_subscription_no_dt.setInt(++paramIndex, subscriberId);
+        pst_insert_subscription_no_dt.setInt(++paramIndex, 0);
+        pst_insert_subscription_no_dt.setBoolean(++paramIndex, true);
+        pst_insert_subscription_no_dt.setFloat(++paramIndex, 0);
+        pst_insert_subscription_no_dt.setFloat(++paramIndex, 0);
+
+        //Inserting the record in Subscription Table
+        int ret = pst_insert_subscription_no_dt.executeUpdate();
+        if (ret == 1) {
+            //Getting back the subsciption Id
+            ResultSet rs_sub = pst_insert_subscription_no_dt.getGeneratedKeys();
+            rs_sub.first();
+            return rs_sub.getInt(1);  //return subscription id
+        } else {
+            throw (new SQLException("Failed to add subscription"));
+        }
 
     }
 
@@ -473,12 +556,11 @@ public class MigrationBase implements IMigrate {
             StringBuilder sb = new StringBuilder();
 
             FileReader _fr = new FileReader(new File(files[j].toString()));
-            BufferedReader _br = new BufferedReader(_fr);
-
-            while ((s = _br.readLine()) != null) {
-                sb.append(s);
+            try (BufferedReader _br = new BufferedReader(_fr)) {
+                while ((s = _br.readLine()) != null) {
+                    sb.append(s);
+                }
             }
-            _br.close();
 
             // here is our splitter ! We use ";" as a delimiter for each request
             // then we are sure to have well formed statements

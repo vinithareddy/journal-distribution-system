@@ -75,10 +75,10 @@ public class Corr extends MigrationBase {
                 String subscriptionYear = subYearMatcher.group(1);
 
                 logger.debug("subscription year: " + subscriptionYear);
-                if (Integer.parseInt(subscriptionYear) < 2009) {
+                /*if (Integer.parseInt(subscriptionYear) < 2009) {
                     logger.debug("Skipping record " + rowCount + "," + "year " + subscriptionYear + " less than 2009");
                     continue;
-                }
+                }*/
                 try {
                     inwardMatcher.find();
                     String inwardNo = subscriptionYear.substring(2) + inwardMatcher.group(1) + "-" + String.format("%05d", Integer.parseInt(inwardMatcher.group(2)));

@@ -23,29 +23,31 @@ public class JDSMigrate {
     // set this to override all other migration flags
     private boolean MIGRATE_ALL = true;
     
-    private boolean INIT_MASTER_DATA = MIGRATE_ALL || false;
-    private boolean MIGRATE_INWARD = MIGRATE_ALL || false;
-    private boolean MIGRATE_SUBSCRIBER = MIGRATE_ALL || false;
-    private boolean MIGRATE_SUBSCRIPTION = MIGRATE_ALL || true;
-    private boolean MIGRATE_CORR = MIGRATE_ALL || false;
-    private boolean MIGRATE_FELLOWS = MIGRATE_ALL || false;
-    private boolean MIGRATE_ASSOCIATES = MIGRATE_ALL || false;
-    private boolean MIGRATE_EBALL = MIGRATE_ALL || false;
-    private boolean MIGRATE_HONFEL = MIGRATE_ALL || false;
-    private boolean MIGRATE_JGRANT = MIGRATE_ALL || false;
-    private boolean MIGRATE_EXCHANGE = MIGRATE_ALL || false;
-    private boolean CURRMEM = MIGRATE_ALL || false;
-    private boolean CURTWAS = MIGRATE_ALL || false;
-    private boolean MIGRATE_CURR = MIGRATE_ALL || false;
-    private boolean MIGRATE_RES = MIGRATE_ALL || false;
-    private boolean CIRCULATION_FIGURES = MIGRATE_ALL || false;
+    private boolean INIT_MASTER_DATA = MIGRATE_ALL && true;
+    private boolean MIGRATE_INWARD = MIGRATE_ALL && true;
+    private boolean MIGRATE_SUBSCRIBER = MIGRATE_ALL && true;
+    private boolean MIGRATE_SUBSCRIPTION = MIGRATE_ALL && true;
+    private boolean MIGRATE_CORR = MIGRATE_ALL && true;
+    private boolean MIGRATE_FELLOWS = MIGRATE_ALL && true;
+    private boolean MIGRATE_ASSOCIATES = MIGRATE_ALL && true;
+    private boolean MIGRATE_EBALL = MIGRATE_ALL && true;
+    private boolean MIGRATE_HONFEL = MIGRATE_ALL && true;
+    private boolean MIGRATE_JGRANT = MIGRATE_ALL && true;
+    private boolean MIGRATE_EXCHANGE = MIGRATE_ALL && true;
+    private boolean CURRMEM = MIGRATE_ALL && false;
+    private boolean CURTWAS = MIGRATE_ALL && false;
+    private boolean MIGRATE_CURR = MIGRATE_ALL && false;
+    private boolean MIGRATE_RES = MIGRATE_ALL && true;
+    private boolean MIGRATE_RESOCOMP = MIGRATE_ALL && false;
+    private boolean MIGRATE_RESOEB = MIGRATE_ALL && false;
+    private boolean CIRCULATION_FIGURES = MIGRATE_ALL && true;
     
     
 
 
     public static void main(String[] args) throws IOException, FileNotFoundException,
             ParseException, SQLException, BiffException, InvocationTargetException,
-            IllegalAccessException{
+            IllegalAccessException, Exception{
 
         JDSMigrate _jdsmigrate = new JDSMigrate();
 
@@ -123,6 +125,14 @@ public class JDSMigrate {
         if (_jdsmigrate.MIGRATE_RES) {
             migrateRES _migrateRES = new migrateRES();
             _migrateRES.migrate();
+        }
+        if (_jdsmigrate.MIGRATE_RESOCOMP) {
+            RESOCOMP _resocomp = new RESOCOMP();
+            _resocomp.Migrate();
+        }
+        if (_jdsmigrate.MIGRATE_RESOEB) {
+            RESOEB _resoeb = new RESOEB();
+            _resoeb.Migrate();
         }
         if (_jdsmigrate.CIRCULATION_FIGURES) {
             circulationFigures _circulationFigures = new circulationFigures();
