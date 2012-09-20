@@ -23,22 +23,22 @@ public class JDSMigrate {
     // set this to override all other migration flags
     private boolean MIGRATE_ALL = true;
     
-    private boolean INIT_MASTER_DATA = MIGRATE_ALL || true;
-    private boolean MIGRATE_INWARD = MIGRATE_ALL || true;
-    private boolean MIGRATE_SUBSCRIBER = MIGRATE_ALL || true;
+    private boolean INIT_MASTER_DATA = MIGRATE_ALL || false;
+    private boolean MIGRATE_INWARD = MIGRATE_ALL || false;
+    private boolean MIGRATE_SUBSCRIBER = MIGRATE_ALL || false;
     private boolean MIGRATE_SUBSCRIPTION = MIGRATE_ALL || true;
-    private boolean MIGRATE_CORR = MIGRATE_ALL || true;
-    private boolean MIGRATE_FELLOWS = MIGRATE_ALL || true;
-    private boolean MIGRATE_ASSOCIATES = MIGRATE_ALL || true;
-    private boolean MIGRATE_EBALL = MIGRATE_ALL || true;
-    private boolean MIGRATE_HONFEL = MIGRATE_ALL || true;
-    private boolean MIGRATE_JGRANT = MIGRATE_ALL || true;
-    private boolean MIGRATE_EXCHANGE = MIGRATE_ALL || true;
-    private boolean CURRMEM = MIGRATE_ALL || true;
-    private boolean CURTWAS = MIGRATE_ALL || true;
-    private boolean MIGRATE_CURR = MIGRATE_ALL || true;
-    private boolean MIGRATE_RES = MIGRATE_ALL || true;
-    private boolean CIRCULATION_FIGURES = MIGRATE_ALL || true;
+    private boolean MIGRATE_CORR = MIGRATE_ALL || false;
+    private boolean MIGRATE_FELLOWS = MIGRATE_ALL || false;
+    private boolean MIGRATE_ASSOCIATES = MIGRATE_ALL || false;
+    private boolean MIGRATE_EBALL = MIGRATE_ALL || false;
+    private boolean MIGRATE_HONFEL = MIGRATE_ALL || false;
+    private boolean MIGRATE_JGRANT = MIGRATE_ALL || false;
+    private boolean MIGRATE_EXCHANGE = MIGRATE_ALL || false;
+    private boolean CURRMEM = MIGRATE_ALL || false;
+    private boolean CURTWAS = MIGRATE_ALL || false;
+    private boolean MIGRATE_CURR = MIGRATE_ALL || false;
+    private boolean MIGRATE_RES = MIGRATE_ALL || false;
+    private boolean CIRCULATION_FIGURES = MIGRATE_ALL || false;
     
     
 

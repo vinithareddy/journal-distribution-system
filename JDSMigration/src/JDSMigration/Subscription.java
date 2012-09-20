@@ -102,6 +102,7 @@ public class Subscription extends MigrationBase {
 
             //Subscriber Number from excel
             this.subscriberNumber = datacolumns[0];
+            
             int subscriberId = 0;
             pst_select_subscriber.setString(1, datacolumns[0]);
             ResultSet rs_subscriber = this.db.executeQueryPreparedStatement(pst_select_subscriber);
@@ -145,6 +146,10 @@ public class Subscription extends MigrationBase {
                 logger.fatal("subscriber in corr:" + corr_subscriber);
 
                 corr_balance = (float) 0;
+            }
+            
+            if("2521".equals(this.subscriberNumber)){
+                logger.debug(this.subscriberNumber);
             }
 
 
@@ -209,9 +214,9 @@ public class Subscription extends MigrationBase {
             int _tempEndYr = Integer.parseInt(datacolumns[32]);
             int endYr = _tempEndYr;
 
-            if (_tempEndYr == 0 && startYr == 2012) { // in case of only one year subscription, only start year is filled
-                _tempEndYr = startYr;
-                endYr = _tempEndYr;
+            if (_tempEndYr == 0) { // in case of only one year subscription, only start year is filled
+                //_tempEndYr = startYr;
+                endYr = startYr;
             }
 
             /*
@@ -274,13 +279,13 @@ public class Subscription extends MigrationBase {
                     // Journal Group for all the journals except CS
                     insertedRowsSubDtls = migrateSubDtls(subscriptionID, jrnlGrpIDArr[12], Integer.parseInt(datacolumns[jrnlArr[1]]), 1, startYr, endYr);
                 } else {
-                    String dateRes = datacolumns[23];
-                    String dateCurr = datacolumns[28];
-                    String dateStr = null;
+                    //String dateRes = datacolumns[23];
+                    //String dateCurr = datacolumns[28];
+                    //String dateStr = null;
                     int startMonth = 1;
 
                     // if CURR_DATE or RES_DATE is set, it means it could start from middle of the year
-                    if ((!datacolumns[22].isEmpty() && !datacolumns[22].equals("0"))
+                    /*if ((!datacolumns[22].isEmpty() && !datacolumns[22].equals("0"))
                             || (!datacolumns[27].isEmpty() && !datacolumns[27].equals("0"))) {
                         if (!dateRes.isEmpty()) {
                             dateStr = dateRes;
@@ -291,7 +296,7 @@ public class Subscription extends MigrationBase {
                         }
                         String[] splitDate = dateStr.split("/");
                         startMonth = Integer.parseInt(splitDate[0]);
-                    }
+                    }*/
 
 
                     for (int j = 0; j < jrnlArr.length; j++) {
@@ -337,8 +342,10 @@ public class Subscription extends MigrationBase {
         if(startMonth==1){
             endMonth = 12;
         }else{
-            endMonth = startMonth - 1;
+            endMonth = startMonth - 1; // case where the subscription starts from July
+            //endYr = endYr + 1;  // if the month does not start from 1 it means the
         }
+        
         
         
         int subtypeID = this.getSubscriberTyeID(this.subscriberID);
