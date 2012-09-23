@@ -242,4 +242,5 @@ insert into cities
 ('Visakhapatnam'), 
 ('Warangal'), 
 ('Yamunanagar'), 
-('Yeddumailaram')
+('Yeddumailaram'),
+('Haridwar')

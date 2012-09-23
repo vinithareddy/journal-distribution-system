@@ -93,17 +93,7 @@ public class MigrationBase implements IMigrate {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        stateMap.put("T.N.", "Tamil Nadu");
-        stateMap.put("T.N", "Tamil Nadu");
-        stateMap.put("A.P.", "Andhra Pradesh");
-        stateMap.put("M.S.", "Maharashtra");
-        stateMap.put("U.P.", "Uttar Pradesh");
-        stateMap.put("M.P.", "Madhya Pradesh");
-        stateMap.put("H.P.", "Himachal Pradesh");
-        stateMap.put("W.B.", "West Bengal");
-        stateMap.put("Orissa", "Odisha");
-        stateMap.put("J&K", "Jammu & Kashmir");
-        stateMap.put("A&N Islands", "Andaman & Nicobar");
+        
 
 
         String sql = "select id from subscription_rates t1 "
@@ -137,6 +127,18 @@ public class MigrationBase implements IMigrate {
         cityMap.put("Pune - ", "Pune");
         cityMap.put("Goa ", "Goa");
 
+        stateMap.put("Uttaranchal", "Uttarakhand");
+        stateMap.put("T.N.", "Tamil Nadu");
+        stateMap.put("T.N", "Tamil Nadu");
+        stateMap.put("A.P.", "Andhra Pradesh");
+        stateMap.put("M.S.", "Maharashtra");
+        stateMap.put("U.P.", "Uttar Pradesh");
+        stateMap.put("M.P.", "Madhya Pradesh");
+        stateMap.put("H.P.", "Himachal Pradesh");
+        stateMap.put("W.B.", "West Bengal");
+        stateMap.put("Orissa", "Odisha");
+        stateMap.put("J&K", "Jammu & Kashmir");
+        stateMap.put("A&N Islands", "Andaman & Nicobar");
         stateMap.put("Delhi", "New Delhi");
         stateMap.put("UP", "Uttar Pradesh");
         stateMap.put("Kashmir", "Jammu & Kashmir");
@@ -356,6 +358,18 @@ public class MigrationBase implements IMigrate {
         }
         return priceGroupID;
 
+    }
+    
+    public int getInteger(String _text){
+        int rc = 0;
+        try{
+            rc = Integer.parseInt(_text);
+        }catch (NumberFormatException e){
+            logger.error("Invalid string to int: " + _text);
+            rc = 0;
+        }finally{
+            return rc;
+        }
     }
 
     public int getPinCode(String _pinAsText) {
