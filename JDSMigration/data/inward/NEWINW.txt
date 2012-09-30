@@ -3949,7 +3949,7 @@ SL_NO	DATE_REC	FROM	CITY	PURPOSE	CHK_NO	CHK_DT	CURRENCY	AMOUNT	J_NO	EMAIL	SLNO1
 3948	6/15/2012	HSS	Chennai	subcription	000211			810.00			12F
 3949	6/15/2012	HSS	Chennai	subcription	000212			360.00			12F
 3950	6/15/2012	West Bengal Biodiversity Board	Kolkata	Invoice						biodiversity.wbbb@nic.in	12F
-3951	6/15/2012	Central Library	Jhansi	Invoice							12F
+3951	6/15/2012	"Central Library, Bundelkhind Univ."	Jhansi	Invoice							12F
 3952	6/15/2012	Sarojini Inst of Tech	Krishna Dist	Invoice						sarojini.lib03@gmail.com	12F
 3953	6/18/2012	Indo German Sci Tech	Gurgaon	Advertisement	390728			12000.00			12F
 3954	6/18/2012	NISC	New Delhi	Invoice						isen@niscair.res.in	12F
@@ -4207,7 +4207,7 @@ SL_NO	DATE_REC	FROM	CITY	PURPOSE	CHK_NO	CHK_DT	CURRENCY	AMOUNT	J_NO	EMAIL	SLNO1
 4206	7/10/2012	RajeDharamrao Clg of Sci	Aherii	subcription	240462			2600.00			12G
 4207	7/10/2012	Apex	Mumbai	subcription	004513			945.00		info@apexsubs.com	12G
 4208	7/10/2012	St Joseph Clg	Allapuzha	subcription	BANKTRANSFER			400.00			12G
-4209	7/10/2012	Goa Stae Central Lib	Goa	Invoice							12G
+4209	7/10/2012	Goa State Central Lib	Goa	Invoice							12G
 4210	7/10/2012	Boston	Yorkshire	subcription	00416576		$	300.00			12G
 4211	7/10/2012	IICPT	Thanjavur	subcription	022963			4000.00		iicpttnj@gmail.com	12G
 4212	7/10/2012	SJ Arts Sci Clg	Bharuch	subcription	581988			4800.00			12G
@@ -4215,9 +4215,687 @@ SL_NO	DATE_REC	FROM	CITY	PURPOSE	CHK_NO	CHK_DT	CURRENCY	AMOUNT	J_NO	EMAIL	SLNO1
 4214	7/10/2012	IARI	Delhi	subcription	224327			1250.00		gprao_gor@rediffmail.com	12G
 4215	7/10/2012	Calicut Res centrefor CMFRI	Cakicut	subcription	044608			4400.00		crc_cmfri@yahoo.com	12G
 4216	7/10/2012	CIRG	Mathura	subcription	228708			4700.00		mcsharma@cirg.res.in	12G
-4217	7/10/2012	Doaba Clg of Edn	Mohali	subcription	819162			800.00		doaba_diet@yahoo.co.in	12G
+4217	7/10/2012	Doaba Clg of Edn	Mohali	subcription	819162			800.00	RETD	doaba_diet@yahoo.co.in	12G
 4218	7/10/2012	IBH	Mumbai	subcription	183956			9360.00			12G
 4219	7/10/2012	IBH	Mumbai	subcription	142350			3105.00			12G
 4220	7/10/2012	IBH	Mumbai	subcription	142518			5265.00			12G
 4221	7/10/2012	IBH	Mumbai	subcription	142587			6750.00			12G
 4222	7/10/2012	Acharya N G Ranga Agrl Univ	Tirupati	Invoice							12G
+4223	7/11/2012	Army Public School	Bangalore	subcription	915658			800.00		apsblre@rediffmail.com	12G
+4224	7/11/2012	Varadacharyulu	Antapur	subcription	665986			3000.00			12G
+4225	7/11/2012	Chitkara Univ	Solan	subcription	531366			300.00		jatinder.kumar@chitkarauniversity.edu.in	12G
+4226	7/11/2012	B D Kale Mahavidyalaya	Pune	subcription	472067			3000.00			12G
+4227	7/11/2012	Ghosh	Hooghly	subcription	099062			1250.00			12G
+4228	7/11/2012	Thong	Nagaland	subcription	097680			1000.00			12G
+4229	7/11/2012	Sushrut Patel	Ahmedabad	subcription	277536			3000.00			12G
+4230	7/11/2012	NRCO	Sikkim	subcription	966063			300.00			12G
+4231	7/11/2012	Periyar Maniammai Univ	Thanjavur	subcription	276542			100000.00			12G
+4232	7/12/2012	RRS Clg of Pharmacy	Sultanpur	subcription	231646			1500.00		rrscop_amethi@rediffmail.com	12G
+4233	7/12/2012	Inst of Bioinformatics & Biotech	Pune	subcription	797847			3000.00		directoribb@unipune.ac.in	12G
+4234	7/12/2012	Basava raju	Bhimavaram	subcription	359557			3000.00			12G
+4235	7/12/2012	Panjab Univ	Chandigarh	subcription	371665			500.00		pulib@pu.ac.in	12G
+4236	7/12/2012	Guru Nanak Clg of Edn & Trg	J&K	subcription	810972			700.00			12G
+4237	7/12/2012	G D Rungta Clg	Bhilai	subcription	049108			500.00		gdrcst@rungta.ac.in	12G
+4238	7/12/2012	VVP Engg Clg	Rajkot	subcription	966779			500.00			12G
+4239	7/12/2012	KMC College	Khopoli	subcription	021554			2250.00			12G
+4240	7/12/2012	Sachdeva Clg of Pharmacy	Mohali	subcription	006862			900.00		scp@ggssachdeva.com	12G
+4241	7/12/2012	Sree Kerala Varma Clg	Thrissur	subcription	834789			1150.00		skvcollege@yahoo.com	12G
+4242	7/12/2012	Keswari	Hyd	subcription	890979			1250.00		keswari@rediffmail.com	12G
+4243	7/12/2012	CGWB	Bang	subcription	509292			7500.00			12G
+4244	7/12/2012	Asiatic Sco	Kolkata	Invoice						aslibcal@cal.vsnl.net.in	12G
+4245	7/14/2012	Sanofi Synthelabo	Mumbai	subcription	433220			12000.00			12G
+4246	7/14/2012	Nesamony Memorial Chri Clg	Martandam	Advertisement	433220			12000.00			12G
+4247	7/14/2012	Priyadasrhini Inst of Tech	Nellore	subcription	094224			2450.00			12G
+4248	7/14/2012	Swarnandhra Engg college	Narasapur	subcription	191199			400.00			12G
+4249	7/14/2012	SK Srivastava	Allahabad	postage for desptach of bks	206935			1100.00			12G
+4250	7/14/2012	ZSI	Pune	subcription	686105			4400.00			12G
+4251	7/14/2012	SBSD Mahavidyalaya	Atpadi	subcription	392548			2000.00		sbdmatpadi@rediffmail.com	12G
+4252	7/14/2012	Annamacharya Clg of Edn	Kadapa	subcription	462187			900.00			12G
+4253	7/14/2012	CS Jain Clg of Edn	Cuddalore	subcription	830743			500.00			12G
+4254	7/14/2012	Maharajjahs PG College	Vizianagaram	subcription  839	991842			3400.00			12G
+4255	7/14/2012	Feroze Gandhi College	Rae Bareli	subcription	048368			1900.00			12G
+4256	7/14/2012	CBIT	Proddatur	subcription	217459			1500.00			12G
+4257	7/14/2012	Vijayanagar College	Bellary	subcription	251947			500.00			12G
+4258	7/14/2012	CSI Clg of Engg	Nilgiris	subcription	314231			2000.00		principal@csice.edu.in	12G
+4259	7/14/2012	KV	Balaghat	subcription	177911			2000.00		kv_balaghat@rediffmail.com	12G
+4260	7/14/2012	Jerusalem cl of Engg	Chennai	subcription	044675			2000.00		jerusalemengg@gmail.com	12G
+4261	7/14/2012	MES Asmabi Clg	Thrissur	subcription	143817			2000.00		principal_mes_asmabi@yahoo.co.in	12G
+4262	7/14/2012	KV	Kochi	subcription	659994			1000.00		kvlnavalbasekochi@gmail.com	12G
+4263	7/14/2012	Fergusson Clg of	Pune	subcription  887	059886			900.00			12G
+4264	7/14/2012	Rawat	Uttaranchal	subcription	667854			1000.00		drds_rawat@yahoo.com	12G
+4265	7/14/2012	AVK Clg for W	Hassan	Invoice							12G
+4266	7/14/2012	Subs Recd form  Mid Year Mtg at IISc	Bang	"subcription(4RES,1JB,1CURR)"	Cash			47500.00			12G
+4267	7/16/2012	Desikan	Chennai	subcription							12G
+4268	7/16/2012	Malankara catholic college	kanyakumari District	subscription	292652	6/26/2012		4650.00		mcc@india.com	12G
+4269	7/16/2012	Nesamony Memorial Christian College	Martandam	Advertisement	083281	7/11/2012		4000.00		principal@nmcc.ac.in	12G
+4270	7/16/2012	Holy Trinity College Education	Kanyakumari District	Subscription	054416	7/7/2012		500.00		htceducation2007@gmail.com	12G
+4271	7/16/2012	Shri Shivaji Shikshan rasarak Mandal	Dist Solapur	Subscription	155442	7/4/2012		1450.00		ssmbarsi@rediffmail.com	12G
+4272	7/16/2012	Anjuman Clg for W	Bhatkal	subcription	917431			2550.00		acfwcollege@ymail.com	12G
+4273	7/16/2012	M H Shinda Mahavidyalaya	Kolhapur	subcription	775489			1500.00		mhstisangi@rediffmail.com	12G
+4274	7/16/2012	KV	Puducherry	subcription	685418			500.00		kvno1jipmer@yahoo.in	12G
+4275	7/16/2012	Raja Peary Mohan College	Hooghly	subcription	367841			4800.00			12G
+4276	7/16/2012	Chowgule College		Advertisement	241355			4000.00			12G
+4277	7/16/2012	adavpur Univ	Kolkata	subcription	557811			300.00			12G
+4278	7/16/2012	Sindhu Mahavidyalaya	Nagpur	subcription	017539			4800.00		principal@smvnagpur.ac.in	12G
+4279	7/16/2012	Saraswati Inst of tech	Ismailbad	"subcription  333, 334,336"	038332			1910.00			12G
+4280	7/16/2012	Gramin Slikshah Mand	Trimbuk	subcription	MO			400.00			12G
+4281	7/16/2012	Sudha Bk house	Hooghly	subcription	099060			720.00		sudhabooks@rediffmail.com	12G
+4282	7/16/2012	IBH	Chennai	subcription	099012			1035.00		ibhsachen@eth.net	12G
+4283	7/16/2012	IBH	Chennai	subcription	099043			810.00		ibhsachen@eth.net	12G
+4284	7/16/2012	Apex	Mumbai	subcription	004396			675.00		info@apexsubs.com	12G
+4285	7/16/2012	CNA	New Delhi	subcription	345270			2835.00		subs@cna.co	12G
+4286	7/16/2012	Avanthi Inst of Engg & Tech	Vizuangaram	subcription	771005			400.00		principal_q7@rediffmail.com	12G
+4287	7/16/2012	VBIT	Anantapur	subcription	217473			6750.00			12G
+4288	7/16/2012	RIA	Mumbai	subcription	010960			360.00		rhino1@vsnl.com	12G
+4289	7/16/2012	Total Lib	New Delhi	subcription	796431			4320.00		tis@del3vsnl.net.in	12G
+4290	7/16/2012	Mount Zion clg	Pathanamthitta	subcription	297613			1000.00		zionlibrary@gmail.com	12G
+4291	7/16/2012	Abhinav Vidyalaya	Dombivli	subcription	000949			500.00		admin@abhinav.ac.in	12G
+4292	7/16/2012	MGM College	Udupi	"subcription 420,21,22 458 918,20, 21 retd)"	277418			2950.00	"5 dd returned , not in favour of"	principal_mgm@yahoo.co.in	12G
+4293	7/16/2012	KV	Chandrapur         I	nvoice							12G
+4294	7/17/2012	Sikshan Mahavidyalaya	Nasik	reg payment							12G
+4295	7/17/2012	Arumugam Pillai Seetha Ammal College	Sivagangai	subcription	385807			1400.00		principal@apsacollege.com	12G
+4296	7/17/2012	Nayagarh Autonomous Clg	Nayagarh	subcription	708285			5550.00		ngrautcol@yahoo.co.in	12G
+4297	7/17/2012	Magazine World	Anand	subcription	004723			3060.00		magazineworld@gmail.com	12G
+4298	7/17/2012	Magazine Mall	Gurgaon	subcription	000561			1080.00		anubhav@magazinemall.in	12G
+4299	7/17/2012	MES Mampad College	Malappuram	subcription	043039			400.00		info@mesmampad.org	12G
+4300	7/17/2012	SRTMU	Nanded	subcription	531849			4000.00			12G
+4301	7/17/2012	CIFRI	Kolkata	Invoice						cifri@vsnl.com	12G
+4302	7/17/2012	Potato Res Inst	Meerut	Claim					HINDI		12G
+4303	7/18/2012	HP Tech Univ	Hamirpur	subcription	017957			50000.00			12G
+4304	7/18/2012	Newfields Adv	New Delhi	subcription	828882			102000.00			12G
+4305	7/18/2012	APSA	Ahmedabad	subcription	019477			810.00		ahmbd.journals@alliedpublishers.com	12G
+4306	7/18/2012	"Univ of Pune, Dept of Chemistry"	Pune	subcription	095271			3000.00			12G
+4307	7/18/2012	Dhanalakshmi Srinivasan Clg of Arts Sci for W	Perambalur	subcription	668558			4800.00			12G
+4308	7/18/2012	Das	Bang	subcription	162453			1250.00			12G
+4309	7/18/2012	Chaitanya PG Clg	Warangal	subcription	882500			2250.00		chaitanyacoll@yahoo.com	12G
+4310	7/18/2012	Senhur Polytechnic Clg	Tiruppur	subcription	996115			400.00		senthurpolytechnic@gmail.com	12G
+4311	7/18/2012	"Sandipani Tech Campus ,faculty of Engg"	Latur	subcription	724737			1450.00			12G
+4312	7/18/2012	Ashoka Clg of Edn	Nashik	subcription	973935			500.00		aicesr@rediffmail.com	12G
+4313	7/18/2012	Higginbothams P Ltd	Chennai	subcription	314820			990.00		subs@higginbothams.co.in	12G
+4314	7/18/2012	Dhanalakshmi Srinivasan Clg of Edn	Perambalur	subcription	667674			500.00			12G
+4315	7/18/2012	DayarArts Sci Clg for w	Calicut	subcription 161-163	167160			2950.00		info@dayapuram.org	12G
+4316	7/18/2012	APSA	Ahmedabad	subcription	967344			990.00			12G
+4317	7/19/2012	NMKRV College for W	Bangalore	Advertisement	484914			7000.00			12G
+4318	7/19/2012	Gujarat Institute of Desert Ecology	Bhuj	Advertisement	133018			7000.00			12G
+4319	7/19/2012	NCBS	Bang	Advertisement	270378			13500.00			12G
+4320	7/19/2012	Bohra A Pof	Jodhpur	subcription	000018			400.00		profsbohra@yahoo.co.in                           f	12G
+4321	7/19/2012	Gurudev Arts Sci College	Kannur	subcription	520020			500.00			12G
+4322	7/19/2012	Midnapore College Lib	Midnapore	subcription	992367			4800.00		principal@midnaporecollege.org	12G
+4323	7/19/2012	Pharma Guidance	Nagpur 440 010	subcription	145561			900.00		pharma_guidance@hotmail.com	12G
+4324	7/19/2012	Bidhannagar College	Kolkata	subcription	65307			2700.00			12G
+4325	7/19/2012	IBH	Mumbai	subcription	184071			360.00		ibhmag@vsnl.net	12G
+4326	7/19/2012	IBH P Ltd	Mumbai	subcription	184058			735.00		ibh@vsnl.com	12G
+4327	7/19/2012	IBH	Mumbai	subcription	184082			270.00		ibh@vsnl.com	12G
+4328	7/19/2012	Hatwar R Dr	Bang	Advertisement	893112			5250.00			12G
+4329	7/20/2012										12G
+4330	7/20/2012	Alexandar	Villupuram	Reprints	378395			100.00			12G
+4331	7/20/2012	CSSP	Bangalore	subcription	271171			5145.00			12G
+4332	7/20/2012	Charan Singh Univ	Meerut	Advertisement	218997			3000.00			12G
+4333	7/20/2012	Calcutta Inst of Engg & Mgm	Kolkata	subcription	025498			4850.00			12G
+4334	7/20/2012	Umapathi	Nizambad	subcription	742769			800.00			12G
+4335	7/20/2012	Padmavati Mahila Univ	Tirupati	subcription	911323			1000.00		johnsushma@gmail.com	12G
+4336	7/20/2012	Chadalawada Ramana Engg College	Tirupati	subcription	702523			3850.00		crenggcollege.tpt@gmail.com	12G
+4337	7/20/2012	MR College for W	Vizianigaram	subcription  5044	945047			3550.00	RETD DRAFT OUTDATED		12G
+4338	7/20/2012	Priyadarshi Clg of Engg & tech	Nellore	subcription	094267			850.00			12G
+4339	7/20/2012	Montford School	Delhi	subcription	223956			500.00		montfortschooldelhi@live.com	12G
+4340	7/20/2012	JJ College of Engg & Tech	Trichy	subcription	331927			4800.00			12G
+4341	7/20/2012	Nehru Inst of Engg & tech	Coimbatore	subcription	027111			7000.00		niet@nehrucollege.com	12G
+4342	7/20/2012	JP Morgan	Florida	subcription	0000402921		$	294.00			12G
+4343	7/20/2012	West Bengal Biodiversity Board	Kolkata	subcription	781952			7500.00			12G
+4344	7/20/2012	Rajesh Pilot Rajakiya Mahavidyalaya	Dosa	Claim					HINDI		12G
+4345	7/20/2012	SALE OF PUBLICATION DURING MID YEAR MEETIN	BANGALORE	"spl pub, posters"	Cash			9220.00			12G
+4346	7/23/2012	Magdum College of Engg	Kolhapur	subcription	800314			1150.00		principal@jjmcoe.org	12G
+4347	7/23/2012	Subscription Centre	Ahmedabad	subcription	712748			5580.00			12G
+4348	7/23/2012	Sci & Eng Res Board	New Delhi	DST Expenditure	055431			350000.00			12G
+4349	7/23/2012	Sci & Engg research Board	New Delhi	DST Expenditure	055432			350000.00			12G
+4350	7/23/2012	Calicut Univ	Thrissur	subcription	151150			500.00			12G
+4351	7/23/2012	Baddi University	Solan	subcription	141663			1000.00		librarianbust@gmail.com	12G
+4352	7/23/2012	Bhavans Adarsha Vidyalaya	Ernakulam	subcription	940953			500.00		bavleakkanad@yahoo.co.in	12G
+4353	7/23/2012	Asian College of Joyurnalism	Chennai	subcription	052801			500.00		magesg.acj@gmail.com	12G
+4354	7/23/2012	Chandran	Kumta	subcription	747841			1080.00			12G
+4355	7/23/2012	Shadaksharswamy	Jayanagar	subcription	782392			400.00		ultramadurai@rediffmail.com	12G
+4356	7/23/2012	Ultra College of Engg & tech for w	Madurai	subcription	038975			500.00			12G
+4357	7/23/2012	JITS	Karimnagar	subcription	409928			1750.00			12G
+4358	7/23/2012	Sri Venkateswara Engg College	Nalgonda	subcription	183424			2300.00		svengcol@hotmail.com	12G
+4359	7/23/2012	Tea Res Assoc	Kolkata	Advertisement	009894			12000.00			12G
+4360	7/23/2012	Centre for sponsored Schemes & Projects	Bangalore	subcription  271477	630425			10395.00			12G
+4361	7/23/2012	Fort International Academy	Kolhapur	subcription	KLAM2013			700.00		fortinternationalacademy@gmail.com	12G
+4362	7/23/2012	Bharatiya Vidya Bhavan	Trivandrum	subcription	857374			1500.00		bvbtvm@yahoo.co.in	12G
+4363	7/23/2012	Toch Inst of Sci. & tech	Ernakulam	Advertisement	102676			4000.00			12G
+4364	7/23/2012	Ritesh Patel	Jodhpur	subcription	916805			500.00			12G
+4365	7/23/2012	NTRO	Delhi	subcription	567593			12000.00			12G
+4366	7/23/2012	Selmn Arts Sci College	Namakkal	subcription	899643			1750.00			12G
+4367	7/23/2012	SBI Transaction Banking Unit	Mumbai	TAX REFUND	978662			896780.00			12G
+4368	7/23/2012	Bi Bi Raza Degree College for W	Gulbarga	subcription	114329			500.00		bbrdcglb@yahoo.com	12G
+4369	7/23/2012	Syamaladevi Inst of Tech for W	Kurnool	subcription	732995			2450.00		principal.sdit@gmail.com	12G
+4370	7/23/2012	Directorate Rice Res Library	Hyderabad	subcription	500453			700.00		drrlib@drricar.org	12G
+4371	7/23/2012	ICAR	Nagpur	subcription	807518			4000.00		citrus_ngp2sancharnet.in	12G
+4372	7/23/2012	Rayalaseema Univ	Kurnool	subcription	314884			7000.00			12G
+4373	7/23/2012	Union Christan College	Barapani	subcription	401700			1850.00		roseline0306@gmail.com	12G
+4374	7/23/2012	MRITS	Secunderabad	subcription	005090			3850.00		lib_mrits@rediffmail.com	12G
+4375	7/23/2012	VIPS	Anantapur	subcription	922093			400.00		vipskdp@rediffmail.com	12G
+4376	7/23/2012	Vysa College	Salem	subcription	203357			700.00		principal@vysyacollege.org	12G
+4377	7/23/2012	KV Command Hospital	Kolkata	subcription	231021			1500.00			12G
+4378	7/23/2012	Bowmik	Cooch Behar	subcription	000126			400.00			12G
+4379	7/23/2012	CNA	New Delhi	subcription	345363			2430.00		eresources@cna.co.in	12G
+4380	7/23/2012	Srujan	Bang	subcription (JB) from SWB							12G
+4381	7/23/2012	Koundinyavajjha	Bangalore	Manuscript							12G
+4382	7/23/2012	Remore Sensing Appl Centre	Lucknow	Invoice							12G
+4383	7/23/2012	Titus Techers College	Thiruvalla								12G
+4384	7/23/2012	George Varghese	New Delhi	subcription	045010			500.00			12G
+4385	7/24/2012	Srinivas Reddy Institute of Tech.	Nizambad	subcription	280903			4500.00			12G
+4386	7/24/2012	IARC	Hyd	Advertisement	737282			3000.00			12G
+4387	7/24/2012	Ajitdada Pawar Clg of Polytechnic	Ahmednagar	Subscription	241674			750.00		ajitdadapawarpolytechnic@gmail.com	12G
+4388	7/24/2012	Raja N L Khan W College	Mednipur	subcription	MO			200.00			12G
+4389	7/24/2012	SP Mahavidyalaya	Chandrapur	subcription	526600			1100.00		spmchd@sancharnet.in	12G
+4390	7/24/2012	SKSD Mahila Kalasala PG Degree	Tanuku	subcription	319644			4800.00			12G
+4391	7/24/2012	Santanu Mukherjee	Bang	Fellowship	005179			7500.00			12G
+4392	7/25/2012	BNV Clg of Teacher Edn	Trivandrum	subcription	004709			1500.00			12G
+4393	7/25/2012	College of Engg & Tech	Kannur	subcription	602051			2350.00			12G
+4394	7/25/2012	Sri sathya Sai Vidya Vihar	Indore	Invoice						neelam@sathyasaiindore.com	12G
+4395	7/25/2012	"Nair, Life Care Ltd."	Trivandrum	Invoice						crdc@lifecarehll.com	12G
+4396	7/25/2012	Agharkar Res Inst	Pune	Advertisement	020789			9000.00			12G
+4397	7/25/2012	Suraj	Thrissur	subcription	231750			1750.00			12G
+4398	7/25/2012	Sangeeta	Goa	subcription	241385			1250.00			12G
+4399	7/25/2012	Govt P G college	Hamirpur	subcription	913686			1500.00			12G
+4400	7/25/2012	Vasavai Inst of Pharma Sci	Kadapa	subcription 922080	922154			500.00			12G
+4401	7/25/2012	Twisha	Burdwan	subcription	423968			400.00		twoshatah1991@gmail.com	12G
+4402	7/25/2012	Jaysingpur College	Kolhapur	subcription	449474			2000.00			12G
+4403	7/25/2012	Dhanalakshmi Clg of Engg	Chennai	subcription	279074			4200.00		dce405@gmail.com	12G
+4404	7/25/2012	Directorate Rapsedd Mustard Res	Bharatpur	Invoice						drmrlibrary@gmail.com	12G
+4405	7/26/2012	Shiv Jyoti Convent School	Kota	subcription	374510			2000.00			12G
+4406	7/26/2012	Sri Jayendra swamigal Silver Julbliee	Hig Sec School	Tiruvelveli	496760			2000.00			12G
+4407	7/26/2012	DAV College	Hoshiarpur	subcription   351122	351110			2850.00		davchsp@jla.vsnl.net.in	12G
+4408	7/26/2012										12G
+4409	7/27/2012	IPIRT	Bangalore	Advertisement	794186			4000.00			12G
+4410	7/27/2012	St Aloysius College	Mangalore	Advertisement	044473			4000.00			12G
+4411	7/27/2012	Oxford College of Engg	Bangalore	Advertisement	071329			7000.00			12G
+4412	7/27/2012	Manipal Institute of Tech	Manipal	Advertisement	719374			7000.00			12G
+4413	7/27/2012	Moulis Advt	Mumbai	Advertisement	651107			3400.00			12G
+4414	7/27/2012	St Francis PU College	Bangalore	subcription	431817			2000.00			12G
+4415	7/27/2012	Sine Insternational Inst	Jaipur	subcription	726337			4850.00		info@siitjaipur.org	12G
+4416	7/27/2012	Bawa Lalvani Public School	Kapurthala	subcription	769088			1500.00			12G
+4417	7/27/2012	Doon University	Dehradun	subcription	826325					ardoonuniversity@gmail.com	12G
+4418	7/27/2012	Spring Dale Senior School	Amritsar	subcription	036012			1200.00			12G
+4419	7/27/2012	MES Kalladi College	Palakkad	subcription	941886			6350.00			12G
+4420	7/27/2012	North Bengal Univ	Darjeeling	subcription	916489			7000.00		slg_library@sancharnet.in	12G
+4421	7/27/2012	Prasanna SG	Vadodara	subcription	548436			350.00			12G
+4422	7/30/2012	Creative Ads	Kolkata	Advertisement	325034			5950.00		creativeads@rediffmail.com	12G
+4423	7/30/2012	Zuban	New Delhi	Girls Guide	726336			3330.00			12G
+4424	7/30/2012	Nagaland Univ	Nagaland	subcription	097704			250.00		nagalandslide@yahoo.com	12G
+4425	7/30/2012	NRI Inst of Technology	Guntur	"subcription 324,331,375,336"	279333			3000.00		nrit.guntur@gmail.com	12G
+4426	7/30/2012	Informatics	Bang	subcription	019487			720.00		info@informindia.co.in	12G
+4427	7/30/2012	Peeyoosh Magazine World	Mehsana	subcription	000584			1530.00			12G
+4428	7/30/2012	"Jeyanti , KR college of Arts & Sci"	Kovilpatti	Manuscript jb							12G
+4429	7/30/2012	"Univ of Mysore, Byrappa"	Mysore	subcription	731339			9000.00			12G
+4430	7/30/2012	Dept of Mmarine Biology	Kochi	subcription	044981			300.00			12G
+4431	7/30/2012	SK Srivastava	Dadri	Postage Charge	207084			150.00			12G
+4432	7/30/2012	"CSIR Natl Metal Lab.,"	Jamshedpur	subcription	420840			800.00		ngg1rediffmil.com	12G
+4433	7/30/2012	State Forest Res Inst	Jabalpur	subcription	201173			300.00		sdfri@rediffmail.com	12G
+4434	7/30/2012	Ravichandran	Thanjavur	subcription	271394			500.00			12G
+4435	7/30/2012	KV	Palakkad	subcription	294963			500.00		principalkanjikode@yahoo.co.in	12G
+4436	7/30/2012	Pharma Guidance	Nagpur	subcription	141663			990.00		pharma_guidance@hotmail.com	12G
+4437	7/30/2012	Sri Pratap College	Srinagar	subcription	542120			4800.00			12G
+4438	7/30/2012	KV No 2	Pune	subcription	677319			4800.00		kvofd2@gmail.com	12G
+4439	7/30/2012	Moran College	Moranhat	subcription	107065			5000.00		"moran.college@rediffmail,com"	12G
+4440	7/30/2012	Jnan Vikas Mandal	Navi Munmbai	subcription	536507			800.00		jvm_collegeairoli@yahoo.co.in	12G
+4441	7/30/2012	SCMS School of Tech & Mgm	Cochin	subcription	515733			900.00		scms@vsnl.com	12G
+4442	7/30/2012	KV	Ludhiana	subcription	744511			500.00	HINDI	kvbaddowall@yahoo.co.in	12G
+4443	7/30/2012	RRR Govt Degree Collegen	Nagonda	"subcription  304,307"	101303			4150.00			12G
+4444	7/30/2012	Susheela Memorial Degree & PG College	Khammam	subcription	822695			4800.00		smde112.ku@gmail.com	12G
+4445	7/30/2012	Liji Nirmal	Peyad	subcription	MO			400.00			12G
+4446	7/30/2012	Nat Seed Res & Trg Centre	Varanasi	Invoice							12G
+4447	7/30/2012	CERI	Karaikudi	Advertisement (only matter							12G
+4448	7/30/2012	VVVPerumal College for w	Virudhunagar	Invoice							12G
+4449	7/30/2012	TVS Matriculation Higher Sec School	Madurai	subcription	486858			500.00		mdti_tvsimhss@sancharnet.in	12G
+4450	7/31/2012	Indiana	Ghaziabad	subcription	000478			675.00		indiana@del1.vsnl.net.in	12G
+4451	7/31/2012	CIFE	Mumbai	Invoice						contactcife.edu.in	12G
+4452	7/31/2012	Rao Pahlad singh Group of inst	Haryana	subcription	672303			800.00		rpsbalana@gmail.com	12G
+4453	7/31/2012	Akhilesh Kumar	Patna	subcription	081359			3000.00			12G
+4454	7/31/2012	Patkai Christain Clg Lib	Nagaland	subcription	173013			1500.00			12G
+4455	7/31/2012	Alpine Inst of Tech	Ujjain	subcription	067387			13800.00	"RETD NOT AN ACAD JNL, EXCESS"	principal.alpineujjain@gmail.com	12G
+4456	7/31/2012	Bal Bharati Public School	Bharuch	subcription	451551			1500.00		bbpsjh@gmail.com	12G
+4457	7/31/2012	Manipur Univ	Manipur	Advertisement	003887			5250.00			12G
+4458	7/31/2012	Total It Solutions	New Delhi	subcription	822035			4725.00		publisherorder@totalit.co.in	12G
+4459	7/31/2012	Thapar Univ	Patiala	Advertisement	505688			7000.00			12G
+4460	7/31/2012	KV	Palakkad	subcription  502	787501			2000.00			12G
+4461	7/31/2012	Sudha Devi	Wayanad	subcription	860087			1000.00		arsudhadevi@yahoo.co.in	12G
+4462	7/31/2012	Surya	Bang	subcription	184665			2700.00		sipmag@airtelmail.in	12G
+4463	7/31/2012	Surya Info	Banga	subcription	185440			450.00		sipmag@airtelmail.in	12G
+4464	7/31/2012	Surya Info	Bang	subcription	185440			450.00		sipmag@airtelmail.in	12G
+4465	7/31/2012	Bhai Kahn ingh Nabha Lib	Patiala	Invoice							12G
+4466	8/1/2012	Mareshwar College	Jalna	subcription	MO			500.00			12H
+4467	8/1/2012	Dasmarh Girls College	Muktsar	subcription	089835			1080.00			12H
+4468	8/1/2012	CSIR Madras Complex	Chennai	Invoice							12H
+4469	8/1/2012	Bhusawal Arts Sci College	Jalgaon	subcription	039577			2080.00			12H
+4470	8/1/2012	JNV	Kalaigaon	subcription	231048			2250.00		jnvdarrang@jawaharnavodayavidyalaya.in	12H
+4471	8/1/2012	Mohamed Sathak College of Arts & Sci	Chennai	subcription	343455			1500.00			12H
+4472	8/1/2012	Rao P G	Visak	subcription	BANKTRANSFER			2150.00		pgrao51@gmail.com	12H
+4473	8/1/2012	Mandal Engg College	Belgaum	Invoice						librarian@mmec.edu.in	12H
+4474	8/1/2012	Manipur Univ	Manipur	Advertisement	285264			5250.00			12H
+4475	8/1/2012	Archaeological Survey of India	Guwahati Circle	subcription	609162			4000.00			12H
+4476	8/1/2012	Biotech Industry Res Assistance	New Delhi	subcription	811192			3080.00		spathak.birap@nic.in	12H
+4477	8/1/2012	Scholars Without Borders	Kota	subscription (30)							12H
+4478	8/1/2012	Canon Detective & Security Service	Bangalore	Reg short paymnet towards payment of May/June/12							12H
+4479	8/2/2012	Govt Pg Autonomous College	Datia	subcription	428448			4850.00	HINDI		12H
+4480	8/2/2012	OM Institute of Engg & tech	Junagadh	subcription	285572			400.00		shreeomeducation@gmail.com	12H
+4481	8/2/2012	Rao P G	Visak	subcription	BANKTRANSFER			2100.00		pgrao51@gmail.com	12H
+4482	8/2/2012	Inst of Mathematical Sci	Chennai	Accommodation Charge (ackdg)							12H
+4483	8/2/2012	Protection of Plant Varieties	New Delhi	Advertisement	212458			3400.00		pammdelhi@rediffmail.com	12H
+4484	8/2/2012	GGDSD College Rajpur	Kangra	subcription	848448			4150.00		principal@ggdsdrajpur.com	12H
+4485	8/2/2012	Hopal Krishna Gokhale College	Kolhapur	subcription	001279			4250.00		gkgl_college@rediffmail.com	12H
+4486	8/2/2012	Hunsigi	Shimoga	subcription  (Balance amt)	473721			150.00			12H
+4487	8/3/2012	Adsyndicate	Manipal	subcription	827288			5950.00		Advertisement	12H
+4488	8/3/2012	Centre for Sponsored Schemes & Projects	Bang	Advertisement	271906			5145.00			12H
+4489	8/3/2012	CEPC Lab & Tech Div	Kollam	subcription	000525			400.00		cepclab@cashewindia.org	12H
+4490	8/3/2012	Ganga Chemicals	Chennai	LD (2 copies)	064866			600.00		gasngakem@vsnl.com	12H
+4491	8/3/2012	College of Food & Dairy Tech	Chennai	subcription	864675			4000.00			12H
+4492	8/3/2012	Goalpara College	Goalpara	subcription	277821			2525.00			12H
+4493	8/3/2012	Natl Res Centre	Kameng	subcription	809717			4000.00			12H
+4494	8/3/2012	Velammal Inst of Tech	Thiruvallur	subcription	485075			3850.00		info@velammalit.com	12H
+4495	8/3/2012	Rani Laxmi Bai Mahavidyalaya	Jalgon	subcription 464-465	047463			1800.00			12H
+4496	8/3/2012	Dr NGP College of Edn	Coimbatore	subcription 857-858	304856			2350.00			12H
+4497	8/3/2012	Acharya N G Ranga Agrl Univ	Hyderabad	Invoice							12H
+4498	8/3/2012	AVR & SVR College of Engg & tech	Kurnool	subcription	158553			1200.00		avrsvrcetndl@gmail.com	12H
+4499	8/3/2012	Agri Biotech Foundarion	Hyderabad	Advertisement  722	220728			7000.00		gpakkiredyy@gmail.com	12H
+4500	8/6/2012	Bengal Engg & Sci Univ	Howrah	Refreshers Course Fund	142312			282180.00			12H
+4501	8/6/2012	BGIR	Gautam Budh Nagar	subcription	346704			4000.00			12H
+4502	8/6/2012	Parasakthi Clg for w	Tirunelveli	subcription	443126			300.00			12H
+4503	8/6/2012	Andhra Loyola college	Vijayawada	subcription	084264			300.00		contactalc@gmail.com	12H
+4504	8/6/2012	Shram Public School	Kakinada	subcription	965400			500.00			12H
+4505	8/6/2012	AS Shergill Memorial College		Invoice				0.00			12H
+4506	8/6/2012	Rajaseskaran	Cuddalore	Invoice							12H
+4507	8/6/2012	Murugan	Mumbai	subcription	705042			1915.00		murugan@murugan.in	12H
+4508	8/6/2012	Sri Padmavathui School of Pharmacy	Tirupati	subcription	347203			400.00		spspprinci@yahoo.com	12H
+4509	8/6/2012	Bapat	Kolhapur	subcription	494234			1250.00			12H
+4510	8/6/2012	SV Kale	Ahmednagar	subcription	822819			650.00			12H
+4511	8/6/2012	NCAOR	Goa	Advertisement	709265			5145.00			12H
+4512	8/6/2012	Vignans Inst of Pharm Tech	Visak	subcription	551636			1120.00		viptvizag@yahoo.com	12H
+4513	8/6/2012	oaha College	Jalandhar	subcription	781325			2000.00			12H
+4514	8/6/2012	Arts com $ Sci Clg Kolhar	Ahmednagar	"subcription 461,467"	416460			800.00			12H
+4515	8/6/2012	Union Christian Trg Clg	Berhampore	subcription	104993			2300.00		principallibrary@yahoo.co.in	12H
+4516	8/6/2012	Sri Ram Dayal KKV Junior Clg	Chennai	subcription	274283			1500.00			12H
+4517	8/7/2012	Nisanth N Nair	Kanpur	Fellowship	070498			650.00			12H
+4518	8/7/2012	Kumari L A Meera Memorial Trust	Kerala	subcription	726626			70000.00			12H
+4519	8/7/2012	Assam Agrl Univ	Jorhat	subcription	312419			1000.00			12H
+4520	8/7/2012	Veera Naga Raju	Warangal	subcription	640450			4150.00			12H
+4521	8/7/2012	Shashi A	Kanpur	subcription	693719			1250.00			12H
+4522	8/7/2012	HSS	Chennai	subcription	011593			5040.00		hindsub@gmail.com	12H
+4523	8/7/2012	HSS	Chennai	subcription	011594			1440.00			12H
+4524	8/7/2012	HSS	Chennai	subcription	011595			360.00		hindsub@gmail.com	12H
+4525	8/7/2012	HSS	Chennai	subcription	011596			1035.00		hindsub@gmail.com	12H
+4526	8/7/2012	HSS	Chennai	subcription	011597			1395.00		hindsub@gmail.com	12H
+4527	8/7/2012	HSS	Chennai	subcription	011598			450.00		hindsub@gmail.com	12H
+4528	8/7/2012	Aju C Jacob	Ernakulam	subcription	096465			1330.00			12H
+4529	8/7/2012	Apex	Mumbai	subcription	062781			2745.00		info@apexsubs.com	12H
+4530	8/8/2012	Shivani A	Kanpur	subcription	460191			400.00			12H
+4531	8/8/2012	School of Biological Sci	Madurai	Advertisement	727738			5250.00			12H
+4532	8/8/2012	CERI	Karaikudi	Advertisement	315268			2940.00			12H
+4533	8/8/2012	IIFM	Bhopal	Advertisement   (for receipt)							12H
+4534	8/8/2012	Kannur Univ	Kannur	Invoice						kucl@dataone.in	12H
+4535	8/8/2012	Amity Univ	Noida	Invoice						nkishore@amity.edu	12H
+4536	8/8/2012	ICRASAT	Patancheru	Advertisement	000415			7000.00		icrisat@cgiar.org	12H
+4537	8/8/2012	SRM Univ	Chennai	Advertisement	886174			7000.00			12H
+4538	8/8/2012	SRM Univ	Chennai	Advertisement	886215			4000.00			12H
+4539	8/8/2012	PRES	Nellore	subcription	463344			400.00		srnaidu_99yahoo.com	12H
+4540	8/8/2012	JSJV Clg of Edn	Cuddalore	subcription	BANKTRANSFER			4150.00		jsjvbed@yahoo.com	12H
+4541	8/8/2012	Arts Com Sci Clg	Nandurbar	subcription	713468			4800.00			12H
+4542	8/8/2012	Kuchinda Clg	Sambalpur	subcription	266088			3650.00			12H
+4543	8/8/2012	Kaushik	Bhubaneswar	subcription 789	456788			1650.00			12H
+4544	8/8/2012	Kamp Sr Clg	Dhule	subcription	BANKTRANSFER			4800.00		kampsrcollege@yahoo.in	12H
+4545	8/9/2012	Sujit Kumar Ghosh	Pune	subcription	266767			7500.00			12H
+4546	8/9/2012	Presidency University	Kolkata	Advertisement	890805			4000.00			12H
+4547	8/9/2012	Shantha Clg of Edn	Cholapuram	subcription	MO			500.00			12H
+4548	8/9/2012	Theja Urs	Myrsore	subcription	893293			730.00			12H
+4549	8/9/2012	Anuj Bhata	Delhi	subcription    723	907718			3400.00			12H
+4550	8/9/2012	KV	Bang	subcription	631259			400.00			12H
+4551	8/9/2012	Export Bank of India	Mumbai	Red FD maturity							12H
+4552	8/9/2012	CBS Group of Inst	Delhi	subcription	230398			600.00		librariancbscollege@gmail.com	12H
+4553	8/9/2012	Joseph	Kumarcoil	subcription	906455			1330.00			12H
+4554	8/9/2012	Total	New Delhi	subcription	820736			1395.00			12H
+4555	8/9/2012	Total	New Delhi	subcription	820770			5040.00		tis@del3.vsnl.net.in	12H
+4556	8/9/2012	Ar Ann Clg of Engg	Chirala	subcription	494969			600.00		sacet1@yahoo.co.in	12H
+4557	8/9/2012	George V	New Delhi	subcription (Bal Pay)	045096			150.00			12H
+4558	8/9/2012	EXP Imp Bank	Mumbai	Ref Income Tax							12H
+4559	8/9/2012	Bastar Univ	Dharampur	Invoice							12H
+4560	8/9/2012	Univ Book Depot	Uttarkhand	Invoice						ulgbpuat@yahoo.co.in	12H
+4561	8/10/2012	Univ. of Mysore	Mysore	Advertisement	731390			5250.00			12H
+4562	8/13/2012	Kaushik Nayak	Banga	subcription	456789			1250.00		kaushik.nayak@gmail.com	12H
+4563	8/13/2012	Delhi Univ	Delhi	Advertisement	860659			3000.00			12H
+4564	8/13/2012	Mangalore Univ	Mangalore	Advertisement	422164			7000.00			12H
+4565	8/13/2012	JNCA	Bang	Advertisement	870180			9000.00			12H
+4566	8/13/2012	Ravishankar Shukla Univ	Raipur	Advertisement	795023			3000.00			12H
+4567	8/13/2012	Kasturba Med College	Mangalore	Advertisement	311486			4000.00			12H
+4568	8/13/2012	Kalyani Univ	Kalyani	Advertisement	360239			4000.00			12H
+4569	8/13/2012	Mount Seena Clg of Arts & Sci	Palghat	subcription	644977			500.00			12H
+4570	8/13/2012	E perumal Manikalai Clg of Engg	Chennai	subcription	913303			4800.00			12H
+4571	8/13/2012	Total Lib	New Delhi	subcription	820836			3870.00			12H
+4572	8/13/2012	Higginbothams	Chennai	subcription	315144			360.00		higginbothams@vsnl.com	12H
+4573	8/13/2012	Shree Venkateshwara Hi Tech Engg Clg	Mettupalayam	subcription	529555			3450.00		svhecgobi@gmail.com	12H
+4574	8/13/2012	Global Interative Malls P Ltd	Gurgaon	subcription	000819			4455.00		anubhav@magazinemall.in	12H
+4575	8/13/2012	Maharana Pratap Engg Clg	Kanpur	subcription	001681			1850.00		itsrachanagupta@gmail.com	12H
+4576	8/13/2012	Raghat Besant School	Varanasi	subcription	019461			500.00			12H
+4577	8/13/2012	Karpagam Univ	Coimbatore	Advertisement	006089			7000.00			12H
+4578	8/13/2012	KR Advertisers	New Delhi	Advertisement(matter)							12H
+4579	8/13/2012	Allahabad Univ	Allahabad	Advertisement (matter  only)							12H
+4580	8/13/2012	PRL	Ahmedabad	Advertisement (matter only)							12H
+4581	8/13/2012	Gujarat Univ	Ahmedabad	subcription	893432			1500.00			12H
+4582	8/13/2012	Pharma Guidance	Nagpur	subcription	141018			1350.00		pharma_guidance@hotmail.com	12H
+4583	8/13/2012	IBHS	Chennai	subcription	099066			900.00		ibhsachen@eth.net	12H
+4584	8/13/2012	SNVM Mahavidyalaya	Hyd	subcription	187342			500.00		snvmv@rediffmail.com	12H
+4585	8/13/2012	JNV	Muktsar	Free Specimen copies							12H
+4586	8/13/2012	Govt First Grade Clg	Kunigal	subcription	051502			1450.00			12H
+4587	8/13/2012	MIT	Pune	subcription	329374			4500.00		mit@mitpune.com	12H
+4588	8/13/2012	SRIT	Nizambad	subcription	280943			300.00			12H
+4589	8/13/2012	Nat College	Trivandrum	subcription	264001			1500.00		nc@mhtrust.com	12H
+4590	8/13/2012	Anand Insternation Clg of Engg	Jaipur	subcription	454366			1500.00		anand.educationjpr@gmail.com	12H
+4591	8/13/2012	Mr Clg for W	Vizan	subcription 047	945044			3550.00	recd after revalidation		12H
+4592	8/13/2012	CNA	New Delhi	subcription	360523			630.00		subs@cna.co.in	12H
+4593	8/13/2012	RR Lahoti ci College	Amravati	subcription	537677			500.00	retd DD not in favour	shivaji020110@shivajiedusocamt.org	12H
+4594	8/13/2012	Sarvajanik Clg of Engg & Tech	Surat	subcription	059902			1250.00		info@scet.ac.in	12H
+4595	8/13/2012	Ministry of earth Sci	New Delhi	subcription	878358			3000.00			12H
+4596	8/13/2012	Rakesh A	New delhi	Invoice	Cash			1250.00			12H
+4597	8/13/2012	Surya	Bang	subcription	185523			900.00		sipmag@airtelmail.in	12H
+4598	8/14/2012	GM Vedak College of Science	Raigad	Invoice							12H
+4599	8/14/2012	"Central Univ, of kerala"	Kasaragod	subcription	130311			50000.00			12H
+4600	8/14/2012	Rajasekar	Trivandrum	subcription	593026			1100.00		v_rajasekar@vssc.gov.in	12H
+4601	8/14/2012	AD & PG College	Hyderabad	subcription	012621			3750.00		ramchanderm@adc.edu.in	12H
+4602	8/14/2012	Blackdale Public School	Aligarh	subcription	BANKTRANSFER			500.00		bps_nfk@yahoo.co.in	12H
+4603	8/14/2012	Dagla	Jodhpur	subcription	MO			200.00			12H
+4604	8/14/2012	SRF 2012 (267 records)		subcription	SRF2012	8/14/2012					12H
+4605	8/17/2012	Abraham	Calicut	subcription	821664			1330.00			12H
+4606	8/17/2012	Mrinalini uranik	Pune	subcription	Cash			400.00		puranik.mrinalini@gmail.com	12H
+4607	8/17/2012	PVP College of Arts Sci & Com	Ahmednagar	subcription	411686			1250.00		pvpc@pravara.org.in	12H
+4608	8/17/2012	IAE	Hyd	subcription	005224			4800.00		iare_hyderabad@yahoo.co.in	12H
+4609	8/17/2012	Sunil Magazine Services	Pune	subcription	388330			540.00		sunilmagazine@rediffmail.com	12H
+4610	8/17/2012	Siddharth Clg	Jalna	subcription	312531			500.00		libsiddharth@gmail.com	12H
+4611	8/17/2012	Govt First Grade Clg	Mysore	subcription	911613			330.00			12H
+4612	8/17/2012	Karmayogi Polytechnic Clg	Solapur	subcription	930587			700.00		kpcmailbox@rediffmail.com	12H
+4613	8/17/2012	Infotrack	New delhi	subcription	167312			270.00	retd chk outdated	info@infotrackls.com	12H
+4614	8/17/2012	Atil B	Jalandhar	subcription	425783			1520.00			12H
+4615	8/17/2012	Sudha	Wayanad	subcription	860269			250.00			12H
+4616	8/17/2012	Ramakrishna Bajaj Clg of Agrl	Wardha	subcription	001778			500.00			12H
+4617	8/17/2012	MGM College	Udupi	subcription	278679			3450.00			12H
+4618	8/17/2012	Inst of Engg & tech	Kakinada	subcription	670046			750.00	retd not in favour	swrnandhra_institute@rediffmail.com	12H
+4619	8/17/2012	KBC of Education	Kumta	subcription	930996			1850.00			12H
+4620	8/17/2012	Kalyani Univ	Kalyani	subcription	031837			1550.00		assistant_librarian@klyuniv.ac.in	12H
+4621	8/17/2012	Nehru Bal mandir Sec School	Jhunjhnu	subcription	BANKTRANSFER			1500.00		nbm_chirawa@yahoo.com	12H
+4622	8/17/2012	Reader Point	Bang	subcription	161126			3600.00			12H
+4623	8/17/2012	Nehru Bal Mandir Sec School	Raj	subcription	BANKTRANSFER			1500.00		nbm_chirawa@yahoo.com	12H
+4624	8/17/2012	IBHS Agency	Chennai	subcription	099109			4230.00		ibhsachen@eth.net	12H
+4625	8/17/2012	Natl centre for Biol Sci	Bangalore	Advertisement	631359			13500.00			12H
+4626	8/21/2012	Sci & Eng  Res Board	New delhi	Advertisement	056482			7000.00			12H
+4627	8/21/2012	Archana Gupata	Bareilly	subcription	CASH			1650.00			12H
+4628	8/21/2012	Alka Misra	Lucknow	subcription	CASH			400.00		alkamisra99@gmail.com	12H
+4629	8/21/2012	Soma V R	Hyderabad	subcription	CASH			400.00			12H
+4630	8/21/2012	Jaganmohan	Pune	subcription	266832			7500.00			12H
+4631	8/21/2012	Univ of Chicago	Chicago	"Royality (no cheque, only charges)"							12H
+4632	8/21/2012	Nat Inst of Rock Nechanics	KGF	subcription	BANK TRANSFER			3306.00			12H
+4633	8/21/2012	Enegy & Resources Inst	New Delhi	Advertisement	946348			22000.00			12H
+4634	8/21/2012	Iladevi Cataract & Intraocular Lens Centre	Ahmedabad	Advertisement	926986			7000.00			12H
+4635	8/21/2012	Institute for Intensive Research	Kottayam	Advertisement	976811			9000.00			12H
+4636	8/21/2012	RIA	Navi Mumbai	subcription	011069			2475.00		rhino1@vsnl.com	12H
+4637	8/21/2012	SRM Univ	Kancheepuram	subcription	887159			7000.00			12H
+4638	8/21/2012	Dr JJ Magdum Polytechnic	Jaysingpur	subcription	030073			1500.00			12H
+4639	8/21/2012	Maharaja Arts Sci Clg	Coimbatore	subcription	187332			2300.00		maharajacas@gmail.com	12H
+4640	8/21/2012	SVD Govt Degree Clg for W	Nidadavole	subcription	482073			600.00			12H
+4641	8/21/2012	Timely Mgm	Mumbai	subcription	672904			2475.00		tmcs@indiatimes.com	12H
+4642	8/21/2012	Shri Shiv Chhatrapati Clg	Pune	subcription	337769			1500.00			12H
+4643	8/21/2012	Ratha	Lucknow	subcription	654994			500.00			12H
+4644	8/21/2012	Indu Saxena	Lucknow	subcription	654995			500.00			12H
+4645	8/21/2012	Rahul Kumar	Lucknow	subcription	654993			500.00			12H
+4646	8/21/2012	Archana	Lucknow	subcription	654996			500.00			12H
+4647	8/21/2012	Mere Mohan	Trivandrum	subcription	084492			1830.00			12H
+4648	8/21/2012	EPTRI	Hyderabad	Advertisement	188648			4000.00			12H
+4649	8/21/2012	KV Animal Sci Univ	Wayanand	Advertisement	192052			7000.00			12H
+4650	8/21/2012	St Joseph Engg Clg	Mangalore	Advertisement	429191			7000.00			12H
+4651	8/21/2012	AV Kanthamma College for W	Hassan	subcription	019859			2000.00			12H
+4652	8/21/2012	CBI Tech	Anantapur	subcription	217542			1250.00			12H
+4653	8/21/2012	Sawarkar mahavidyalaya	Beed	Subscription	BANKTRANSFER			9850.00			12H
+4654	8/21/2012	KR College of Tech	Trichy	subcription	048132			4800.00			12H
+4655	8/21/2012	Sahayaraj	Tirunelveli	subcription	990395			3000.00			12H
+4656	8/22/2012	Assam Agrl Univ	Jorhat	subcription	312645			300.00			12H
+4657	8/22/2012	CTRI	Trivandrum	subcription	401374			3000.00		ctcritvm@yahoo.com	12H
+4658	8/22/2012	GSI	Jabalpur	Invoice							12H
+4659	8/22/2012	Remote Sensing Appl centre	Lucknow	Invoice							12H
+4660	8/22/2012	KVPY	Bang	subcription (357)	776729			89250.00			12H
+4661	8/23/2012	CBK Basaveshwar Sci Com Clg	Akalot	subcription	845638			500.00			12H
+4662	8/23/2012	Loyola College	Raichur	subcription	007598			1000.00			12H
+4663	8/23/2012	SSIET	Nuzvid	Invoice							12H
+4664	8/23/2012	INSA	New Delhi	Advertisement (matter only)							12H
+4665	8/23/2012	INSA	New Delhi	Advertisement (Matter only)							12H
+4666	8/23/2012	Nabira Mahavidyalaya	Katol	subcription	605676			600.00			12H
+4667	8/23/2012	KV	Dharmapuri	subcription	396602			500.00		kvdpi@yahoo.co.in	12H
+4668	8/23/2012										12H
+4669	8/23/2012										12H
+4670	8/23/2012	AUKBC Res Centre	Chennai	Advertisement	232541			4000.00			12H
+4671	8/24/2012	Magazine world	Anand	subscription	004972	8/13/2012		1575.00		magazineworld@gmail.com	12H
+4672	8/24/2012	Rajiv Gandhi College of Arts Commerce & Science	Navi Mumbai 400073	subscription	856757	8/17/2012		7000.00		rajivgandhicollege2002@gmail.com	12H
+4673	8/24/2012	St. Joseph's College	Bangalore	Refund of unspend balance of workshop	539668	8/21/2012		42395.00		admin@sjc.ac.in	12H
+4674	8/24/2012	Veer Narmad South Gujarat University	Surat	Subscription	426602	7/26/2012		5950.00		lib@sgu.ernet.in	12H
+4675	8/24/2012	Srinivas College of Pharmacy	Mangalore	Subscription	507177	8/21/2012		250.00		info@srinivasgroup.com	12H
+4676	8/24/2012	Geetika Gupta	"Dist Mohali, Punjab"	Subscription	262736	8/12/2012		200.00			12H
+4677	8/24/2012	Biotech Consortium India Limited	New Delhi	Advertisement	805835	8/23/2012		12000.00		info.bcil@nic.in	12H
+4678	8/24/2012	C S International School	"Gobindgarh, Punjab"	Subscription	066296	8/20/2012		2300.00		csisch@gmail.com	12H
+4679	8/27/2012	BHU	Varnasi	Advertisement  (matter only)							12H
+4680	8/27/2012	Megha	Bang	subcription	CASH			400.00			12H
+4681	8/27/2012	Jayadevan K S	Ernakulam	subcription	329284			400.00			12H
+4682	8/27/2012	Dhote Bandhu Sci Clg	Gondia	subcription	259098			4200.00		anjannaidu@indiatimes.com	12H
+4683	8/27/2012	KV	Ahmedabad	subcription	578037			1250.00			12H
+4684	8/27/2012	Sanmati Hr Sec School	Indore	subcription	000837			2350.00		sanmatischool@gmail.com	12H
+4685	8/27/2012	College of Horticulture	Chikmagalur	subcription	430026			4000.00		cohmudigerelib@gmail.com	12H
+4686	8/27/2012	Christ College	Rajkot	subcription	484511			3500.00		info@christcollegerajkot.org	12H
+4687	8/27/2012	GSI	Mangalore	subcription	810673			4900.00			12H
+4688	8/27/2012	MS Univ of Baorda	Baroda	subcription	BANKTRANSFER			50.00			12H
+4689	8/27/2012	Malla Reddy Inst of Technology	Secunderabad	subcription	035723			2750.00			12H
+4690	8/27/2012	CSSRI	Bharuch	subcription	67544			4000.00		salinityguj@gmail.com	12H
+4691	8/27/2012	NCL	Pune	subcription	971903			9000.00			12H
+4692	8/27/2012	College of Professional Edn	Meerut	subcription	148117			400.00		cpe_mrt@rediffmail.com	12H
+4693	8/27/2012	Adarsh Khanna	Pune	subcription	004192			500.00			12H
+4694	8/27/2012	KE Society	Sangli	subcription	564060			400.00		director@ritindia.edu	12H
+4695	8/27/2012	Bohra	Jodpur	subcription	000020			200.00			12H
+4696	8/27/2012	National Public school	Indore	subcription	553135			500.00		npsindore1@rediffmail.com	12H
+4697	8/27/2012	SC Jain College	Minjur	subcription	714348			500.00		principal@scpjaincollege.com	12H
+4698	8/28/2012	Saheed Rajguru Clg of Appl Sci for W	New Delhi	subcription	938251			2700.00	HINDI		12H
+4699	8/28/2012	Total IT	New delhi	subcription	822254			6300.00		publisherorder@totalit.co.in	12H
+4700	8/28/2012	South Asia Distributors & Publ	New Delhi	subcription	031584			1395.00		sadpindia@yahoo.co.in	12H
+4701	8/28/2012	Dwarkdas Sanghvi College of Engg	Mumbai	subcription	392195			900.00		info@djscoe.org	12H
+4702	8/28/2012	SDM College of Edn	Haryana	subcription	001372			400.00	retd dd not in fa our		12H
+4703	8/28/2012	CPRS	Patna	Invoice							12H
+4704	8/28/2012	Sri Ranganathar Inst of Engg & tech	Coimbatore	Invoice							12H
+4705	8/29/2012	Kalyan PG College	Bhilainagar	subcription	653749			5250.00			12H
+4706	8/29/2012	Arts Com Sci College	Pune	subcription	986604			2000.00			12H
+4707	8/29/2012	Vikas PU College	Mangalore	subcription	591445			1100.00			12H
+4708	8/29/2012	Royal New Subs Agency	Lucknow	subcription	163790			720.00			12H
+4709	8/29/2012	IPBPL	Kolkata	Advertisement	166455			5950.00			12H
+4710	8/29/2012	Sumbiosis Int Univ	Pune	Inst Subs	136132			100000.00			12H
+4711	8/29/2012	KN Bishe Arts Commerce College	Solapur	subcription	ONLINE TRANFER			2350.00			12H
+4712	8/30/2012	Doon International School	Dehradun	subcription	829721			2000.00		dnints@vsnl.com	12H
+4713	8/30/2012	ICHR	Bang	Invoice						ichrsrc@rediffmail.com	12H
+4714	8/30/2012	IIT	Kharagpur	Advertisement	076832			5100.00			12H
+4715	8/30/2012	Univ of Mysore	Mysore	subcription	708005			9000.00		kbyrappa@gmail.com	12H
+4716	8/30/2012	KV	Bangalore	subcription	631456			100.00			12H
+4717	8/30/2012	RPA First Grade College	Bangalore	subcription	361343			900.00			12H
+4718	8/30/2012	"Sakunthala, BRNS Project"	Coimbatore	Advertisement	634579			4000.00			12H
+4719	8/30/2012	JE Society	Nelgaum	subcription	362738			1500.00			12H
+4720	8/30/2012	Dr D Y Patil Biotech	Pune	Advertisement	003617			7000.00			12H
+4721	8/30/2012	RDKVV Jr College	Chennai	subcription	524117			500.00			12H
+4722	8/31/2012	CPRI	Meerut	Invoice							12H
+4723	8/31/2012	Teri	New Delhi	subcription	946407			4000.00		mailbox@teri.res.in	12H
+4724	8/31/2012	Arts Sci & Com College	Ahmagnagar	subcription 317-321	230172			3250.00			12H
+4725	8/31/2012	MLR Inst of Tech	Hyd	subcription	005240			1500.00			12H
+4726	8/31/2012	KV	Baroda	subcription	294584			1500.00			12H
+4727	8/31/2012	MIA	Chennai	subcription	594613			360.00			12H
+4728	8/31/2012	PG Dept of Lib Science	Gudivada	subcription 68	242878			1900.00		anre_pglibrary@yahoo.co.in	12H
+4729	8/31/2012	Informatics	Bang	subcription	019533			2205.00		info@informindia.co.in	12H
+4730	8/31/2012	Sipak S B	Pune	subcription	609940			700.00			12H
+4731	8/31/2012	LRSDA Sr Sec Model school	Abohar	subcription	853709			4800.00		darabh@gmail.com	12H
+4732	8/31/2012	NSNM Clg of Edn	Jammu	subcription	090603			1500.00		parneeshmahajan_nsm@yahoo.co.in	12H
+4733	8/31/2012	Indira Gandhi Manav Sangralaya	Bhopal	subcription	468249			4500.00	HINDI		12H
+4734	8/31/2012	KIIT Internation School	Bhubaneswar	subcription	259194			500.00			12H
+4735	8/31/2012	CWPRS	Pune	Invoice						wapis_cwprs@hotmail.com	12H
+4736	8/31/2012	Remote Sensing Apll Centre	Lucknow	Invoice						madhavi@rsacup.org.in	12H
+4737	8/31/2012	M L sukhadia Univ	Udaipur	Invoice						hansahinger@yahoo.com	12H
+4738	8/31/2012	Takshsila Public school	Hyderabad	subcription	BANKTRANSFER			2000.00		takshasilapublicschool@gmail.com	12H
+4739	8/31/2012	MK Univ	Madurai	Advertisement	727931			5250.00			12H
+4740	8/31/2012	"Lib & Infm Officer, CSRTI"	Mysore	Invoice						library@csrtimys.res.in	12H
+4741	9/3/2012	Ginson P Joseph	Kottayam	subcription	CASH			500.00		ginsonpj@gmail.com	12I
+4742	9/3/2012	Indiar Dey	Assam	subcription	CASH			400.00		indiradey@rediffmail.com	12I
+4743	9/3/2012	"Univ of Calcutta, Dept. of Bioinformatics"	Kolkata	Advertisement	347800			6000.00			12I
+4744	9/3/2012	"Univ of Hyd, School of Chemistry"	Hyd	Advertisement	817789			7000.00			12I
+4745	9/3/2012	Central Univ of TN	Thiruvarur	subcription	331191			3300.00	HINDI		12I
+4746	9/3/2012	Tripura English Medium School	Rajahmundry	subcription	118932			1500.00		tripura.em.school@gmail.com	12I
+4747	9/3/2012	Informatics	Bangalore	subcription	019579			360.00		info@informindia.co.in	12I
+4748	9/3/2012	Subs Centre	Ahmedabad	subcription	721861			7785.00		subscriptioncentre37@yahoo.com	12I
+4749	9/3/2012	Shri Mahaveer Eng Medium School	Belgaum	subcription	208606			2000.00			12I
+4750	9/3/2012	Little Rock Indian School	Udupi	subcription	277467			4000.00			12I
+4751	9/3/2012	ADJ Dharmambal Polytechnic Clg	Nagapattinam	subcription	578857			300.00		adjdwpt@yahoo.com	12I
+4752	9/3/2012	Nikhl Inst of Engg & Mgm	Mathura	subcription	013936			400.00			12I
+4753	9/3/2012	Inana Ganga Central School	Sullia	subcription	387141			2000.00		xiitell@gmail.xom	12I
+4754	9/3/2012	Cambeidge Sr Seconday School	Buxar	request for speciment copies							12I
+4755	9/3/2012	Varda College	Sikar	subcription	001368			900.00		varda_nkt@yahoo.co.in	12I
+4756	9/3/2012	Monarch Magazine Distrb P Ltd	Baroda	subcription	857024			360.00		mmdpltd@indiatimes.com	12I
+4757	9/3/2012	Maharanis Sci Clg for W	Bangalore	subcription	682446			2250.00			12I
+4758	9/3/2012	Karnataka Univ	Dharwad	Advertisement	120683			5250.00			12I
+4759	9/3/2012	Sreepathy Inst of Mgm & Tech	Palakkad	subcription	096360			3150.00		sreepathytrust@gmail.com	12I
+4760	9/3/2012	Delhi Public School	Vijayawada	subcription	798465			3450.00		dpsvijayawada@gmail.com	12I
+4761	9/3/2012	Total Library solutions	New Delhi	subcription	820896			2115.00		tis@del3.vsnl.net.in	12I
+4762	9/3/2012	TIFR	Mumbai	Advertisement	013157			22500.00			12I
+4763	9/3/2012	Navkar Magazine Agency	Ahmedabad	subcription	000831			2430.00			12I
+4764	9/3/2012	Manipur Univ	Imphal	Advertisement	285938			3000.00			12I
+4765	9/4/2012	Jivraj Mehta Inst of Tech	Anand	subcription	044674			400.00			12I
+4766	9/4/2012	Infotrack	New Delhi	subcription	187643			3600.00		info2infotrackls.com	12I
+4767	9/4/2012	Narula Inst of tech	Kolkata	subcription	013542			500.00		info@nit.ac.in	12I
+4768	9/4/2012	Piyush Kumar	Kota	subcription	344585			400.00			12I
+4769	9/4/2012	SDMRI	Tuticorin	Advertisement	225418			4000.00			12I
+4770	9/4/2012	SR International Inst of tech	RR Dist	subcription	823550			750.00			12I
+4771	9/4/2012	Long View Public School	Nainital	subcription	436642			2000.00		lpsnainital@gmail.com	12I
+4772	9/4/2012	Dept. of Chemistry	Trichy	Advertisement	823421			4000.00			12I
+4773	9/4/2012	Forensic Lab	Sagar	Invoice							12I
+4774	9/4/2012	Assam Univ	Silchar	Invoice							12I
+4775	9/4/2012	Gandhigram Rural Inst of deemed Univ	Dindigul	Advertisement (reg bill)							12I
+4776	9/4/2012	Mohan Kumar Tikare	Koppal	subcription	CASH			500.00			12I
+4777	9/5/2012	Refresher Course on Physics	Bangalore	subcription (19)							12I
+4778	9/5/2012	Adhyapan School	Madurai	subcription	484257			2000.00		adhyapanaschool@gmail.com	12I
+4779	9/5/2012	Hinggin	Chennai	subcription	327459			360.00		higginbothams.co.in	12I
+4780	9/5/2012	Higginbothams	Chennai	subcription	327166			9765.00			12I
+4781	9/5/2012	Human Resources Dev	Mumbai	subcription	654303			500.00			12I
+4782	9/5/2012	KK Wagh College of Agrl Biotech	Nashik	subcription	818783			1500.00		principalkkw@gmail.com	12I
+4783	9/5/2012	Arts Com Sci Clg	mravati	subcription	570982			1100.00		ascc1@rediffmail.com	12I
+4784	9/5/2012	Vidyabharati College	Gadchiroli	subcription	737195			4800.00		abhoyar321@gmail.com	12I
+4785	9/5/2012	New Arts Comm Sci Clg	Wardha	subcription	379558			4150.00		info@rgbgi.org	12I
+4786	9/5/2012	JNV	Jharkhand	subcription	984708			1000.00	HINDI		12I
+4787	9/6/2012	"CEAS, IISC"	Bangalore	Advertisement	853131			5250.00			12I
+4788	9/6/2012	Ganeshaiah	Bang	Advertisement	193828			7000.00			12I
+4789	9/6/2012	JNCA	Bangalore	Advertisement	494384			5198.00			12I
+4790	9/6/2012	BSIP	Lucknow	Advertisement (matter only)							12I
+4791	9/6/2012	BHU	Varnasi	Advertisement matter only)							12I
+4792	9/6/2012	Rainbow jnl Service	Kolkata	subcription	458998			4635.00		rainbowjournal@yahoo.co.in	12I
+4793	9/6/2012	Sri Sankara Sr Sec School	Chennai	subcription	902265			1500.00			12I
+4794	9/6/2012	Angappa Edn Trust	Coimbatore	subcription	848257			500.00			12I
+4795	9/6/2012	Rajghat Besant School	Varanasi	subcription	077552			400.00		kvivns@rediffmail.com	12I
+4796	9/6/2012	JNCA	Bangalore	Advertisement	870238			31500.00			12I
+4797	9/6/2012	Moulis Adv	Mumbai	Advertisement	444522			3400.00			12I
+4798	9/6/2012	Major Bihari Lal Mem Sr sec School	Gurgaon	subcription	092026			1200.00		pri.mblmsss200@gmail.com	12I
+4799	9/6/2012	Prime Mag Subs	Delhi	subcription	625542			3600.00			12I
+4800	9/6/2012	Administrative Mgm College	Bangalore	subcription	903391			2700.00		amclib@gmail.com	12I
+4801	9/7/2012	Srinivas School of Engg	Mangalore	Advertisement	507194			7000.00			12I
+4802	9/7/2012	Reg Met centre	Mumbai	subcription	025343			4400.00			12I
+4803	9/7/2012	charya Polytechnic	Bang	subcription	017224			400.00		ap@acharya.ac.in	12I
+4804	9/7/2012	Sarvottam	Dharwad	subcription	512931			1000.00			12I
+4805	9/7/2012	Vigan Inst of Tech & Sci	Nalgonda	subcription	425867			750.00		info@vignanits.ac.in	12I
+4806	9/7/2012	Maharana Pratap Clg of Pharmacy	Kanpur	subcription	001708			800.00		nathmpcp1980@gmail.com	12I
+4807	9/7/2012	Erode Builder Edn Trust Group of Inst	Kangayam	subcription	015516			400.00		info@ebet.edu.in	12I
+4808	9/7/2012	Chavan	Solapur	subcription	853355			500.00			12I
+4809	9/7/2012	Clg of Horticulte	Bagalkot	Invoice						cohbagalkotlib@gmail.com	12I
+4810	9/7/2012	Mahaveer Public School	Jaipur	subcription	002329			900.00			12I
+4811	9/10/2012	Coir Board	Bangalore	Advertisement (only matter)							12I
+4812	9/11/2012	Naskar	Bangalore	subcription	Cash			500.00		abhinabanaskar@gmail.com	12I
+4813	9/11/2012	BSIP	Lucknow	Advertisement	509606			5250.00			12I
+4814	9/11/2012	Univ of Madras	Chennai	Advertisement	217888			3000.00			12I
+4815	9/11/2012	Soyal Society	UK	Royality							12I
+4816	9/11/2012	Kovai Kalaimagal Clg of Arts & sci	Coimbatore	subcription	055104			500.00		kkcas@kovaikalaimagal.org	12I
+4817	9/11/2012	MG Centenary AC Sci Clg	Siddapur	subcription	277559			2000.00			12I
+4818	9/11/2012	Adarsh Khanna		subcription (bal payment)	BANKTRANSFER			150.00		adarsh_khanna@infosys.com	12I
+4819	9/11/2012	Muralidhar MS		subcription	783303			400.00	SCB BANK TRANSFER		12I
+4820	9/11/2012	Gujarat Inst  Tech	Bhuj	Advertisement	131200			12000.00			12I
+4821	9/11/2012	Tinsukia Commerce College	Assam	subcription	349266			500.00		principaltcc@yahoo.co.in	12I
+4822	9/11/2012	Shre Ram Mulkh Clg of Edn	Panchkula	subcription	009195			500.00	not in favour		12I
+4823	9/11/2012	Northern Int School	Hisar	subcription	926479			500.00		principal@northerninternational.org	12I
+4824	9/11/2012	Lakshmi	Trichy	subcription	807188			1000.00			12I
+4825	9/11/2012	St Crecorios Sr Sec School	Udaipur	subcription	866085			500.00			12I
+4826	9/11/2012	Surya	Bang	subcription	187058			450.00			12I
+4827	9/11/2012	Nandi school	Belary	subcription	BANKTRANSFER			4800.00			12I
+4828	9/11/2012	Nat Public School	Haryana	subcription	220636			4800.00			12I
+4829	9/11/2012	KV	Aurangabad	subcription	267588			1500.00		mailkvaurangabad@yahoomail.com	12I
+4830	9/11/2012	TERI Tech Edn Res Intg Inst	Kurukshetra	subcription	459395			1500.00		librarian@terii.in	12I
+4831	9/11/2012	ANG Ranga Agrl Univ	Hyd	subcription	210156			400.00			12I
+4832	9/11/2012	St Bendicta School	Bang	subcription	153479			2000.00		stbenedictchseschool@gmail.com	12I
+4833	9/11/2012	Bahauddin Sci College	Junagadh	subcription  56-59	9552555			10500.00			12I
+4834	9/11/2012	Pullaiah Clg of Eng	Kurnool	subcription	379018			750.00		library@gpcet.ac.in	12I
+4835	9/11/2012	Sree narayan Clg	Chengannur	subcription	649035			4800.00		sncchenganner@gmail.com	12I
+4836	9/11/2012	Dasmesh Girls lg	Muktsar	subcription	224087			1000.00			12I
+4837	9/11/2012	"Pioneer Kumarswamy Clg, Dept of Zool"	Kanyakumari	subcription	183149			1500.00			12I
+4838	9/11/2012	Kutir PG college	Jaunpur	subcription	000602			1900.00			12I
+4839	9/11/2012	IBH	Mumbai	subcription	184201			360.00			12I
+4840	9/11/2012	ISTK	Yamunagar	subcription	200160			3300.00		info@istk.org	12I
+4841	9/11/2012	Indira Inst of tech	Nanded	subcription  469-471	509468			2600.00	not in favour	indirapply@gmail.com	12I
+4842	9/11/2012	Rairangpur Clege	Orissa	subcription	017223			1450.00			12I
+4843	9/11/2012	Sarvodaya Clg of Edn	Virajpet	subcription	368074			9850.00			12I
+4844	9/11/2012	CPRS	Jalandhar	Invoice							12I
+4845	9/11/2012	Nat Sci foundation	Sri Lanka	Invoice							12I
+4846	9/11/2012	SSIET	Nuzvid	Invoice							12I
+4847	9/11/2012	Santhan Dhar Mahavidyalaya	Muzaffarnagar	HINDI							12I
+4848	9/11/2012	Aerials Dev Res & organ	Agra	Claim							12I
+4849	9/12/2012	Shri Alpesh N Patel PG Institute	Anand	subcription	071865			5600.00		anpatelpginstitute@gmail.com	12I
+4850	9/12/2012	Vishnu Engg Clg for W	Kakinada	subcription	910042			2250.00		info@svecw.edu.in	12I
+4851	9/12/2012	Shaskiya Mahila Santhoksh Mahavidyalaya	Raipur	subcription	211284			1400.00	HINDI		12I
+4852	9/12/2012	Carmel College	Mala	subcription	784783			8000.00		camelcollege@rediffmail.com	12I
+4853	9/12/2012	Pharma Guidance	Nagpur	subcription	141031			1980.00			12I
+4854	9/12/2012	Jnanadeepa School	Shimoga	subcription	340464			2400.00		jds2002@sify.com	12I
+4855	9/12/2012	Goel	New Delhi	subcription	121577			100.00			12I
+4856	9/12/2012	KLE Society	Belgaum	"subcription 901,899"	831900			2200.00			12I
+4857	9/12/2012	Acharya N G Ranga Univ	Hyd	Invoice							12I
+4858	9/12/2012	Govt. Higher Secondary School	Tawang	claim							12I
+4859	9/12/2012	Directorate of Groundnut Research	Junagadh	Invoice					HINDI		12I
+4860	9/12/2012	IARI Library	New Delhi	Invoice							12I
+4861	9/13/2012	Vanlalnghaka	Mizoram	subcription	364528			1330.00			12I
+4862	9/13/2012	Krishnamurthy N R	Chikkaballapur	subcription	CASH			400.00			12I
+4863	9/13/2012	Mohanan	Kozhikode	subcription	MO			400.00			12I
+4864	9/13/2012	RIA	Mumbai	subcription	011288			720.00		rhino1@vsnl.com	12I
+4865	9/13/2012	Shri Shivaji Clg	Akola	subcription	208060			4800.00			12I
+4866	9/13/2012	Sub No 6564	Jaipur	subcription	723412			470.00	HINDi		12I
+4867	9/13/2012	Surya Engg Clg	Erode	subcription	931363			2650.00		secerode@gmail.com	12I
+4868	9/13/2012	Arts Sci Clg	Wardha	subcription	947442			400.00		ankushwakode@gmail.com	12I
+4869	9/13/2012	Don Bosco School	New delhi	subcription	206629			4800.00			12I
+4870	9/13/2012	KL Arys DAV Public School	Hisar	subcription	974944			500.00			12I
+4871	9/13/2012	Dinakar Nat Polytechnic	Shimoga	Invoice						dsdnp502@gmail.com	12I
+4872	9/13/2012	High Energy Mat Res Lab	Pune	Invoice					HINDI		12I
+4873	9/13/2012	Gnyan Kendra	Gospur	Invoice							12I
+4874	9/13/2012	III	New Delhi	Invoice							12I
+4875	9/13/2012	PD Patel Inst of Appl Sci	Changa	Advertisement	829484			7000.00			12I
+4876	9/13/2012	Nat Inst of Adv Studies	Bang	Advertisement	638357			5250.00			12I
+4877	9/13/2012	Parulekar Library	Kolhapur	subcription  5 MO	MO			3100.00			12I
+4878	9/14/2012	Cochin Univ of Sci & tech	Cochin	Invoice							12I
+4879	9/14/2012	Himachal Pradesh Univ	Shimla	Invoice							12I
+4880	9/14/2012	SVIT	Vasad	Invoice							12I
+4881	9/14/2012	CWPRS	Pune	Invoice							12I
+4882	9/14/2012	Anantsadvidya Bed Clg	Arsikere	subcription	335015			1100.00			12I
+4883	9/14/2012	Clg of Horticulture and Forestry	Pasighat	subcription	439653			1800.00			12I
+4884	9/14/2012	Pratul M R	Junagudh	subcription	565402			400.00			12I
+4885	9/14/2012	Vidya Mandir Public School	Faridabad	subcription	090175			500.00			12I
+4886	9/14/2012	DRM Sci Clg	Davangagere	subcription	257120			1500.00		drmscollege@yahoo.com.in	12I
+4887	9/14/2012	Bangur Nagar Arts Sci & Com Clg	Dandeli	subcription	706529			500.00		principalbndc@yahoo.com	12I
+4888	9/14/2012	Kuvempu Univ	Shimoga	Invoice							12I
+4889	9/17/2012	Ajith K M	Surathkal	Refresher Course for 2012	820010			62627.00			12I
+4890	9/17/2012	"NIT, Rourkela"	odisha	Advertisement	790206			3000.00			12I
+4891	9/17/2012	Univ Press India Ltyd	Hyd	Royality   (reg statement)							12I
+4892	9/17/2012	Sree Vivekananda Clg of Techer Edn	Malappuram	subcription						sreevivekanandacte@yahoo.co.in	12I
+4893	9/17/2012	Thapar Univ	Patiala	Advertisement	431866			4000.00			12I
+4894	9/17/2012	BARC	Mumbai	Advertisement	654783			7000.00			12I
+4895	9/17/2012	Mohanlal Sukhadia Univ	Udaipur	Advertisement	008593			3000.00			12I
+4896	9/17/2012	Centre for Sci & Environment	New delhi	Advertisement	802736			7000.00			12I
+4897	9/17/2012	Bharti Vidyapeeths Clg of Pharmacy	Navi Mumbai	subcription	820954			4000.00			12I
+4898	9/17/2012	Agharkar res Inst	Pune	subcription	061648			5250.00			12I
+4899	9/17/2012	Mizoram Univ	Mizoram	Advertisement	578475			5250.00			12I
+4900	9/17/2012										12I
