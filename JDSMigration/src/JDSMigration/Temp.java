@@ -57,7 +57,7 @@ public class Temp extends MigrationBase {
         pst_insert = this.conn.prepareStatement(sql_insert);
 
         //conn.setAutoCommit(false);
-        
+
         // truncate the old data
         //this.truncateTable("Subscriber");
 
@@ -90,7 +90,7 @@ public class Temp extends MigrationBase {
             String cityAndPin = datacolumns[11];
             String country = datacolumns[13];
             String email = datacolumns[55];
-            
+
             //skip foreign suscribers
             /*if(subscribercode.equalsIgnoreCase("FP") || subscribercode.equalsIgnoreCase("FI")){
                 logger.debug("Skipping foreign subscriber:" + subscriberNumber);
@@ -103,7 +103,7 @@ public class Temp extends MigrationBase {
             }
 
             int pin;
-            pin = this.getPinCode(datacolumns[14].replaceAll(" ", "")); 
+            pin = this.getPinCode(datacolumns[14].replaceAll(" ", ""));
             String remarks = "";//datacolumns[10];
             String city = "";
 
@@ -117,6 +117,7 @@ public class Temp extends MigrationBase {
             address = address.replaceAll("\"", "");
             //address2 = address2.replaceAll("\"", "");
 
+            int countryID = 0, stateID = 0, cityID = 0;
             //remove the spaces from city and then separate the pincode from the city
             Pattern p = Pattern.compile("^(.*?)\\s+(\\d+\\s+\\d+)$");
             Matcher m = p.matcher(cityAndPin);
@@ -128,21 +129,51 @@ public class Temp extends MigrationBase {
 
             logger.debug("Inserting subscriber: " + subscriberNumber);
 
-            // get the city id
-            int cityID = this.getCityID(city);
-            logger.debug("city " + city + " has the id : " + cityID);
-            address = (cityID == 0) ? address : address + "\n" + city;
-
-            // get the country id, check the hash map first
-            if (this.stateMap.containsKey(country)) {
-                country = this.stateMap.get(country);
+            // At times the city name in JDS db and city name mentioned may in the xls may not match due to say spelling mistake.
+            // Try to correct that before checking if the city exist in the JDS db.
+            if (this.cityMap.containsKey(city)) {
+                city = this.cityMap.get(city);
             }
-            int countryID = this.getCountryID(country);
-            int stateID = 0;
-            if (countryID == 0) {
-                stateID = this.getStateID(country);
-                logger.debug("State " + country + " has the id : " + stateID);
-                address = (stateID > 0) ? address : address + "\n" + country;
+            // get the city id
+            cityID = this.getCityID(city);
+            if(cityID == 0){
+                // if this is not a city, check if this is a state
+                //String state = city;
+                //if (this.stateMap.containsKey(state)) {
+                    //state = this.stateMap.get(state);
+                //}
+                //stateID = this.getStateID(state);
+                //if(stateID == 0) {
+                    logger.warn("Found city/state " + city + " which does not have a entry in the database");
+                    address = (cityID == 0) ? address : address + "\n" + city;
+                //}
+
+            } else {
+                logger.debug("city " + city + " has the id : " + cityID);
+            }
+
+            // get the country id, check the state hash map first, there are many cases where the state is mentioned in the country field
+            if(this.countryMap.containsKey(country)) {
+                country = this.countryMap.get(country);
+            }
+            countryID = this.getCountryID(country);
+            // If country is not found, check if this is a state
+            if(countryID == 0) {
+                String state = country;
+                if (this.stateMap.containsKey(state)) {
+                    state = this.stateMap.get(state);
+                }
+                stateID = this.getStateID(state);
+                // If state is also not found means we either have a country or a state which is not present in the db
+                if(stateID == 0) {
+                    logger.warn("Found state/country " + country + " which does not have a entry in the database");
+                    address = (stateID > 0) ? address : address + "\n" + country;
+                }
+                // If we found a valid state, means the country is India.
+                else {
+                    country = "India";
+                    countryID = this.getCountryID(country);
+                }
             }
 
             logger.debug("pin Code is : " + pin);
@@ -165,9 +196,9 @@ public class Temp extends MigrationBase {
             pst_insert.setString(++paramIndex, email);
             pst_insert.addBatch();
             recordCounter++;
-            
-            
-            
+
+
+
             int ret = this.db.executeUpdatePreparedStatement(pst_insert);
             if (ret == 0) {
                 logger.error("Skipping Duplicate Subscriber : " + subscriberNumber + " Name: " + subscriberName);
@@ -176,7 +207,7 @@ public class Temp extends MigrationBase {
             } else {
                 insertedRows++;
             }
-            
+
             if(recordCounter == COMMIT_BATCH_SIZE){
                 logger.debug("commiting database after " + String.valueOf(insertedRows) + " rows");
                 conn.commit();
