@@ -56,10 +56,10 @@ public class MigrationBase implements IMigrate {
     //Insert Statement for Subscription
     public String sql_insert_subscription = "insert into subscription(subscriberID,inwardID,legacy,legacy_amount,subscriptiondate,legacy_balance)"
             + "values(?,?,?,?,?,?)";
-    
+
     public String sql_insert_subscription_no_dt = "insert into subscription(subscriberID,inwardID,legacy,legacy_amount,legacy_balance)"
             + "values(?,?,?,?,?)";
-    
+
     public String sql_insert_subscription_free_subs = "insert into subscription(subscriberID,inwardID,legacy) values(?,?,?)";
 //--------------------------------------------------------------------------------------------
     //Insert Statement for Subscription Details
@@ -71,7 +71,7 @@ public class MigrationBase implements IMigrate {
             + ",institution, shippingAddress, invoiceAddress"
             + ",city, state, pincode, country, deactive, email)values"
             + "((select id from subscriber_type where subtypecode = ?),?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    
+
     public String sql_insert_subscriber_dt = "insert IGNORE into subscriber(subtype, subscriberNumber"
             + ",subscriberName, department"
             + ",institution, shippingAddress, invoiceAddress"
@@ -93,7 +93,7 @@ public class MigrationBase implements IMigrate {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        
+
 
 
         String sql = "select id from subscription_rates t1 "
@@ -126,6 +126,12 @@ public class MigrationBase implements IMigrate {
         cityMap.put("Kolkdata ", "Kolkata");
         cityMap.put("Pune - ", "Pune");
         cityMap.put("Goa ", "Goa");
+        cityMap.put("Kotal", "Kotala");
+        cityMap.put("Jammu-Tawi", "Jammu");
+        cityMap.put("Alapuuzha", "Alappuzha");
+        cityMap.put("Sivagangai", "Sivaganga");
+        cityMap.put("Trivandrum", "Thiruvananthapuram");
+        cityMap.put("Peramballur", "Perambalur");
 
         stateMap.put("Uttaranchal", "Uttarakhand");
         stateMap.put("T.N.", "Tamil Nadu");
@@ -149,6 +155,9 @@ public class MigrationBase implements IMigrate {
         stateMap.put("Karnataaka", "Karnataka");
         stateMap.put("Karnataka ************************", "Karnataka");
         stateMap.put("Gujrat", "Gujarat");
+        stateMap.put("Chattisgarh", "Chhattisgarh");
+        stateMap.put("Delhi`", "New Delhi");
+        stateMap.put("W.B", "West Bengal");
 
         countryMap.put("U.S.A", "USA");
         countryMap.put("U.S.A.", "USA");
@@ -163,6 +172,25 @@ public class MigrationBase implements IMigrate {
         countryMap.put("US", "USA");
         countryMap.put("S. Afarica", "USA");
         countryMap.put("Frnace", "France");
+        countryMap.put("Italy*****SURFACE", "Italy");
+        countryMap.put("S.A.", "Colombia");
+        countryMap.put("Brasil", "Brazil");
+        countryMap.put("Colombia, S.A.", "Colombia");
+        countryMap.put("Argentine", "Argentina");
+        countryMap.put("Sultanate of Oman", "Oman");
+        countryMap.put("Southern Africa", "Mozambique");
+        countryMap.put("U.A.E", "United Arab Emirates");
+        countryMap.put("England", "UK");
+        countryMap.put("Great Britain", "UK");
+        countryMap.put("Kuwait Surface Mail", "Kuwait");
+        countryMap.put("Panama 6", "Panama");
+        countryMap.put("Rep.of Korea", "South Korea");
+        countryMap.put("Korea", "South Korea");
+        countryMap.put("France (Cedex)", "France");
+        countryMap.put("Phillippines", "Philippines");
+        countryMap.put("U.S.S.R.", "Russia");
+        countryMap.put("U.S.A.(DO NOT SEND)", "USA");
+        countryMap.put("Philippines 1109", "Philippines");
 
         pst_insert_subscription = this.conn.prepareStatement(sql_insert_subscription, Statement.RETURN_GENERATED_KEYS);
         pst_insert_subscription_no_dt = this.conn.prepareStatement(sql_insert_subscription_no_dt, Statement.RETURN_GENERATED_KEYS);
@@ -359,7 +387,7 @@ public class MigrationBase implements IMigrate {
         return priceGroupID;
 
     }
-    
+
     public int getInteger(String _text){
         int rc = 0;
         try{
@@ -442,19 +470,19 @@ public class MigrationBase implements IMigrate {
         return endYear;
 
     }
-    
+
     public int insertSubscriber(String subtypeCode, String SubscriberName, String department,
             String institution, String ShipAddress, String invAddress,
             int city, int state, int pincode, int country, String email) throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException{
-        
+
         String nextSubscriberNumber = this.getNextSubscriberNumber();
         int paramindex = 0;
-        
+
         pst_insert_subscriber.setString(++paramindex, subtypeCode);
         pst_insert_subscriber.setString(++paramindex, nextSubscriberNumber);
         pst_insert_subscriber.setString(++paramindex, SubscriberName);
-        
+
         pst_insert_subscriber.setString(++paramindex, department);
         pst_insert_subscriber.setString(++paramindex, institution);
         pst_insert_subscriber.setString(++paramindex, ShipAddress);
@@ -466,7 +494,7 @@ public class MigrationBase implements IMigrate {
         pst_insert_subscriber.setBoolean(++paramindex, false);
         pst_insert_subscriber.setString(++paramindex, email);
         pst_insert_subscriber.setDate(++paramindex, util.dateStringToSqlDate(util.getDateString()));
-        
+
         int subscriberid = 0;
         try{
             if(pst_insert_subscriber.executeUpdate() == 1){
@@ -479,9 +507,9 @@ public class MigrationBase implements IMigrate {
         }finally{
             return subscriberid;
         }
-         
-        
-        
+
+
+
     }
 
     public int insertSubscription(int subscriberId, int inwardId, float amount, Date subdate, float corr_balance) throws SQLException {
@@ -506,7 +534,7 @@ public class MigrationBase implements IMigrate {
         }
 
     }
-    
+
     public int insertSubscription(int subscriberId) throws SQLException {
         int paramIndex = 0;
         pst_insert_subscription_no_dt.setInt(++paramIndex, subscriberId);
