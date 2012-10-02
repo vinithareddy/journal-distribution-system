@@ -220,8 +220,8 @@ public class migrateEBALL extends MigrationBase{
             /*----------------------------------------------------------------*/
             /*---Insert Subscription details---*/
             /*----------------------------------------------------------------*/
-            int[] jrnlArr = {13, 14, 15, 16, 17, 18, 19, 20, 21, 22};   //Data Columns frm excel
-            int[] jrnlGrpIDArr = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};       //Journal Group IDs
+            int[] jrnlArr = {13, 14, 15, 16, 17, 18, 19, 20, 21};   //Data Columns frm excel
+            int[] jrnlGrpIDArr = {1, 2, 3, 4, 5, 6, 7, 8, 9};       //Journal Group IDs
 
             for (int j = 0; j < jrnlArr.length; j++) {
                 if (!datacolumns[jrnlArr[j]].equalsIgnoreCase("0") && !datacolumns[jrnlArr[j]].isEmpty()) {

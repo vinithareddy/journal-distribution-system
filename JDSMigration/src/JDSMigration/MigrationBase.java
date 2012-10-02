@@ -160,10 +160,12 @@ public class MigrationBase implements IMigrate {
         stateMap.put("T,N.", "Tamil Nadu");
         stateMap.put("T.M.", "Tamil Nadu");
         stateMap.put("T.N", "Tamil Nadu");
+        stateMap.put("\"T,N.\"", "Tamil Nadu");
         stateMap.put("A.P.", "Andhra Pradesh");
         stateMap.put("A.P", "Andhra Pradesh");
         stateMap.put("A.p.", "Andhra Pradesh");
         stateMap.put("M.S.", "Maharashtra");
+        stateMap.put("M.S", "Maharashtra");
         stateMap.put("M.s.", "Maharashtra");
         stateMap.put("U.P.", "Uttar Pradesh");
         stateMap.put("UP", "Uttar Pradesh");
@@ -221,6 +223,9 @@ public class MigrationBase implements IMigrate {
         stateMap.put("Maghalaya", "Meghalaya");
         stateMap.put("Sikkam", "Sikkim");
         stateMap.put("A.S.", "Andhra Pradesh");
+        stateMap.put("A& N Islands", "Andaman & Nicobar");
+        stateMap.put("A&N Island", "Andaman & Nicobar");
+        stateMap.put("Dadra & N Haveli", "Dadra and Nagar Haveli");
 
         countryMap.put("U.S.A", "USA");
         countryMap.put("U.S.A.", "USA");

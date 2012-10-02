@@ -229,8 +229,8 @@ public class migrateExchange extends MigrationBase{
             /*----------------------------------------------------------------*/
             /*---Insert Subscription details---*/
             /*----------------------------------------------------------------*/
-            int[] jrnlArr = {21, 25, 26, 27, 28, 29, 30, 31, 32, 33};   //Data Columns frm excel
-            int[] jrnlGrpIDArr = {10, 1, 2, 3, 4, 6, 5, 7, 8, 9};       //Journal Group IDs
+            int[] jrnlArr = {25, 26, 27, 28, 29, 30, 31, 32, 33};   //Data Columns frm excel
+            int[] jrnlGrpIDArr = {1, 2, 3, 4, 6, 5, 7, 8, 9};       //Journal Group IDs
 
             //logger.debug("Migrating row: " + totalRows);
 

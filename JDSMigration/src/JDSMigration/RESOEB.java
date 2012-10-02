@@ -79,7 +79,8 @@ public class RESOEB extends MigrationBase {
             if (datacolumns[11].isEmpty() == false) {
                 address = address == null ? datacolumns[11] : address + "\nFAX: " + datacolumns[11];
             }
-         
+
+            /*
             if ((subscriberType.equalsIgnoreCase("I") || subscriberType.isEmpty()) && !subscriberType.equalsIgnoreCase("F")) {
                 subscriberTypeID = 8; //code for indian institutes
                 subscriberTypeCode = "II";
@@ -89,6 +90,9 @@ public class RESOEB extends MigrationBase {
             } else {
                 throw new Exception("Cannot determine subscriber type");
             }
+            */
+            subscriberTypeID = 3;
+            subscriberTypeCode = "EBALL";
 
             String cityPin = datacolumns[6];
             String country = datacolumns[8];
@@ -110,23 +114,23 @@ public class RESOEB extends MigrationBase {
 
             int subscriberid = this.insertSubscriber(
                     subscriberTypeCode,
-                    name, 
-                    department, 
-                    institute, 
-                    address, 
-                    address, 
-                    cityid, 
-                    stateid, 
-                    pin, 
-                    countryid, 
+                    name,
+                    department,
+                    institute,
+                    address,
+                    address,
+                    cityid,
+                    stateid,
+                    pin,
+                    countryid,
                     datacolumns[12]);
-            
+
             if(subscriberid > 0){
                 logger.info("Successfully inserted subsciber data for:" + name);
                 int subscription_id = this.insertSubscription(subscriberid);
                 if(subscription_id > 0){
                     boolean isSuccess = this.insertSubscriptionDetails(
-                            subscription_id, 
+                            subscription_id,
                             10, //jgroup id
                             copies, //copies
                             2012, //start year
@@ -134,7 +138,7 @@ public class RESOEB extends MigrationBase {
                             2012, //end year
                             12, //end month
                             1); //price group id
-                    
+
                     if(isSuccess){
                         logger.info("Subscription inserted successfully for: " + name);
                         success++;

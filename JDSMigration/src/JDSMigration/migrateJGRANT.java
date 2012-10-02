@@ -219,8 +219,8 @@ public class migrateJGRANT extends MigrationBase{
             /*----------------------------------------------------------------*/
             /*---Insert Subscription details---*/
             /*----------------------------------------------------------------*/
-            int[] jrnlArr = {10, 11, 12, 13, 14, 15, 16, 17, 18, 19};   //Data Columns frm excel
-            int[] jrnlGrpIDArr = {1, 2, 3, 4, 6, 5, 7, 8, 9, 10};       //Journal Group IDs
+            int[] jrnlArr = {10, 11, 12, 13, 14, 15, 16, 17, 18};   //Data Columns frm excel
+            int[] jrnlGrpIDArr = {1, 2, 3, 4, 6, 5, 7, 8, 9};       //Journal Group IDs
 
             for (int j = 0; j < jrnlArr.length; j++) {
                 if (!datacolumns[jrnlArr[j]].equalsIgnoreCase("0") && !datacolumns[jrnlArr[j]].isEmpty()) {

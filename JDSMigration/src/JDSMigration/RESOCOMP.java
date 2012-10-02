@@ -72,15 +72,17 @@ public class RESOCOMP extends MigrationBase {
                 address = address == null ? datacolumns[4] : address + "\n" + datacolumns[4];
             }
 
+
             if (subscriberType.equalsIgnoreCase("I") || (subscriberType.isEmpty() && !subscriberType.equalsIgnoreCase("F"))) {
-                subscriberTypeID = 8; //code for indian institutes
-                subscriberTypeCode = "II";
+                subscriberTypeID = 4; //code for indian institutes
+                subscriberTypeCode = "EI";
             } else if (!subscriberType.isEmpty() && subscriberType.equalsIgnoreCase("F")) {
-                subscriberTypeID = 13; //code for foreign institutes
-                subscriberTypeCode = "FI";
+                subscriberTypeID = 5; //code for foreign institutes
+                subscriberTypeCode = "EF";
             } else {
                 throw new Exception("Cannot determine subscriber type");
             }
+
 
             String cityPin = datacolumns[5];
             String country = datacolumns[7];
@@ -102,23 +104,23 @@ public class RESOCOMP extends MigrationBase {
 
             int subscriberid = this.insertSubscriber(
                     subscriberTypeCode,
-                    name, 
-                    department, 
-                    institute, 
-                    address, 
-                    address, 
-                    cityid, 
-                    stateid, 
-                    pin, 
-                    countryid, 
+                    name,
+                    department,
+                    institute,
+                    address,
+                    address,
+                    cityid,
+                    stateid,
+                    pin,
+                    countryid,
                     "");
-            
+
             if(subscriberid > 0){
                 logger.info("Successfully inserted subsciber data for:" + name);
                 int subscription_id = this.insertSubscription(subscriberid);
                 if(subscription_id > 0){
                     boolean isSuccess = this.insertSubscriptionDetails(
-                            subscription_id, 
+                            subscription_id,
                             10, //jgroup id
                             1, //copies
                             2012, //start year
@@ -126,7 +128,7 @@ public class RESOCOMP extends MigrationBase {
                             2012, //end year
                             12, //end month
                             1); //price group id
-                    
+
                     if(isSuccess){
                         logger.info("Subscription inserted successfully for: " + name);
                         success++;
