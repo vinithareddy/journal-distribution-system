@@ -106,6 +106,7 @@ public class Temp extends MigrationBase {
             pin = this.getPinCode(datacolumns[14].replaceAll(" ", ""));
             String remarks = "";//datacolumns[10];
             String city = "";
+            String pin2 = "";
 
             //country field has ****, remove them
             country = country.replaceAll("\\*", "");
@@ -123,6 +124,7 @@ public class Temp extends MigrationBase {
             Matcher m = p.matcher(cityAndPin);
             if (m.find()) {
                 city = m.group(1);
+                pin2 = m.group(2);
                 // remove spaces between the pin code e.g. 123 456
                 //pin = Integer.parseInt(m.group(2).replaceAll(" ", ""));
             }
@@ -144,7 +146,7 @@ public class Temp extends MigrationBase {
                 //}
                 //stateID = this.getStateID(state);
                 //if(stateID == 0) {
-                    logger.warn("Found city/state " + city + " which does not have a entry in the database");
+                    logger.debug("Found city/state " + city + " which does not have a entry in the database");
                     address = (cityID == 0) ? address : address + "\n" + city;
                 //}
 
@@ -166,7 +168,7 @@ public class Temp extends MigrationBase {
                 stateID = this.getStateID(state);
                 // If state is also not found means we either have a country or a state which is not present in the db
                 if(stateID == 0) {
-                    logger.warn("Found state/country " + country + " which does not have a entry in the database");
+                    logger.debug("Found state/country " + country + " which does not have a entry in the database");
                     address = (stateID > 0) ? address : address + "\n" + country;
                 }
                 // If we found a valid state, means the country is India.
@@ -176,7 +178,19 @@ public class Temp extends MigrationBase {
                 }
             }
 
-            logger.debug("pin Code is : " + pin);
+            // By default the pin is extracted from the pin column,
+            // but in some cases the pin code is present in the citypin column
+            // If the pin column is empty, then check if the cityPin column has the pin code
+            if(pin == 0)
+            {
+                pin = this.getPinCode(pin2);
+                if(pin == 0) {
+                    logger.warn("Found pin to be 0 for subscriber number " + subscriberNumber);
+                }
+                else {
+                    logger.debug("pin Code is : " + pin);
+                }
+            }
 
             int paramIndex = 0;
             pst_insert.setString(++paramIndex, subscribercode);

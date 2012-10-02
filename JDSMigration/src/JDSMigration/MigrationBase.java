@@ -132,32 +132,72 @@ public class MigrationBase implements IMigrate {
         cityMap.put("Sivagangai", "Sivaganga");
         cityMap.put("Trivandrum", "Thiruvananthapuram");
         cityMap.put("Peramballur", "Perambalur");
+        cityMap.put("Chandigrah", "Chandigarh");
 
         stateMap.put("Uttaranchal", "Uttarakhand");
+        stateMap.put("Uttarkhand", "Uttarakhand");
+        stateMap.put("Uttrakhand", "Uttarakhand");
+        stateMap.put("Uttranchal", "Uttarakhand");
+        stateMap.put("Uttarnchal", "Uttarakhand");
         stateMap.put("T.N.", "Tamil Nadu");
         stateMap.put("T.N", "Tamil Nadu");
         stateMap.put("A.P.", "Andhra Pradesh");
+        stateMap.put("A.P", "Andhra Pradesh");
+        stateMap.put("A.p.", "Andhra Pradesh");
         stateMap.put("M.S.", "Maharashtra");
         stateMap.put("U.P.", "Uttar Pradesh");
+        stateMap.put("UP", "Uttar Pradesh");
+        stateMap.put("U.P", "Uttar Pradesh");
+        stateMap.put("U.P.`", "Uttar Pradesh");
+        stateMap.put("U.p.", "Uttar Pradesh");
         stateMap.put("M.P.", "Madhya Pradesh");
         stateMap.put("H.P.", "Himachal Pradesh");
         stateMap.put("W.B.", "West Bengal");
+        stateMap.put("w.B.", "West Bengal");
+        stateMap.put("W.B", "West Bengal");
         stateMap.put("Orissa", "Odisha");
+        stateMap.put("Oriss", "Odisha");
         stateMap.put("J&K", "Jammu & Kashmir");
         stateMap.put("A&N Islands", "Andaman & Nicobar");
         stateMap.put("Delhi", "New Delhi");
-        stateMap.put("UP", "Uttar Pradesh");
+        stateMap.put("Delhi`", "New Delhi");
         stateMap.put("Kashmir", "Jammu & Kashmir");
-        stateMap.put("Karnatakia", "Karnataka");
-        stateMap.put("Karnatka", "Karnataka");
         stateMap.put("Panjab", "Punjab");
+        stateMap.put("Pubjab", "Punjab");
         stateMap.put("Puducherry", "Pondicherry");
+        stateMap.put("Pondicherr", "Pondicherry");
+        stateMap.put("Gujrat", "Gujarat");
+        stateMap.put("Guj.", "Gujarat");
+        stateMap.put("Gujatat", "Gujarat");
+        stateMap.put("Harayana", "Haryana");
+        stateMap.put("Haryanaka", "Haryana");
+        stateMap.put("Haryrana", "Haryana");
+
+        stateMap.put("Chattisgarh", "Chhattisgarh");
+        stateMap.put("Chattisgarh", "Chhattisgarh");
+        stateMap.put("Chhaattisgarh", "Chhattisgarh");
+        stateMap.put("Chhatisgarh",  "Chhattisgarh");
+        stateMap.put("Chattisgarah",  "Chhattisgarh");
+        stateMap.put("T/N/", "Tamil Nadu");
+        stateMap.put("T.N/", "Tamil Nadu");
+        stateMap.put("T,N.", "Tamil Nadu");
+        stateMap.put("Kar.", "Karnataka");
+        stateMap.put("Kar", "Karnataka");
+        stateMap.put("Karnataka'", "Karnataka");
         stateMap.put("Karnataaka", "Karnataka");
         stateMap.put("Karnataka ************************", "Karnataka");
-        stateMap.put("Gujrat", "Gujarat");
-        stateMap.put("Chattisgarh", "Chhattisgarh");
-        stateMap.put("Delhi`", "New Delhi");
-        stateMap.put("W.B", "West Bengal");
+        stateMap.put("Karnatakia", "Karnataka");
+        stateMap.put("Karnatka", "Karnataka");
+        stateMap.put("Karnakata", "Karnataka");
+        stateMap.put("Raj", "Rajasthan");
+        stateMap.put("Raj.", "Rajasthan");
+        stateMap.put("Jharkahand", "Jharkhand");
+        stateMap.put("Jhanrkhand", "Jharkhand");
+        stateMap.put("Dlhi", "New Delhi");
+        stateMap.put("KeralaM.S.", "Kerala");
+        stateMap.put("Goa.", "Goa");
+        stateMap.put("Maghalaya", "Meghalaya");
+        stateMap.put("Sikkam", "Sikkim");
 
         countryMap.put("U.S.A", "USA");
         countryMap.put("U.S.A.", "USA");
@@ -176,6 +216,7 @@ public class MigrationBase implements IMigrate {
         countryMap.put("S.A.", "Colombia");
         countryMap.put("Brasil", "Brazil");
         countryMap.put("Colombia, S.A.", "Colombia");
+        countryMap.put("Columbia, S.A.", "Colombia");
         countryMap.put("Argentine", "Argentina");
         countryMap.put("Sultanate of Oman", "Oman");
         countryMap.put("Southern Africa", "Mozambique");
@@ -407,11 +448,11 @@ public class MigrationBase implements IMigrate {
             try {
                 pincode = Integer.parseInt(_pinAsText);
             } catch (NumberFormatException e) {
-                logger.fatal("Invalid pincode: " + _pinAsText);
+                //logger.fatal("Invalid pincode: " + _pinAsText);
                 pincode = 0;
             }
         }else{
-            logger.fatal("Invalid pincode: " + _pinAsText);
+            //logger.fatal("Invalid pincode: " + _pinAsText);
         }
         return pincode;
     }
