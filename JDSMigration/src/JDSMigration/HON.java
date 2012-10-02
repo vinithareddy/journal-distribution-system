@@ -52,12 +52,11 @@ public class HON extends MigrationBase{
             int stateid = 0;
 
             String country = "";
-            if(this.countryMap.containsKey(datacolumns[8])) {
-                country = this.countryMap.get(datacolumns[8]);
-            }
-            int countryID = this.getCountryID(country);
+
+            int countryID = this.getCountryID(datacolumns[8]);
             if(countryID == 0) {
                 logger.warn("Found country " + datacolumns[8] + " which does not have a entry in the database");
+                address = address + "\n" + datacolumns[8];
             }
 
             int copies = 1;

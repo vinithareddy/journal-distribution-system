@@ -50,7 +50,7 @@ public class CURRFEX extends MigrationBase{
             int pin = 0;
             int stateid = 0;
             int countryid = this.getCountryID(datacolumns[9]);
-            int cityid = 0;
+            int cityid = this.getCityID(datacolumns[8]);
             //String cityPin = datacolumns[6];
 
             int copies = this.getInteger(datacolumns[10]);
@@ -65,10 +65,15 @@ public class CURRFEX extends MigrationBase{
             if (datacolumns[7].isEmpty() == false) {
                 address = address == null ? datacolumns[7] : address + "\n" + datacolumns[7];
             }
-            if (datacolumns[8].isEmpty() == false) { // append the city also in this case
-                address = address == null ? datacolumns[8] : address + "\n" + datacolumns[8];
-            }           
-
+                  
+            if (cityid == 0){
+                logger.warn("Found City with Id 0 " + datacolumns[8]);
+                address = address + datacolumns[8];
+            }
+            if (countryid == 0){
+                logger.warn("Found Country with Id 0 " + datacolumns[9]);
+                address = address + datacolumns[9];
+            }
             int subscriberid = this.insertSubscriber(
                     "EF",
                     name,

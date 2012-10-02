@@ -77,12 +77,13 @@ public class CurtWas extends MigrationBase{
                 name += " " + desig; 
             }
             name += datacolumns[3];
-            String address = datacolumns[5] + "\n" + datacolumns[6] + "\n" + datacolumns[7] +
-                            datacolumns[8] + "\n" + datacolumns[9];
+            String address = datacolumns[4] + " " + datacolumns[5] + "\n" + datacolumns[6] + " " + datacolumns[7] +
+                            datacolumns[8] + " " + datacolumns[9];
             String country = datacolumns[10];
             countryid = this.getCountryID(country);
             if(countryid == 0){
-                logger.debug("Failed to get country id for " + country);
+                logger.warn("Failed to get country id for " + country);
+                address = address + datacolumns[10];
             }
             int paramindex = 0;
             PreparedStatement pst = conn.prepareStatement(insert_subscriber_sql, Statement.RETURN_GENERATED_KEYS);

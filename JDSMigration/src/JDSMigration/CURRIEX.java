@@ -62,7 +62,15 @@ public class CURRIEX extends MigrationBase {
             if (datacolumns[7].isEmpty() == false) {
                 address = address == null ? datacolumns[7] : address + "\n" + datacolumns[7];
             }
-
+            if (cityid == 0){
+                logger.warn("Found City with Id 0 " + cityPin);
+                address = address + cityPin;
+            }
+            if (stateid == 0){
+                logger.warn("Found State with Id 0 " + datacolumns[10]);
+                address = address + datacolumns[8];
+            }
+                        
             if (cityPin.matches(".*\\d+$")) {
                 String[] city = cityPin.split("\\d+", 2);
                 cityid = this.getCityID(city[0]);

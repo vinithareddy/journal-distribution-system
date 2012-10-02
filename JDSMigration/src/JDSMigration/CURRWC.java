@@ -69,7 +69,14 @@ public class CURRWC extends MigrationBase{
                 logger.debug("city is:" + city[0]);
                 logger.debug("city id is:" + cityid);
             }
-
+            if (cityid == 0){
+                logger.warn("Found City with Id 0 " + cityPin);
+                address = address + cityPin;
+            }
+            if (stateid == 0){
+                logger.warn("Found State with Id 0 " + datacolumns[8]);
+                address = address + datacolumns[8];
+            }
             int subscriberid = this.insertSubscriber(
                     "WC",
                     name,
