@@ -20,7 +20,7 @@ import org.apache.log4j.Logger;
  * @author Newton
  */
 public class CurrMem extends MigrationBase{
-    
+
     private static final Logger logger = Logger.getLogger(CurrMem.class.getName());
     private String insert_subscriber_sql;
     private String insert_subscription_sql;
@@ -30,16 +30,16 @@ public class CurrMem extends MigrationBase{
         this.openExcel(this.dataFile);
         insert_subscriber_sql = "insert into subscriber(subscriberNumber,subscriberCreationDate,subscriberName,"
                 + "department,institution,shippingaddress,invoiceAddress,city,state,country,pincode,subtype)values("
-                + "?,?,?,?,?,?,?,?,?,?,?)";
-        
+                + "?,?,?,?,?,?,?,?,?,?,?,?)";
+
         insert_subscription_sql = "insert into subscription(subscriberID,inwardID,legacy,legacy_amount) values "
                 + "(?, ?, ?, ?)";
-        
+
         insert_subscription_detail_sql = "insert into subscriptiondetails(subscriptionID,journalGroupID,copies,startYear,startMonth,endMonth,endYear,journalPriceGroupID) "
                 + "values (?, ?, ?, ?, ?, ?, ?, ?)";
- 
+
     }
-    
+
     @Override
     public void Migrate() throws SQLException, IOException, BiffException, ParseException,
                                     InvocationTargetException, IllegalAccessException {
@@ -47,7 +47,7 @@ public class CurrMem extends MigrationBase{
         //int commitCounter = 0;
         String[] datacolumns;
         int rownum = 0;
-        
+
         while (true) {
             datacolumns = this.getNextRow();
             if (datacolumns == null) {
@@ -60,7 +60,7 @@ public class CurrMem extends MigrationBase{
                 logger.debug("STOP flag found at row num:" + rownum);
                 continue;
             }
-            
+
             String name = datacolumns[1];
             String department = datacolumns[2];
             String institute = datacolumns[3];
@@ -69,10 +69,10 @@ public class CurrMem extends MigrationBase{
             String pin = datacolumns[7].replaceAll(" ", "");
             pin = pin.isEmpty() ? "0" : pin;
             float amount = datacolumns[11].isEmpty() || datacolumns[11] == null || datacolumns[11].equalsIgnoreCase("null") ? 0 : Float.parseFloat(datacolumns[11]);
-            
+
             int cityid = 0;
             int stateid;
-            
+
             // get the city name from city+pin columns
             Pattern p = Pattern.compile("^(.*?)\\s*(\\d+\\s*\\d+)$");
             Matcher m = p.matcher(cityAndPin);
@@ -80,7 +80,7 @@ public class CurrMem extends MigrationBase{
                 String city = m.group(1);
                 cityid = this.getCityID(city);
             }
-            
+
             // get the state id
             stateid = this.getStateID(state);
             if (cityid == 0){
@@ -93,7 +93,7 @@ public class CurrMem extends MigrationBase{
             }
             int paramindex = 0;
             PreparedStatement pst = conn.prepareStatement(insert_subscriber_sql, Statement.RETURN_GENERATED_KEYS);
-            
+
             pst.setString(++paramindex, this.getNextSubscriberNumber());
             pst.setDate(++paramindex, util.dateStringToSqlDate(util.getDateString()));
             pst.setString(++paramindex, name);
@@ -111,7 +111,7 @@ public class CurrMem extends MigrationBase{
                 ResultSet rs = pst.getGeneratedKeys();
                 rs.first();
                 int subscriberId = rs.getInt(1);
-                
+
                 this.conn.setAutoCommit(false);
                 paramindex = 0;
                 PreparedStatement pst_sub = conn.prepareStatement(insert_subscription_sql, Statement.RETURN_GENERATED_KEYS);
@@ -119,7 +119,7 @@ public class CurrMem extends MigrationBase{
                 pst_sub.setInt(++paramindex, 0);
                 pst_sub.setBoolean(++paramindex, true);
                 pst_sub.setFloat(++paramindex, amount);
-                
+
                 upd_count = pst_sub.executeUpdate();
                 if(upd_count == 1){
                     ResultSet rs1 = pst_sub.getGeneratedKeys();
@@ -139,9 +139,9 @@ public class CurrMem extends MigrationBase{
                     this.conn.commit();
                     logger.debug("subscriber migrated for row: " + rownum);
                 }
-            
+
             }
-            
+
         }
     }
 }
