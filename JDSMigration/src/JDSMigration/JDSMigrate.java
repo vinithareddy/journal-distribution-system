@@ -21,12 +21,12 @@ public class JDSMigrate {
     private static final Logger logger = Logger.getLogger(JDSMigrate.class);
 
     // set this to override all other migration flags
-    private boolean MIGRATE_ALL = false;
+    private boolean MIGRATE_ALL = true;
 
     private boolean INIT_MASTER_DATA = true;
 
     private boolean MIGRATE_INWARD = MIGRATE_ALL && true;
-    private boolean MIGRATE_SUBSCRIBER = MIGRATE_ALL || true;
+    private boolean MIGRATE_SUBSCRIBER = MIGRATE_ALL && true;
     private boolean MIGRATE_SUBSCRIPTION = MIGRATE_ALL && true;
     private boolean MIGRATE_CORR = MIGRATE_ALL && true;
     private boolean MIGRATE_FELLOWS = MIGRATE_ALL && true;
@@ -48,9 +48,9 @@ public class JDSMigrate {
     private boolean MIGRATE_HON = MIGRATE_ALL && true;
     private boolean MIGRATE_MEMBER = MIGRATE_ALL && true;
 
-    private boolean MIGRATE_RES = MIGRATE_ALL || true;
-    private boolean MIGRATE_RESOCOMP = MIGRATE_ALL || true;
-    private boolean MIGRATE_RESOEB = MIGRATE_ALL || true;
+    private boolean MIGRATE_RES = MIGRATE_ALL && true;
+    private boolean MIGRATE_RESOCOMP = MIGRATE_ALL && true;
+    private boolean MIGRATE_RESOEB = MIGRATE_ALL && true;
 
     private boolean CIRCULATION_FIGURES = MIGRATE_ALL && true;
 

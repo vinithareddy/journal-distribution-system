@@ -71,7 +71,7 @@ public class CURRWC extends MigrationBase{
             }
 
             int subscriberid = this.insertSubscriber(
-                    "II",
+                    "WC",
                     name,
                     department,
                     institute,
