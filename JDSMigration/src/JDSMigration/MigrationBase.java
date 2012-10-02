@@ -146,19 +146,25 @@ public class MigrationBase implements IMigrate {
         cityMap.put("Thoothkudi","Thoothukudi");
         cityMap.put("Thoothudkudi","Thoothukudi");
         cityMap.put("Krishnapuran","Krishnapuram");
-        
-        
+        cityMap.put("Shimoga","Shivamogga (Shimoga)");
+        cityMap.put("Trichy", "Tiruchirapalli");
+        cityMap.put("Kollam", "Kollam (Quilon)");
+        cityMap.put("Chandigrah", "Chandigarh");
+
         stateMap.put("Uttaranchal", "Uttarakhand");
         stateMap.put("Uttarkhand", "Uttarakhand");
         stateMap.put("Uttrakhand", "Uttarakhand");
         stateMap.put("Uttranchal", "Uttarakhand");
         stateMap.put("Uttarnchal", "Uttarakhand");
         stateMap.put("T.N.", "Tamil Nadu");
+        stateMap.put("T,N.", "Tamil Nadu");
+        stateMap.put("T.M.", "Tamil Nadu");
         stateMap.put("T.N", "Tamil Nadu");
         stateMap.put("A.P.", "Andhra Pradesh");
         stateMap.put("A.P", "Andhra Pradesh");
         stateMap.put("A.p.", "Andhra Pradesh");
         stateMap.put("M.S.", "Maharashtra");
+        stateMap.put("M.s.", "Maharashtra");
         stateMap.put("U.P.", "Uttar Pradesh");
         stateMap.put("UP", "Uttar Pradesh");
         stateMap.put("U.P", "Uttar Pradesh");
@@ -172,6 +178,7 @@ public class MigrationBase implements IMigrate {
         stateMap.put("Orissa", "Odisha");
         stateMap.put("Oriss", "Odisha");
         stateMap.put("J&K", "Jammu & Kashmir");
+        stateMap.put("J & K", "Jammu & Kashmir");
         stateMap.put("A&N Islands", "Andaman & Nicobar");
         stateMap.put("Delhi", "New Delhi");
         stateMap.put("Delhi`", "New Delhi");
@@ -186,13 +193,12 @@ public class MigrationBase implements IMigrate {
         stateMap.put("Harayana", "Haryana");
         stateMap.put("Haryanaka", "Haryana");
         stateMap.put("Haryrana", "Haryana");
-        cityMap.put("Chandigrah", "Chandigarh");
-
         stateMap.put("Chattisgarh", "Chhattisgarh");
         stateMap.put("Chattisgarh", "Chhattisgarh");
         stateMap.put("Chhaattisgarh", "Chhattisgarh");
         stateMap.put("Chhatisgarh",  "Chhattisgarh");
         stateMap.put("Chattisgarah",  "Chhattisgarh");
+        stateMap.put("C.G.",  "Chhattisgarh");
         stateMap.put("T/N/", "Tamil Nadu");
         stateMap.put("T.N/", "Tamil Nadu");
         stateMap.put("T,N.", "Tamil Nadu");
@@ -211,8 +217,10 @@ public class MigrationBase implements IMigrate {
         stateMap.put("Dlhi", "New Delhi");
         stateMap.put("KeralaM.S.", "Kerala");
         stateMap.put("Goa.", "Goa");
+        stateMap.put("Goa              Y", "Goa");
         stateMap.put("Maghalaya", "Meghalaya");
         stateMap.put("Sikkam", "Sikkim");
+        stateMap.put("A.S.", "Andhra Pradesh");
 
         countryMap.put("U.S.A", "USA");
         countryMap.put("U.S.A.", "USA");

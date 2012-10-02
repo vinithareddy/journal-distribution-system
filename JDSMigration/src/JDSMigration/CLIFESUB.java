@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
  * @author Shailendra
  */
 public class CLIFESUB extends MigrationBase{
-    
+
     private static final Logger logger = Logger.getLogger(CLIFESUB.class.getName());
 
     public CLIFESUB() throws SQLException, IOException, BiffException {
@@ -39,7 +39,7 @@ public class CLIFESUB extends MigrationBase{
             }
             rownum++;
             logger.info("Migrating row: " + rownum);
-            
+
             String name = datacolumns[1];
             String address = null;
             String institute = datacolumns[3];
@@ -51,7 +51,7 @@ public class CLIFESUB extends MigrationBase{
             String cityPin = datacolumns[6];
 
             int copies = this.getInteger(datacolumns[10]);
-            
+
             if(copies == 0){
                 continue; // do not migrate if there is no subscription
             }
@@ -70,23 +70,23 @@ public class CLIFESUB extends MigrationBase{
                 logger.debug("city id is:" + cityid);
             }
             int subscriberid = this.insertSubscriber(
-                    "II",
-                    name, 
-                    department, 
-                    institute, 
-                    address, 
-                    address, 
-                    cityid, 
-                    stateid, 
-                    pin, 
-                    countryid, 
+                    "LS",
+                    name,
+                    department,
+                    institute,
+                    address,
+                    address,
+                    cityid,
+                    stateid,
+                    pin,
+                    countryid,
                     null);
             if(subscriberid > 0){
                 logger.info("Successfully inserted subsciber data for:" + name);
                 int subscription_id = this.insertSubscription(subscriberid);
                 if(subscription_id > 0){
                     boolean isSuccess = this.insertSubscriptionDetails(
-                            subscription_id, 
+                            subscription_id,
                             11, //jgroup id
                             copies, //copies
                             2012, //start year
@@ -94,7 +94,7 @@ public class CLIFESUB extends MigrationBase{
                             2050, //end year
                             12, //end month
                             1); //price group id
-                    
+
                     if(isSuccess){
                         logger.info("Subscription inserted successfully for: " + name);
                         success++;
@@ -105,7 +105,7 @@ public class CLIFESUB extends MigrationBase{
             }else{
                 logger.fatal("Failed to insert subscriber for: " + name);
             }
-            
+
         }
         logger.info("Total rows: " + (rownum - 1));
         logger.info("Success: " + success);

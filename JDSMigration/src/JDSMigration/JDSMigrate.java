@@ -45,9 +45,9 @@ public class JDSMigrate {
     private boolean MIGRATE_CURREB = MIGRATE_ALL && true;
     private boolean MIGRATE_CURRGRAN = MIGRATE_ALL && true;
     private boolean MIGRATE_CURRFEX = MIGRATE_ALL && true;
-    private boolean MIGRATE_HON = MIGRATE_ALL || true;
-    private boolean MIGRATE_MEMBER = MIGRATE_ALL || true;
-    
+    private boolean MIGRATE_HON = MIGRATE_ALL && true;
+    private boolean MIGRATE_MEMBER = MIGRATE_ALL && true;
+
     private boolean MIGRATE_RES = MIGRATE_ALL && true;
     private boolean MIGRATE_RESOCOMP = MIGRATE_ALL && true;
     private boolean MIGRATE_RESOEB = MIGRATE_ALL && false;
@@ -166,7 +166,7 @@ public class JDSMigrate {
             member _migrate = new member();
             _migrate.Migrate();
         }
-        
+
         if (_jdsmigrate.MIGRATE_RES) {
             migrateRES _migrateRES = new migrateRES();
             _migrateRES.migrate();

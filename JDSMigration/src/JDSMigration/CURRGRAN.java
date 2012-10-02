@@ -71,7 +71,7 @@ public class CURRGRAN extends MigrationBase{
             }
 
             int subscriberid = this.insertSubscriber(
-                    "II",
+                    "GRANT",
                     name,
                     department,
                     institute,

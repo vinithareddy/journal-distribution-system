@@ -149,7 +149,7 @@ public class IndTemp extends MigrationBase {
                 //}
                 //stateID = this.getStateID(state);
                 //if(stateID == 0) {
-                    logger.debug("Found city/state " + city + " which does not have a entry in the database");
+                    logger.warn("Found city/state " + city + " which does not have a entry in the database");
                     address = (cityID == 0) ? address : address + "\n" + city;
                 //}
 
@@ -171,7 +171,7 @@ public class IndTemp extends MigrationBase {
                 stateID = this.getStateID(state);
                 // If state is also not found means we either have a country or a state which is not present in the db
                 if(stateID == 0) {
-                    logger.debug("Found state/country " + country + " which does not have a entry in the database");
+                    logger.warn("Found state/country " + country + " which does not have a entry in the database");
                     address = (stateID > 0) ? address : address + "\n" + country;
                 }
                 // If we found a valid state, means the country is India.

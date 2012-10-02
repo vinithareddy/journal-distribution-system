@@ -71,7 +71,7 @@ public class CURREB extends MigrationBase{
             }
 
             int subscriberid = this.insertSubscriber(
-                    "II",
+                    "EBALL",
                     name,
                     department,
                     institute,
