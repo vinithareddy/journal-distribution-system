@@ -132,8 +132,22 @@ public class MigrationBase implements IMigrate {
         cityMap.put("Sivagangai", "Sivaganga");
         cityMap.put("Trivandrum", "Thiruvananthapuram");
         cityMap.put("Peramballur", "Perambalur");
-        cityMap.put("Chandigrah", "Chandigarh");
-
+        cityMap.put("Allapuzha","Alappuzha");
+        cityMap.put("Alleppay","Alappuzha");
+        cityMap.put("Alleppey","Alappuzha");
+        cityMap.put("Chikkmagalur","Chikmagalur");
+        cityMap.put("Virudhaunagar","Viridhunagar");
+        cityMap.put("Virudhinagar","Viridhunagar");
+        cityMap.put("Virudhunagar","Viridhunagar");
+        cityMap.put("Visakha","Vishakhapatnam");
+        cityMap.put("Visakhapatna","Vishakhapatnam");
+        cityMap.put("Vishakapatnam","Vishakhapatnam");
+        cityMap.put("Viskhapatnam","Vishakhapatnam");
+        cityMap.put("Thoothkudi","Thoothukudi");
+        cityMap.put("Thoothudkudi","Thoothukudi");
+        cityMap.put("Krishnapuran","Krishnapuram");
+        
+        
         stateMap.put("Uttaranchal", "Uttarakhand");
         stateMap.put("Uttarkhand", "Uttarakhand");
         stateMap.put("Uttrakhand", "Uttarakhand");
@@ -172,6 +186,7 @@ public class MigrationBase implements IMigrate {
         stateMap.put("Harayana", "Haryana");
         stateMap.put("Haryanaka", "Haryana");
         stateMap.put("Haryrana", "Haryana");
+        cityMap.put("Chandigrah", "Chandigarh");
 
         stateMap.put("Chattisgarh", "Chhattisgarh");
         stateMap.put("Chattisgarh", "Chhattisgarh");
