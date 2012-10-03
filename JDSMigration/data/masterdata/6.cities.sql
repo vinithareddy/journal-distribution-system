@@ -146,7 +146,8 @@ insert into cities
 ('Kuppam'), 
 ('Kurnool'),
 ('Kurseong'), 
-('Kushalnagar'), 
+('Kushalnagar'),
+('Kurukshetra'), 
 ('Larambha'),
 ('Latur'),
 ('Lonavala'), 
@@ -314,7 +315,9 @@ insert into cities
 ('Krishnagiri'),
 ('Krishnapuram'),
 ('Jhunjhunu'),
-('Puri')
+('Puri'),
+('24 Parganas North'), 
+('24 Parganas South')
 
 
 

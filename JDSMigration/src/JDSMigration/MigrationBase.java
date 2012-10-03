@@ -12,8 +12,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import jxl.read.biff.BiffException;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
@@ -32,10 +34,12 @@ public class MigrationBase implements IMigrate {
     public Database db = null;
     public Connection conn = null;
     private static final Logger logger = Logger.getLogger(MigrationBase.class);
+    private static final Logger invalidcitylog = Logger.getLogger("JDSMigration.MigrationBase.getCityID");
     public HashMap<String, String> stateMap = new HashMap<>();
     public HashMap<String, String> cityMap = new HashMap<>();
     public HashMap<String, String> countryMap = new HashMap<>();
     public String sql_city = "select id from cities where city = ?";
+    private String insert_city = "insert into cities(city)values(?)";
     public String sql_distrcit = "select id from districts where district = ?";
     public String sql_state = "select id from states where state = ?";
     public String sql_country = "select id from countries where country = ?";
@@ -56,10 +60,8 @@ public class MigrationBase implements IMigrate {
     //Insert Statement for Subscription
     public String sql_insert_subscription = "insert into subscription(subscriberID,inwardID,legacy,legacy_amount,subscriptiondate,legacy_balance)"
             + "values(?,?,?,?,?,?)";
-
     public String sql_insert_subscription_no_dt = "insert into subscription(subscriberID,inwardID,legacy,legacy_amount,legacy_balance)"
             + "values(?,?,?,?,?)";
-
     public String sql_insert_subscription_free_subs = "insert into subscription(subscriberID,inwardID,legacy) values(?,?,?)";
 //--------------------------------------------------------------------------------------------
     //Insert Statement for Subscription Details
@@ -71,7 +73,6 @@ public class MigrationBase implements IMigrate {
             + ",institution, shippingAddress, invoiceAddress"
             + ",city, state, pincode, country, deactive, email)values"
             + "((select id from subscriber_type where subtypecode = ?),?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
     public String sql_insert_subscriber_dt = "insert IGNORE into subscriber(subtype, subscriberNumber"
             + ",subscriberName, department"
             + ",institution, shippingAddress, invoiceAddress"
@@ -83,6 +84,7 @@ public class MigrationBase implements IMigrate {
     private PreparedStatement pst_insert_subscription_no_dt = null;
     private PreparedStatement pst_insert_subscription_dtls = null;
     private PreparedStatement pst_insert_subscriber = null;
+    private PreparedStatement pst_insert_city = null;
 
     public MigrationBase() throws SQLException {
 
@@ -132,24 +134,39 @@ public class MigrationBase implements IMigrate {
         cityMap.put("Sivagangai", "Sivaganga");
         cityMap.put("Trivandrum", "Thiruvananthapuram");
         cityMap.put("Peramballur", "Perambalur");
-        cityMap.put("Allapuzha","Alappuzha");
-        cityMap.put("Alleppay","Alappuzha");
-        cityMap.put("Alleppey","Alappuzha");
-        cityMap.put("Chikkmagalur","Chikmagalur");
-        cityMap.put("Virudhaunagar","Viridhunagar");
-        cityMap.put("Virudhinagar","Viridhunagar");
-        cityMap.put("Virudhunagar","Viridhunagar");
-        cityMap.put("Visakha","Vishakhapatnam");
-        cityMap.put("Visakhapatna","Vishakhapatnam");
-        cityMap.put("Vishakapatnam","Vishakhapatnam");
-        cityMap.put("Viskhapatnam","Vishakhapatnam");
-        cityMap.put("Thoothkudi","Thoothukudi");
-        cityMap.put("Thoothudkudi","Thoothukudi");
-        cityMap.put("Krishnapuran","Krishnapuram");
-        cityMap.put("Shimoga","Shivamogga (Shimoga)");
+        cityMap.put("Allapuzha", "Alappuzha");
+        cityMap.put("Alleppay", "Alappuzha");
+        cityMap.put("Alleppey", "Alappuzha");
+        cityMap.put("Chikkmagalur", "Chikmagalur");
+        cityMap.put("Virudhaunagar", "Viridhunagar");
+        cityMap.put("Virudhinagar", "Viridhunagar");
+        cityMap.put("Virudhunagar", "Viridhunagar");
+        cityMap.put("Visakha", "Vishakhapatnam");
+        cityMap.put("Visakhapatna", "Vishakhapatnam");
+        cityMap.put("Vishakapatnam", "Vishakhapatnam");
+        cityMap.put("Viskhapatnam", "Vishakhapatnam");
+        cityMap.put("Thoothkudi", "Thoothukudi");
+        cityMap.put("Thoothudkudi", "Thoothukudi");
+        cityMap.put("Krishnapuran", "Krishnapuram");
+        cityMap.put("Shimoga", "Shivamogga (Shimoga)");
         cityMap.put("Trichy", "Tiruchirapalli");
         cityMap.put("Kollam", "Kollam (Quilon)");
         cityMap.put("Chandigrah", "Chandigarh");
+        cityMap.put("24 Paraganas", "24 Parganas North");
+        cityMap.put("24 Paraganas N", "24 Parganas North");
+        cityMap.put("24 Paraganas(N)", "24 Parganas North");
+        cityMap.put("24 Pargana N", "24 Parganas North");
+        cityMap.put("24 Parganas", "24 Parganas North");
+        cityMap.put("24 Parganas (N)", "24 Parganas North");
+        cityMap.put("24 Parganas N", "24 Parganas North");
+        cityMap.put("24 Parganas(N)", "24 Parganas North");
+        cityMap.put("24 Parganes N", "24 Parganas North");
+        cityMap.put("24 Pragans", "24 Parganas North");
+        cityMap.put("24 Parganas (S)", "24 Parganas South");
+        cityMap.put("24 Parganas S", "24 Parganas South");
+        cityMap.put("Bhubaneshwar", "Bhubaneswar");
+        cityMap.put("Bhunbaneshwar", "Bhubaneswar");
+
 
         stateMap.put("Uttaranchal", "Uttarakhand");
         stateMap.put("Uttarkhand", "Uttarakhand");
@@ -201,9 +218,9 @@ public class MigrationBase implements IMigrate {
         stateMap.put("Chattisgarh", "Chhattisgarh");
         stateMap.put("Chattisgarh", "Chhattisgarh");
         stateMap.put("Chhaattisgarh", "Chhattisgarh");
-        stateMap.put("Chhatisgarh",  "Chhattisgarh");
-        stateMap.put("Chattisgarah",  "Chhattisgarh");
-        stateMap.put("C.G.",  "Chhattisgarh");
+        stateMap.put("Chhatisgarh", "Chhattisgarh");
+        stateMap.put("Chattisgarah", "Chhattisgarh");
+        stateMap.put("C.G.", "Chhattisgarh");
         stateMap.put("T/N/", "Tamil Nadu");
         stateMap.put("T.N/", "Tamil Nadu");
         stateMap.put("T,N.", "Tamil Nadu");
@@ -325,8 +342,7 @@ public class MigrationBase implements IMigrate {
         pst_insert_subscription_no_dt = this.conn.prepareStatement(sql_insert_subscription_no_dt, Statement.RETURN_GENERATED_KEYS);
         pst_insert_subscription_dtls = this.conn.prepareStatement(sql_insert_subscriptiondetails);
         pst_insert_subscriber = this.conn.prepareStatement(sql_insert_subscriber_dt, Statement.RETURN_GENERATED_KEYS);
-
-
+        pst_insert_city = this.conn.prepareStatement(insert_city, Statement.RETURN_GENERATED_KEYS);
 
     }
 
@@ -343,9 +359,9 @@ public class MigrationBase implements IMigrate {
     }
 
     public void openExcel(String fileName) throws java.io.FileNotFoundException {
-        try{
+        try {
             excelReader = new ExcelReader(fileName, 0);
-        }catch(IOException | BiffException ex){
+        } catch (IOException | BiffException ex) {
             logger.fatal("Failed to open excel file: " + fileName);
             System.exit(1);
         }
@@ -378,6 +394,14 @@ public class MigrationBase implements IMigrate {
     }
 
     public int getCityID(String cityName) throws SQLException {
+        if (cityName.isEmpty()) {
+            return 0;
+        }
+
+        //trim of any spaces are the ends
+        cityName = cityName.trim();
+
+        int cityid = 0;
         if (this.cityMap.containsKey(cityName)) {
             cityName = this.cityMap.get(cityName);
         }
@@ -386,10 +410,24 @@ public class MigrationBase implements IMigrate {
         ResultSet rs = db.executeQueryPreparedStatement(pst);
         if (rs.isBeforeFirst()) {
             rs.first();
-            return rs.getInt(1);
+            cityid = rs.getInt(1);
         } else {
-            return 0;
+            // if the city is not present in the city table, check the district table
+            //try {
+            invalidcitylog.error(cityName);
+            //Path path = Paths.get("logs\\invalidCities.log");
+            //Files.write(path, citynames, StandardCharsets.UTF_8);
+            pst_insert_city.setString(1, cityName);
+            int rc = pst_insert_city.executeUpdate();
+            if (rc == 1) {
+                ResultSet _rs = pst_insert_city.getGeneratedKeys();
+                if (_rs.first()) {
+                    cityid = _rs.getInt(1);
+                }
+            }
+            //} 
         }
+        return cityid;
 
 
     }
@@ -517,14 +555,14 @@ public class MigrationBase implements IMigrate {
 
     }
 
-    public int getInteger(String _text){
+    public int getInteger(String _text) {
         int rc = 0;
-        try{
+        try {
             rc = Integer.parseInt(_text);
-        }catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             logger.error("Invalid string to int: " + _text);
             rc = 0;
-        }finally{
+        } finally {
             return rc;
         }
     }
@@ -539,7 +577,7 @@ public class MigrationBase implements IMigrate {
                 //logger.fatal("Invalid pincode: " + _pinAsText);
                 pincode = 0;
             }
-        }else{
+        } else {
             //logger.fatal("Invalid pincode: " + _pinAsText);
         }
         return pincode;
@@ -603,7 +641,7 @@ public class MigrationBase implements IMigrate {
     public int insertSubscriber(String subtypeCode, String SubscriberName, String department,
             String institution, String ShipAddress, String invAddress,
             int city, int state, int pincode, int country, String email) throws SQLException, ParseException,
-            java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException{
+            java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException {
 
         String nextSubscriberNumber = this.getNextSubscriberNumber();
         int paramindex = 0;
@@ -625,15 +663,15 @@ public class MigrationBase implements IMigrate {
         pst_insert_subscriber.setDate(++paramindex, util.dateStringToSqlDate(util.getDateString()));
 
         int subscriberid = 0;
-        try{
-            if(pst_insert_subscriber.executeUpdate() == 1){
-                try(ResultSet rs = pst_insert_subscriber.getGeneratedKeys();){
-                    if(rs.first()){
+        try {
+            if (pst_insert_subscriber.executeUpdate() == 1) {
+                try (ResultSet rs = pst_insert_subscriber.getGeneratedKeys();) {
+                    if (rs.first()) {
                         subscriberid = rs.getInt(1);
                     }
                 }
             }
-        }finally{
+        } finally {
             return subscriberid;
         }
 
