@@ -256,6 +256,7 @@ public class MigrationBase implements IMigrate {
         countryMap.put("CANCELLED U.S.A.", "USA");
         countryMap.put("CANCELELED  U.S.A.", "USA");
         countryMap.put("U.K.", "UK");
+        countryMap.put("England, U.K.", "UK");
         countryMap.put("London WC2E 8LH", "UK");
         countryMap.put("The Netherlands", "Netherlands");
         countryMap.put("Czechoslovakia", "Czech Republic");
@@ -265,9 +266,12 @@ public class MigrationBase implements IMigrate {
         countryMap.put("THE NETHERLANDS", "Netherlands");
         countryMap.put("REPUBLIC OF MOLDAVA", "Moldava");
         countryMap.put("US", "USA");
-        countryMap.put("S. Afarica", "USA");
+        countryMap.put("U.S.A. (2 COPIES)", "USA");
+        countryMap.put("S. Afarica", "South Africa");
+        countryMap.put("S.Africa", "South Africa");
         countryMap.put("Frnace", "France");
         countryMap.put("Italy*****SURFACE", "Italy");
+        countryMap.put("Italia", "Italy");
         countryMap.put("S.A.", "Colombia");
         countryMap.put("Brasil", "Brazil");
         countryMap.put("Colombia, S.A.", "Colombia");
@@ -425,7 +429,7 @@ public class MigrationBase implements IMigrate {
                     cityid = _rs.getInt(1);
                 }
             }
-            //} 
+            //}
         }
         return cityid;
 

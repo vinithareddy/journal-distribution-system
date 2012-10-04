@@ -51,7 +51,7 @@ public class CURRIEX extends MigrationBase {
             String cityPin = datacolumns[8];
 
             int copies = this.getInteger(datacolumns[12]);
-            
+
             if(copies == 0){
                 continue; // do not migrate if there is no subscription
             }
@@ -62,6 +62,14 @@ public class CURRIEX extends MigrationBase {
             if (datacolumns[7].isEmpty() == false) {
                 address = address == null ? datacolumns[7] : address + "\n" + datacolumns[7];
             }
+
+            if (cityPin.matches(".*\\d+$")) {
+                String[] city = cityPin.split("\\d+", 2);
+                cityid = this.getCityID(city[0]);
+                logger.debug("city is:" + city[0]);
+                logger.debug("city id is:" + cityid);
+            }
+            
             if (cityid == 0){
                 logger.warn("Found City with Id 0 " + cityPin);
                 address = address + cityPin;
@@ -70,32 +78,25 @@ public class CURRIEX extends MigrationBase {
                 logger.warn("Found State with Id 0 " + datacolumns[10]);
                 address = address + datacolumns[8];
             }
-                        
-            if (cityPin.matches(".*\\d+$")) {
-                String[] city = cityPin.split("\\d+", 2);
-                cityid = this.getCityID(city[0]);
-                logger.debug("city is:" + city[0]);
-                logger.debug("city id is:" + cityid);
-            }
-            
+
             int subscriberid = this.insertSubscriber(
                     "EI",
-                    name, 
-                    department, 
-                    institute, 
-                    address, 
-                    address, 
-                    cityid, 
-                    stateid, 
-                    pin, 
-                    countryid, 
+                    name,
+                    department,
+                    institute,
+                    address,
+                    address,
+                    cityid,
+                    stateid,
+                    pin,
+                    countryid,
                     null);
             if(subscriberid > 0){
                 logger.info("Successfully inserted subsciber data for:" + name);
                 int subscription_id = this.insertSubscription(subscriberid);
                 if(subscription_id > 0){
                     boolean isSuccess = this.insertSubscriptionDetails(
-                            subscription_id, 
+                            subscription_id,
                             11, //jgroup id
                             copies, //copies
                             2012, //start year
@@ -103,7 +104,7 @@ public class CURRIEX extends MigrationBase {
                             2050, //end year
                             12, //end month
                             1); //price group id
-                    
+
                     if(isSuccess){
                         logger.info("Subscription inserted successfully for: " + name);
                         success++;
