@@ -166,6 +166,19 @@ public class MigrationBase implements IMigrate {
         cityMap.put("24 Parganas S", "24 Parganas South");
         cityMap.put("Bhubaneshwar", "Bhubaneswar");
         cityMap.put("Bhunbaneshwar", "Bhubaneswar");
+        cityMap.put("Mumbai 400 703", "Mumbai");
+        cityMap.put("Hyderabad 400", "Hyderabad");
+        cityMap.put("Kolkata 700 032", "Kolkata");
+        cityMap.put("Hyderabad 500046", "Hyderabad");
+        cityMap.put("Pune 411 001", "Pune");
+        cityMap.put("Hyderabad 500 001", "Hyderabad");
+        cityMap.put("Thiruvananthapuram 695 004", "Thiruvananthapuram");
+        cityMap.put("Hyderabad 500 046", "Hyderabad");
+        cityMap.put("Bangalore 560 100", "Bengaluru");
+        cityMap.put("New Delhi 110 054", "New Delhi");
+        cityMap.put("Pune 410 513", "Pune");
+        cityMap.put("Hyderabad 500 607", "Hyderabad");
+        cityMap.put("Kottayam 686 560", "Kottayam");
 
 
         stateMap.put("Uttaranchal", "Uttarakhand");
