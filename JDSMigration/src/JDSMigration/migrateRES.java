@@ -108,7 +108,7 @@ public class migrateRES extends MigrationBase {
 
                 // Start year < 1st-Jan-2013 and End year > 31-July-2012
                 // csy.compareTo(dateFormat.parse("01/01/2013")) < 0 && cey.compareTo(dateFormat.parse("31/07/2012")) > 0
-                if (cey.compareTo(dateFormat.parse("01/01/2012")) > 0) {
+                if (cey.compareTo(dateFormat.parse("01/01/2012")) > 0 && copies > 0) {
                     count = count + Integer.parseInt(datacolumns[22]);
                     //logger.info(subno);
 

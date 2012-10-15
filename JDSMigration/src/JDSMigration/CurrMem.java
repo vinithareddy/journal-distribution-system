@@ -68,8 +68,12 @@ public class CurrMem extends MigrationBase{
             String cityAndPin = datacolumns[6];
             String pin = datacolumns[7].replaceAll(" ", "");
             pin = pin.isEmpty() ? "0" : pin;
-            float amount = datacolumns[11].isEmpty() || datacolumns[11] == null || datacolumns[11].equalsIgnoreCase("null") ? 0 : Float.parseFloat(datacolumns[11]);
 
+            float  amount = 0;
+            if(!(datacolumns[11].isEmpty() || datacolumns[11] == null || datacolumns[11].equalsIgnoreCase("null"))){
+                String amountTemp = datacolumns[11].replaceAll("/-", "");
+                amount = Float.parseFloat(amountTemp);
+            }
             int cityid = 0;
             int stateid;
 

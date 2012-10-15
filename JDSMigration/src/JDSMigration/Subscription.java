@@ -102,7 +102,7 @@ public class Subscription extends MigrationBase {
 
             //Subscriber Number from excel
             this.subscriberNumber = datacolumns[0];
-            
+
             int subscriberId = 0;
             pst_select_subscriber.setString(1, datacolumns[0]);
             ResultSet rs_subscriber = this.db.executeQueryPreparedStatement(pst_select_subscriber);
@@ -147,7 +147,7 @@ public class Subscription extends MigrationBase {
 
                 corr_balance = (float) 0;
             }
-            
+
             if("2521".equals(this.subscriberNumber)){
                 logger.debug(this.subscriberNumber);
             }
@@ -196,16 +196,16 @@ public class Subscription extends MigrationBase {
 
             if (_tempStrtYr > 100) { // start year is rightly filled with 4 digit year
 
-             if (_tempStrtYr > 100 && _tempStrtYr < 1000) { 
-                 //Many recordshave 3 digit year 
-                 logger.error("Start year for subscription " + 
-                         subscriptionID + " is 3 digit " + datacolumns[31] + " but it is updated in the table"); } startYr = _tempStrtYr; } 
+             if (_tempStrtYr > 100 && _tempStrtYr < 1000) {
+                 //Many recordshave 3 digit year
+                 logger.error("Start year for subscription " +
+                         subscriptionID + " is 3 digit " + datacolumns[31] + " but it is updated in the table"); } startYr = _tempStrtYr; }
             else {
-             if (_tempStrtYr > 50 && _tempStrtYr < 100) { 
-                 // start year is filled with 2 digit such as 79, which means it is 1979 
-                 startYr = 1900 + _tempStrtYr; 
-             } else if (_tempStrtYr <= 50 && _tempStrtYr > 0){ 
-                 startYr = 2000 + _tempStrtYr; 
+             if (_tempStrtYr > 50 && _tempStrtYr < 100) {
+                 // start year is filled with 2 digit such as 79, which means it is 1979
+                 startYr = 1900 + _tempStrtYr;
+             } else if (_tempStrtYr <= 50 && _tempStrtYr > 0){
+                 startYr = 2000 + _tempStrtYr;
              } }
 
 
@@ -338,16 +338,16 @@ public class Subscription extends MigrationBase {
         endYr = endYr > 0 ? endYr : startYr;
         int paramIndex1 = 0;
         int endMonth;
-        
+
         if(startMonth==1){
             endMonth = 12;
         }else{
             endMonth = startMonth - 1; // case where the subscription starts from July
             //endYr = endYr + 1;  // if the month does not start from 1 it means the
         }
-        
-        
-        
+
+
+
         int subtypeID = this.getSubscriberTyeID(this.subscriberID);
         if (subtypeID == 0) {
             logger.fatal("Subscriber type id = " + subtypeID + " for subscriber : " + this.subscriberNumber);
