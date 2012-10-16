@@ -89,11 +89,11 @@ public class CurrMem extends MigrationBase{
             stateid = this.getStateID(state);
             if (cityid == 0){
                 logger.warn("Found City with Id 0 " + cityAndPin);
-                address = address + cityAndPin;
+                address = address + " " + cityAndPin;
             }
             if (stateid == 0){
                 logger.warn("Found State with Id 0 " + datacolumns[8]);
-                address = address + datacolumns[8];
+                address = address + " " + datacolumns[8];
             }
             int paramindex = 0;
             PreparedStatement pst = conn.prepareStatement(insert_subscriber_sql, Statement.RETURN_GENERATED_KEYS);
@@ -107,7 +107,7 @@ public class CurrMem extends MigrationBase{
             pst.setString(++paramindex, address);
             pst.setInt(++paramindex, cityid);
             pst.setInt(++paramindex, stateid);
-            pst.setInt(++paramindex, 15);
+            pst.setInt(++paramindex, this.getIndiaID());
             pst.setInt(++paramindex, Integer.parseInt(pin));
             pst.setInt(++paramindex, 8);
             int upd_count = pst.executeUpdate();

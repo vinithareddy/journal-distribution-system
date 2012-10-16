@@ -43,6 +43,7 @@ public class MigrationBase implements IMigrate {
     public String sql_distrcit = "select id from districts where district = ?";
     public String sql_state = "select id from states where state = ?";
     public String sql_country = "select id from countries where country = ?";
+    public String sql_india = "select id from countries where country = 'India'";
     public String dataFile = null;
     private ExcelReader excelReader = null;
     public static final int COMMIT_SIZE = 1000;
@@ -473,6 +474,20 @@ public class MigrationBase implements IMigrate {
         }
         PreparedStatement pst = this.conn.prepareStatement(sql_state);
         pst.setString(1, stateName);
+        ResultSet rs = db.executeQueryPreparedStatement(pst);
+        if (rs.isBeforeFirst()) {
+            rs.first();
+            return rs.getInt(1);
+        } else {
+            return 0;
+        }
+
+
+    }
+    
+        public int getIndiaID() throws SQLException {
+
+        PreparedStatement pst = this.conn.prepareStatement(sql_india);
         ResultSet rs = db.executeQueryPreparedStatement(pst);
         if (rs.isBeforeFirst()) {
             rs.first();

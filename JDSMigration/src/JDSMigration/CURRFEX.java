@@ -68,11 +68,11 @@ public class CURRFEX extends MigrationBase{
                   
             if (cityid == 0){
                 logger.warn("Found City with Id 0 " + datacolumns[8]);
-                address = address + datacolumns[8];
+                address = address + " " + datacolumns[8];
             }
             if (countryid == 0){
                 logger.warn("Found Country with Id 0 " + datacolumns[9]);
-                address = address + datacolumns[9];
+                address = address + " " + datacolumns[9];
             }
             int subscriberid = this.insertSubscriber(
                     "EF",

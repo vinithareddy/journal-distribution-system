@@ -87,7 +87,7 @@ public class CurtWas extends MigrationBase{
             countryid = this.getCountryID(country);
             if(countryid == 0){
                 logger.warn("Failed to get country id for " + country);
-                address = address + datacolumns[10];
+                address = address + " " + datacolumns[10];
             }
             int paramindex = 0;
             PreparedStatement pst = conn.prepareStatement(insert_subscriber_sql, Statement.RETURN_GENERATED_KEYS);

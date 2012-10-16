@@ -46,7 +46,7 @@ public class CURRGRAN extends MigrationBase{
             String department = datacolumns[3];
             int pin = this.getPinCode(datacolumns[8]);
             int stateid = this.getStateID(datacolumns[10]);
-            int countryid = 15; //default to india
+            int countryid = this.getIndiaID(); //default to india
             int cityid = 0;
             String cityPin = datacolumns[7];
 
@@ -71,7 +71,7 @@ public class CURRGRAN extends MigrationBase{
             }
             if (cityid == 0){
                 logger.warn("Found City with Id 0 " + cityPin);
-                address = address + cityPin;
+                address = address + " " + cityPin;
             }
             int subscriberid = this.insertSubscriber(
                     "GRANT",

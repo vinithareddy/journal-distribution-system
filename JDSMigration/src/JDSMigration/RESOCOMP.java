@@ -48,7 +48,7 @@ public class RESOCOMP extends MigrationBase {
             String department = null;
             int pin = this.getPinCode(datacolumns[6]);
             int stateid = 0;
-            int countryid = 15; //default to india
+            int countryid = this.getIndiaID(); //default to india
             int cityid = 0;
             String subscriberType = datacolumns[8];
             int subscriberTypeID = 0;
@@ -103,11 +103,11 @@ public class RESOCOMP extends MigrationBase {
             }
             if (cityid == 0){
                 logger.warn("Found City with Id 0 " + cityPin);
-                address = address + cityPin;
+                address = address + " " + cityPin;
             }
             if (stateid == 0){
                 logger.warn("Found State with Id 0 " + datacolumns[7]);
-                address = address + datacolumns[7];
+                address = address + " " + datacolumns[7];
             }
             int subscriberid = this.insertSubscriber(
                     subscriberTypeCode,

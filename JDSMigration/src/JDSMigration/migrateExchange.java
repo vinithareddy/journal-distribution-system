@@ -6,6 +6,7 @@ package JDSMigration;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import jxl.read.biff.BiffException;
@@ -13,6 +14,7 @@ import org.apache.log4j.Logger;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
@@ -29,16 +31,16 @@ public class migrateExchange extends MigrationBase{
         private int COMMIT_BATCH_SIZE = 1000;
 
         // Fellows do not have a subscriber no, hence we take the last subscriber ID and start from there
-        int subscriberNumberStart;
+        //int subscriberNumberStart;
 
         public migrateExchange() throws SQLException {
         this.dataFile = this.dataFolder + "\\EXCHANGE.xls";
         this.conn = this.db.getConnection();
         conn.setAutoCommit(false);
-        subscriberNumberStart = getLastSubscriberId() + 1;
+        //subscriberNumberStart = getLastSubscriberId() + 1;
     }
 
-    public void Migrate() throws FileNotFoundException, IOException, BiffException, SQLException {
+    public void Migrate() throws FileNotFoundException, IOException, BiffException, SQLException, ParseException, InvocationTargetException, IllegalAccessException {
 
         this.openExcel(dataFile);
         logger.debug("able to open file" + dataFile.toString());
@@ -53,11 +55,11 @@ public class migrateExchange extends MigrationBase{
         PreparedStatement pst_insert_subscriber = null,
                 pst_insert_subscription = null,
                 pst_insert_subscription_dtls = null;
-        pst_insert_subscriber = this.conn.prepareStatement(sql_insert_subscriber);
+        pst_insert_subscriber = this.conn.prepareStatement(sql_insert_subscriber_dt, com.mysql.jdbc.Statement.RETURN_GENERATED_KEYS);
         pst_insert_subscription = this.conn.prepareStatement(sql_insert_subscription_free_subs, Statement.RETURN_GENERATED_KEYS);
         pst_insert_subscription_dtls = this.conn.prepareStatement(sql_insert_subscriptiondetails);
 
-        int subscriberNumber = subscriberNumberStart;
+        //int subscriberNumber = subscriberNumberStart;
 
         while (true) {
             datacolumns = this.getNextRow();
@@ -128,7 +130,7 @@ public class migrateExchange extends MigrationBase{
             }
             else
             {
-                shippingAddress = shippingAddress + cityAndPin;
+                shippingAddress = shippingAddress + " " + cityAndPin;
             }
 
             // Now get the stateID
@@ -173,11 +175,13 @@ public class migrateExchange extends MigrationBase{
                     shippingAddress = shippingAddress + " " + pincode;
                 }
             }
+            
+            String subscriberNumber = this.getNextSubscriberNumber();
 
             // Insert into the database
             int paramIndex = 0;
             pst_insert_subscriber.setString(++paramIndex, subtype);
-            pst_insert_subscriber.setString(++paramIndex, Integer.toString(subscriberNumber));
+            pst_insert_subscriber.setString(++paramIndex, subscriberNumber);
             pst_insert_subscriber.setString(++paramIndex, subscriberName);
             pst_insert_subscriber.setString(++paramIndex, department);
             pst_insert_subscriber.setString(++paramIndex, institution);
@@ -189,8 +193,21 @@ public class migrateExchange extends MigrationBase{
             pst_insert_subscriber.setInt(++paramIndex, countryID);
             pst_insert_subscriber.setInt(++paramIndex, 0);
             pst_insert_subscriber.setString(++paramIndex, email);
+            pst_insert_subscriber.setDate(++paramIndex, util.dateStringToSqlDate(util.getDateString()));
             pst_insert_subscriber.addBatch();
+            
+            int subscriberid = 0;
+            if (pst_insert_subscriber.executeUpdate() == 1) {
+                try (ResultSet rs = pst_insert_subscriber.getGeneratedKeys();) {
+                    if (rs.first()) {
+                        subscriberid = rs.getInt(1);
+                    }
+                }
+            }
+            recordCounter++;
+            insertedSubscribers++;            
 
+            /*
             int ret = this.db.executeUpdatePreparedStatement(pst_insert_subscriber);
             if (ret == 0) {
                 logger.fatal("Failed to insert subscriber: " + subscriberNumber + " Name: " + subscriberName);
@@ -199,18 +216,19 @@ public class migrateExchange extends MigrationBase{
                 recordCounter++;
                 insertedSubscribers++;
             }
+            */ 
 
             /*----------------------------------------------------------------*/
             /*---Insert Subscription ---*/
             /*----------------------------------------------------------------*/
             int inwardId = 0;
             paramIndex = 0;
-            pst_insert_subscription.setInt(++paramIndex, subscriberNumber);
+            pst_insert_subscription.setInt(++paramIndex, subscriberid);
             pst_insert_subscription.setInt(++paramIndex, inwardId);
             pst_insert_subscription.setBoolean(++paramIndex, true);
 
             //Inserting the record in Subscription Table
-            ret = this.db.executeUpdatePreparedStatement(pst_insert_subscription);
+            int ret = this.db.executeUpdatePreparedStatement(pst_insert_subscription);
 
             //Logging the inserting row
             if (ret == 1) {
@@ -289,7 +307,7 @@ public class migrateExchange extends MigrationBase{
                 conn.commit();
                 recordCounter = 0;
             }
-            subscriberNumber++;
+            //subscriberNumber++;
         }
         conn.commit();
         logger.debug("Total Rows: " + totalRows);

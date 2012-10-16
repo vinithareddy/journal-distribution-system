@@ -46,7 +46,7 @@ public class CURRWC extends MigrationBase{
             String department = datacolumns[2];
             int pin = this.getPinCode(datacolumns[7]);
             int stateid = this.getStateID(datacolumns[8]);
-            int countryid = 15; //default to india
+            int countryid = this.getIndiaID(); //default to india
             int cityid = 0;
             String cityPin = datacolumns[6];
 
@@ -71,11 +71,11 @@ public class CURRWC extends MigrationBase{
             }
             if (cityid == 0){
                 logger.warn("Found City with Id 0 " + cityPin);
-                address = address + cityPin;
+                address = address + " " + cityPin;
             }
             if (stateid == 0){
                 logger.warn("Found State with Id 0 " + datacolumns[8]);
-                address = address + datacolumns[8];
+                address = address + " " + datacolumns[8];
             }
             int subscriberid = this.insertSubscriber(
                     "WC",

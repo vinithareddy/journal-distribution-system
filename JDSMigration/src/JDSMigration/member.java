@@ -46,7 +46,7 @@ public class member extends MigrationBase{
             String department = datacolumns[4];
             int pin = this.getPinCode(datacolumns[9]);
             int stateid = this.getStateID(datacolumns[10]);
-            int countryid = 15; //default to india
+            int countryid = this.getIndiaID(); //default to india
             int cityid = 0;
             String cityPin = datacolumns[8];
 
@@ -67,11 +67,11 @@ public class member extends MigrationBase{
             }
             if (cityid == 0){
                 logger.warn("Found City with Id 0 " + cityPin);
-                address = address + cityPin;
+                address = address + " " + cityPin;
             }
             if (stateid == 0){
                 logger.warn("Found State with Id 0 " + datacolumns[10]);
-                address = address + datacolumns[10];
+                address = address + " " + datacolumns[10];
             }            
             int subscriberid = this.insertSubscriber(
                     "FELJM",
