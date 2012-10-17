@@ -151,6 +151,9 @@ public class migrateJGRANT extends MigrationBase{
                     logger.warn("Found country " + country + " which does not have a entry in the database");
                     shippingAddress = country + " " + country;
                 }
+            } else {
+                countryID = this.getIndiaID();
+                logger.warn("Found country " + country + " which does not have a entry in the database. Setting to India");
             }
 
             // Replace the space in the pincode and convert to integer
@@ -165,7 +168,7 @@ public class migrateJGRANT extends MigrationBase{
                     shippingAddress = shippingAddress + " " + pincode;
                 }
             }
-            
+
             String subscriberNumber = this.getNextSubscriberNumber();
 
             // Insert into the database the subscriber
@@ -185,7 +188,7 @@ public class migrateJGRANT extends MigrationBase{
             pst_insert_subscriber.setString(++paramIndex, email);
             pst_insert_subscriber.setDate(++paramIndex, util.dateStringToSqlDate(util.getDateString()));
             pst_insert_subscriber.addBatch();
-            
+
             int subscriberid = 0;
             if (pst_insert_subscriber.executeUpdate() == 1) {
                 try (ResultSet rs = pst_insert_subscriber.getGeneratedKeys();) {
@@ -206,7 +209,7 @@ public class migrateJGRANT extends MigrationBase{
                 recordCounter++;
                 insertedSubscribers++;
             }
-            */ 
+            */
 
             /*----------------------------------------------------------------*/
             /*---Insert Subscription ---*/

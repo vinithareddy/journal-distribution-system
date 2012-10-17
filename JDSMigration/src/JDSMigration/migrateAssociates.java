@@ -148,6 +148,9 @@ public class migrateAssociates extends MigrationBase{
                     logger.warn("Found country " + country + " which does not have a entry in the database");
                     shippingAddress = country + " " + country;
                 }
+            }else {
+                countryID = this.getIndiaID();
+                logger.warn("Found country " + country + " which does not have a entry in the database. Setting to India");
             }
 
             // Replace the space in the pincode and convert to integer
@@ -163,8 +166,8 @@ public class migrateAssociates extends MigrationBase{
                 }
             }
 
-            String subscriberNumber = this.getNextSubscriberNumber();                 
-            
+            String subscriberNumber = this.getNextSubscriberNumber();
+
             // Insert into the database
             int paramIndex = 0;
             pst_insert_subscriber.setString(++paramIndex, subtype);

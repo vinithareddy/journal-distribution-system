@@ -99,6 +99,18 @@ public class IndTemp extends MigrationBase {
                 logger.debug("Skipping foreign subscriber:" + subscriberNumber);
                 continue;
             }*/
+            // This is exception1 that we are making as of now. This needs to be corrected in the original files
+            if(subscribercode.equalsIgnoreCase("1P") ||
+               subscribercode.equalsIgnoreCase("P") ||
+               subscribercode.equalsIgnoreCase("I")
+               ){
+                subscribercode = "IP";
+            }
+
+            // This is exception2 that we are making as of now. This needs to be corrected in the original files
+            if(subscriberNumber.equals("24000")){
+                subscribercode = "IP";
+            }
 
             if(subscriberNumber.isEmpty() || Integer.parseInt(subscriberNumber) == 0){
                 logger.error("No Subscriber Number found for:" + subscriberName + " at line number:" + lineNum);
@@ -179,6 +191,14 @@ public class IndTemp extends MigrationBase {
                     country = "India";
                     countryID = this.getCountryID(country);
                 }
+            }
+
+            if(countryID == 0 &&
+              (subscribercode.equalsIgnoreCase("IP") ||
+                    subscribercode.equalsIgnoreCase("II") ||
+                    subscribercode.equalsIgnoreCase("IC"))
+              ){
+                countryID = this.getIndiaID();
             }
 
             /*

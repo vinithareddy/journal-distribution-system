@@ -149,6 +149,10 @@ public class migrateFellows extends MigrationBase{
                     shippingAddress = country + " " + country;
                 }
             }
+            else {
+                countryID = this.getIndiaID();
+                logger.warn("Found country " + country + " which does not have a entry in the database. Setting to India");
+            }
 
             // Replace the space in the pincode and convert to integer
             int pin = 0;
@@ -162,8 +166,8 @@ public class migrateFellows extends MigrationBase{
                     shippingAddress = shippingAddress + " " + pincode;
                 }
             }
-            
-            String subscriberNumber = this.getNextSubscriberNumber();  
+
+            String subscriberNumber = this.getNextSubscriberNumber();
 
             // Insert into the database
             int paramIndex = 0;

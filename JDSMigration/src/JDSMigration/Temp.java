@@ -97,6 +97,14 @@ public class Temp extends MigrationBase {
                 continue;
             }*/
 
+            if(subscribercode.equalsIgnoreCase("1P") ||
+               subscribercode.equalsIgnoreCase("P") ||
+               subscribercode.equalsIgnoreCase("I")
+               ){
+                subscribercode = "IP";
+            }
+
+
             if(subscriberNumber.isEmpty() || Integer.parseInt(subscriberNumber) == 0){
                 logger.error("No Subscriber Number found for:" + subscriberName + " at line number:" + lineNum);
                 continue;
@@ -176,6 +184,14 @@ public class Temp extends MigrationBase {
                     country = "India";
                     countryID = this.getCountryID(country);
                 }
+            }
+
+            if(countryID == 0 &&
+              (subscribercode.equalsIgnoreCase("IP") ||
+                    subscribercode.equalsIgnoreCase("II") ||
+                    subscribercode.equalsIgnoreCase("IC"))
+              ){
+                countryID = this.getIndiaID();
             }
 
             // By default the pin is extracted from the pin column,
