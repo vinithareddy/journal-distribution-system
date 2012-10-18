@@ -74,7 +74,7 @@ public class member extends MigrationBase{
                 address = address + " " + datacolumns[10];
             }            
             int subscriberid = this.insertSubscriber(
-                    "FELJM",
+                    "MEMBER",
                     name, 
                     department, 
                     institute, 

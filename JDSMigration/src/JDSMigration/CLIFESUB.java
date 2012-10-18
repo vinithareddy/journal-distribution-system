@@ -79,7 +79,7 @@ public class CLIFESUB extends MigrationBase{
             }
             
             int subscriberid = this.insertSubscriber(
-                    "LS",
+                    "LSP",
                     name,
                     department,
                     institute,

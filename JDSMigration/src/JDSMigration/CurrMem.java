@@ -109,7 +109,7 @@ public class CurrMem extends MigrationBase{
             pst.setInt(++paramindex, stateid);
             pst.setInt(++paramindex, this.getIndiaID());
             pst.setInt(++paramindex, Integer.parseInt(pin));
-            pst.setInt(++paramindex, 8);
+            pst.setInt(++paramindex, 17);
             int upd_count = pst.executeUpdate();
             if(upd_count == 1){
                 ResultSet rs = pst.getGeneratedKeys();
