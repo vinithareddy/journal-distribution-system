@@ -68,7 +68,6 @@ insert into cities
 ('Davanagere'), 
 ('Davangere'), 
 ('Dehradun'), 
-('Delhi'), 
 ('Deoli'), 
 ('Dewas'), 
 ('Dhanbad'), 

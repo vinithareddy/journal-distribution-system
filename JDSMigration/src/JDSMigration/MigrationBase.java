@@ -20,6 +20,9 @@ import jxl.read.biff.BiffException;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import javax.mail.Address;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 
 /**
  *
@@ -215,8 +218,7 @@ public class MigrationBase implements IMigrate {
         stateMap.put("J&K", "Jammu & Kashmir");
         stateMap.put("J & K", "Jammu & Kashmir");
         stateMap.put("A&N Islands", "Andaman & Nicobar");
-        stateMap.put("Delhi", "New Delhi");
-        stateMap.put("Delhi`", "New Delhi");
+        stateMap.put("Delhi`", "Delhi");
         stateMap.put("Kashmir", "Jammu & Kashmir");
         stateMap.put("Panjab", "Punjab");
         stateMap.put("Pubjab", "Punjab");
@@ -251,7 +253,7 @@ public class MigrationBase implements IMigrate {
         stateMap.put("Raj.", "Rajasthan");
         stateMap.put("Jharkahand", "Jharkhand");
         stateMap.put("Jhanrkhand", "Jharkhand");
-        stateMap.put("Dlhi", "New Delhi");
+        stateMap.put("Dlhi", "Delhi");
         stateMap.put("KeralaM.S.", "Kerala");
         stateMap.put("Goa.", "Goa");
         stateMap.put("Goa              Y", "Goa");
@@ -484,7 +486,7 @@ public class MigrationBase implements IMigrate {
 
 
     }
-    
+
         public int getIndiaID() throws SQLException {
 
         PreparedStatement pst = this.conn.prepareStatement(sql_india);
@@ -816,5 +818,23 @@ public class MigrationBase implements IMigrate {
                 }
             }
         }
+    }
+
+    boolean validateEmail(String to){
+
+        String message = "";
+        boolean success = false;
+        try {
+            //new InternetAddress(to).validate();
+            Address[] toUser = InternetAddress.parse(to, false);
+            for(Address s: toUser){
+                new InternetAddress(s.toString()).validate();
+            }
+            success = true;
+        } catch (AddressException ex) {
+            message = ex.getMessage();
+            success = false;
+        }
+        return success;
     }
 }

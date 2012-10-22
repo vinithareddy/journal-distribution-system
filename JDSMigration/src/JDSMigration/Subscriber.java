@@ -89,6 +89,10 @@ public class Subscriber extends MigrationBase {
             String cityAndPin = datacolumns[11];
             String country = datacolumns[13];
             String email = datacolumns[55];
+            if(!validateEmail(email)){
+                email = "";
+                logger.warn("Found email ID " + email +" that is not valid for subscriber name: " + subscriberName);
+            }
 
             //skip foreign suscribers
             if(subscribercode.equalsIgnoreCase("FP") || subscribercode.equalsIgnoreCase("FI")){

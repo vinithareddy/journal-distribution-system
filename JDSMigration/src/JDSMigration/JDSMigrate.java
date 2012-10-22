@@ -21,13 +21,13 @@ public class JDSMigrate {
     private static final Logger logger = Logger.getLogger(JDSMigrate.class);
 
     // set this to override all other migration flags
-    private boolean MIGRATE_ALL = true;
+    private boolean MIGRATE_ALL = false;
 
     private boolean INIT_MASTER_DATA = true;
 
     private boolean MIGRATE_INWARD = MIGRATE_ALL && true;
-    private boolean MIGRATE_SUBSCRIBER = MIGRATE_ALL && true;
-    private boolean MIGRATE_SUBSCRIPTION = MIGRATE_ALL && true;
+    private boolean MIGRATE_SUBSCRIBER = MIGRATE_ALL || true;
+    private boolean MIGRATE_SUBSCRIPTION = MIGRATE_ALL || true;
     private boolean MIGRATE_CORR = MIGRATE_ALL && true;
     private boolean MIGRATE_FELLOWS = MIGRATE_ALL && true;
     private boolean MIGRATE_ASSOCIATES = MIGRATE_ALL && true;

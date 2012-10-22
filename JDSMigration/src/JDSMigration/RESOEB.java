@@ -123,6 +123,11 @@ public class RESOEB extends MigrationBase {
                 logger.warn("Found Country with Id 0 " + datacolumns[8]);
                 address = address + " " + datacolumns[8];
             }
+            String email = datacolumns[12];
+            if(!validateEmail(email)){
+                email = "";
+                logger.warn("Found email ID " + email +" that is not valid for subscriber name: " + name);
+            }
             int subscriberid = this.insertSubscriber(
                     subscriberTypeCode,
                     name,
@@ -134,7 +139,7 @@ public class RESOEB extends MigrationBase {
                     stateid,
                     pin,
                     countryid,
-                    datacolumns[12]);
+                    email);
 
             if(subscriberid > 0){
                 logger.info("Successfully inserted subsciber data for:" + name);
