@@ -221,88 +221,91 @@ public class migrateExchange extends MigrationBase{
             }
             */
 
-            /*----------------------------------------------------------------*/
-            /*---Insert Subscription ---*/
-            /*----------------------------------------------------------------*/
-            int inwardId = 0;
-            paramIndex = 0;
-            pst_insert_subscription.setInt(++paramIndex, subscriberid);
-            pst_insert_subscription.setInt(++paramIndex, inwardId);
-            pst_insert_subscription.setBoolean(++paramIndex, true);
+            if(getTotalNoOfCopiesExchange(datacolumns) > 0){
 
-            //Inserting the record in Subscription Table
-            int ret = this.db.executeUpdatePreparedStatement(pst_insert_subscription);
+                /*----------------------------------------------------------------*/
+                /*---Insert Subscription ---*/
+                /*----------------------------------------------------------------*/
+                int inwardId = 0;
+                paramIndex = 0;
+                pst_insert_subscription.setInt(++paramIndex, subscriberid);
+                pst_insert_subscription.setInt(++paramIndex, inwardId);
+                pst_insert_subscription.setBoolean(++paramIndex, true);
 
-            //Logging the inserting row
-            if (ret == 1) {
-                recordCounter++;
-                insertedSubscriptions++;
-            } else {
-                logger.fatal("Failed to insert subscription for: " + subscriberNumber + " Name: " + subscriberName);
-                break;
-            }
+                //Inserting the record in Subscription Table
+                int ret = this.db.executeUpdatePreparedStatement(pst_insert_subscription);
 
-            //Getting back the subsciption Id
-            ResultSet rs_sub = pst_insert_subscription.getGeneratedKeys();
-            rs_sub.first();
-            int subscriptionID = rs_sub.getInt(1);
-
-            /*----------------------------------------------------------------*/
-            /*---Insert Subscription details---*/
-            /*----------------------------------------------------------------*/
-            int[] jrnlArr = {25, 26, 27, 28, 29, 30, 31, 32, 33};   //Data Columns frm excel
-            int[] jrnlGrpIDArr = {1, 2, 3, 4, 6, 5, 7, 8, 9};       //Journal Group IDs
-
-            //logger.debug("Migrating row: " + totalRows);
-
-            for (int j = 0; j < jrnlArr.length; j++) {
-                /*
-                if(totalRows == 96)
-                {
-                    logger.debug("Subscriber: " + subscriberName + "->journal list: " + j);
-                    //logger.debug("try equals 0: " + datacolumns[jrnlArr[j]].equalsIgnoreCase("0"));
-                    //logger.debug("try equals empty: " + datacolumns[jrnlArr[j]].isEmpty());
+                //Logging the inserting row
+                if (ret == 1) {
+                    recordCounter++;
+                    insertedSubscriptions++;
+                } else {
+                    logger.fatal("Failed to insert subscription for: " + subscriberNumber + " Name: " + subscriberName);
+                    break;
                 }
-                 *
-                 */
-                if(datacolumns[jrnlArr[j]] != null)
-                {
-                if (!datacolumns[jrnlArr[j]].equalsIgnoreCase("0") && !datacolumns[jrnlArr[j]].isEmpty()) {
-                    paramIndex = 0;
-                    int noCopies = 0;
-                    // Reso and Curr science are present in cols 19 and 21 and just present as characters
-                    if(jrnlArr[j] == 19 || jrnlArr[j] == 21)
-                        noCopies = 1;
-                    else
-                        noCopies = Integer.parseInt(datacolumns[jrnlArr[j]]);
-                    int startMonth = 1;
-                    int endMonth = 12;
-                    int startYr = 2012;
-                    int endYr = 2050;
-                    int priceGroupID = 1;
-                    pst_insert_subscription_dtls.setInt(++paramIndex, subscriptionID);
-                    pst_insert_subscription_dtls.setInt(++paramIndex, jrnlGrpIDArr[j]);
-                    pst_insert_subscription_dtls.setInt(++paramIndex, noCopies);
-                    pst_insert_subscription_dtls.setInt(++paramIndex, startYr);
-                    pst_insert_subscription_dtls.setInt(++paramIndex, startMonth);
-                    pst_insert_subscription_dtls.setInt(++paramIndex, endYr);
-                    pst_insert_subscription_dtls.setInt(++paramIndex, endMonth);
-                    pst_insert_subscription_dtls.setInt(++paramIndex, priceGroupID);
 
-                    //Inserting the record in Subscription Table
-                    ret = this.db.executeUpdatePreparedStatement(pst_insert_subscription_dtls);
-                    //Logging the inserting row
-                    if (ret == 1) {
-                        recordCounter++;
-                        jrnlNoOfCopies[jrnlGrpIDArr[j] - 1] = jrnlNoOfCopies[jrnlGrpIDArr[j] - 1] + noCopies;
-                    } else {
-                        logger.fatal("Failed to insert subscription deatils for: " + subscriberNumber + " Name: " + subscriberName);
-                        break;
+                //Getting back the subsciption Id
+                ResultSet rs_sub = pst_insert_subscription.getGeneratedKeys();
+                rs_sub.first();
+                int subscriptionID = rs_sub.getInt(1);
+
+                /*----------------------------------------------------------------*/
+                /*---Insert Subscription details---*/
+                /*----------------------------------------------------------------*/
+                int[] jrnlArr = {25, 26, 27, 28, 29, 30, 31, 32, 33};   //Data Columns frm excel
+                int[] jrnlGrpIDArr = {1, 2, 3, 4, 6, 5, 7, 8, 9};       //Journal Group IDs
+
+                //logger.debug("Migrating row: " + totalRows);
+
+                for (int j = 0; j < jrnlArr.length; j++) {
+                    /*
+                    if(totalRows == 96)
+                    {
+                        logger.debug("Subscriber: " + subscriberName + "->journal list: " + j);
+                        //logger.debug("try equals 0: " + datacolumns[jrnlArr[j]].equalsIgnoreCase("0"));
+                        //logger.debug("try equals empty: " + datacolumns[jrnlArr[j]].isEmpty());
                     }
+                     *
+                     */
+                    if(datacolumns[jrnlArr[j]] != null)
+                    {
+                        if (!datacolumns[jrnlArr[j]].equalsIgnoreCase("0") && !datacolumns[jrnlArr[j]].isEmpty()) {
+                            paramIndex = 0;
+                            int noCopies = 0;
+                            // Reso and Curr science are present in cols 19 and 21 and just present as characters
+                            //if(jrnlArr[j] == 19 || jrnlArr[j] == 21)
+                            //    noCopies = 1;
+                            //else
+                                noCopies = Integer.parseInt(datacolumns[jrnlArr[j]]);
+                            int startMonth = 1;
+                            int endMonth = 12;
+                            int startYr = 2012;
+                            int endYr = 2050;
+                            int priceGroupID = 1;
+                            pst_insert_subscription_dtls.setInt(++paramIndex, subscriptionID);
+                            pst_insert_subscription_dtls.setInt(++paramIndex, jrnlGrpIDArr[j]);
+                            pst_insert_subscription_dtls.setInt(++paramIndex, noCopies);
+                            pst_insert_subscription_dtls.setInt(++paramIndex, startYr);
+                            pst_insert_subscription_dtls.setInt(++paramIndex, startMonth);
+                            pst_insert_subscription_dtls.setInt(++paramIndex, endYr);
+                            pst_insert_subscription_dtls.setInt(++paramIndex, endMonth);
+                            pst_insert_subscription_dtls.setInt(++paramIndex, priceGroupID);
+
+                            //Inserting the record in Subscription Table
+                            ret = this.db.executeUpdatePreparedStatement(pst_insert_subscription_dtls);
+                            //Logging the inserting row
+                            if (ret == 1) {
+                                recordCounter++;
+                                jrnlNoOfCopies[jrnlGrpIDArr[j] - 1] = jrnlNoOfCopies[jrnlGrpIDArr[j] - 1] + noCopies;
+                            } else {
+                                logger.fatal("Failed to insert subscription deatils for: " + subscriberNumber + " Name: " + subscriberName);
+                                break;
+                            }
+                        }
+                    }
+                    else
+                        logger.fatal("Found row: " + totalRows + " column" + jrnlArr[j] + " to be null");
                 }
-                }
-                else
-                    logger.fatal("Found row: " + totalRows + " column" + jrnlArr[j] + " to be null");
             }
             /*----------------------------------------------------------------*/
             if(recordCounter >= COMMIT_BATCH_SIZE){
@@ -320,5 +323,16 @@ public class migrateExchange extends MigrationBase{
         }
 
         //this.CloseFile();
+    }
+
+    public int getTotalNoOfCopiesExchange(String[] datacolumns) {
+        int noCopies = 0;
+        int[] jrnlArr = {25, 26, 27, 28, 29, 30, 31, 32, 33};   //Data Columns frm excel
+        for (int j = 0; j < jrnlArr.length; j++) {
+            if (!datacolumns[jrnlArr[j]].equalsIgnoreCase("0") && !datacolumns[jrnlArr[j]].isEmpty()) {
+                noCopies = noCopies + Integer.parseInt(datacolumns[jrnlArr[j]]);
+            }
+        }
+        return noCopies;
     }
 }

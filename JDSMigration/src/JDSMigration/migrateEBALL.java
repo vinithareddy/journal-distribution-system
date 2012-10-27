@@ -210,68 +210,70 @@ public class migrateEBALL extends MigrationBase{
                 insertedSubscribers++;
             }
             */
+            if(getTotalNoOfCopiesEBALL(datacolumns) > 0) {
 
-            /*----------------------------------------------------------------*/
-            /*---Insert Subscription ---*/
-            /*----------------------------------------------------------------*/
-            int inwardId = 0;
-            paramIndex = 0;
-            pst_insert_subscription.setInt(++paramIndex, subscriberid);
-            pst_insert_subscription.setInt(++paramIndex, inwardId);
-            pst_insert_subscription.setBoolean(++paramIndex, true);
+                /*----------------------------------------------------------------*/
+                /*---Insert Subscription ---*/
+                /*----------------------------------------------------------------*/
+                int inwardId = 0;
+                paramIndex = 0;
+                pst_insert_subscription.setInt(++paramIndex, subscriberid);
+                pst_insert_subscription.setInt(++paramIndex, inwardId);
+                pst_insert_subscription.setBoolean(++paramIndex, true);
 
-            //Inserting the record in Subscription Table
-            int ret = this.db.executeUpdatePreparedStatement(pst_insert_subscription);
+                //Inserting the record in Subscription Table
+                int ret = this.db.executeUpdatePreparedStatement(pst_insert_subscription);
 
-            //Logging the inserting row
-            if (ret == 1) {
-                recordCounter++;
-                insertedSubscriptions++;
-            } else {
-                logger.fatal("Failed to insert subscription for: " + subscriberNumber + " Name: " + subscriberName);
-                break;
-            }
+                //Logging the inserting row
+                if (ret == 1) {
+                    recordCounter++;
+                    insertedSubscriptions++;
+                } else {
+                    logger.fatal("Failed to insert subscription for: " + subscriberNumber + " Name: " + subscriberName);
+                    break;
+                }
 
-            //Getting back the subsciption Id
-            ResultSet rs_sub = pst_insert_subscription.getGeneratedKeys();
-            rs_sub.first();
-            int subscriptionID = rs_sub.getInt(1);
+                //Getting back the subsciption Id
+                ResultSet rs_sub = pst_insert_subscription.getGeneratedKeys();
+                rs_sub.first();
+                int subscriptionID = rs_sub.getInt(1);
 
-            /*----------------------------------------------------------------*/
-            /*---Insert Subscription details---*/
-            /*----------------------------------------------------------------*/
-            int[] jrnlArr = {13, 14, 15, 16, 17, 18, 19, 20, 21};   //Data Columns frm excel
-            int[] jrnlGrpIDArr = {1, 2, 3, 4, 5, 6, 7, 8, 9};       //Journal Group IDs
+                /*----------------------------------------------------------------*/
+                /*---Insert Subscription details---*/
+                /*----------------------------------------------------------------*/
+                int[] jrnlArr = {13, 14, 15, 16, 17, 18, 19, 20, 21};   //Data Columns frm excel
+                int[] jrnlGrpIDArr = {1, 2, 3, 4, 5, 6, 7, 8, 9};       //Journal Group IDs
 
-            for (int j = 0; j < jrnlArr.length; j++) {
-                if (!datacolumns[jrnlArr[j]].equalsIgnoreCase("0") && !datacolumns[jrnlArr[j]].isEmpty()) {
-                    paramIndex = 0;
-                    logger.debug(j);
-                    logger.debug(datacolumns[jrnlArr[j]]);
-                    int noCopies = Integer.parseInt(datacolumns[jrnlArr[j]]);
-                    int startMonth = 1;
-                    int endMonth = 12;
-                    int startYr = 2012;
-                    int endYr = 2050;
-                    int priceGroupID = 1;
-                    pst_insert_subscription_dtls.setInt(++paramIndex, subscriptionID);
-                    pst_insert_subscription_dtls.setInt(++paramIndex, jrnlGrpIDArr[j]);
-                    pst_insert_subscription_dtls.setInt(++paramIndex, noCopies);
-                    pst_insert_subscription_dtls.setInt(++paramIndex, startYr);
-                    pst_insert_subscription_dtls.setInt(++paramIndex, startMonth);
-                    pst_insert_subscription_dtls.setInt(++paramIndex, endYr);
-                    pst_insert_subscription_dtls.setInt(++paramIndex, endMonth);
-                    pst_insert_subscription_dtls.setInt(++paramIndex, priceGroupID);
+                for (int j = 0; j < jrnlArr.length; j++) {
+                    if (!datacolumns[jrnlArr[j]].equalsIgnoreCase("0") && !datacolumns[jrnlArr[j]].isEmpty()) {
+                        paramIndex = 0;
+                        logger.debug(j);
+                        logger.debug(datacolumns[jrnlArr[j]]);
+                        int noCopies = Integer.parseInt(datacolumns[jrnlArr[j]]);
+                        int startMonth = 1;
+                        int endMonth = 12;
+                        int startYr = 2012;
+                        int endYr = 2050;
+                        int priceGroupID = 1;
+                        pst_insert_subscription_dtls.setInt(++paramIndex, subscriptionID);
+                        pst_insert_subscription_dtls.setInt(++paramIndex, jrnlGrpIDArr[j]);
+                        pst_insert_subscription_dtls.setInt(++paramIndex, noCopies);
+                        pst_insert_subscription_dtls.setInt(++paramIndex, startYr);
+                        pst_insert_subscription_dtls.setInt(++paramIndex, startMonth);
+                        pst_insert_subscription_dtls.setInt(++paramIndex, endYr);
+                        pst_insert_subscription_dtls.setInt(++paramIndex, endMonth);
+                        pst_insert_subscription_dtls.setInt(++paramIndex, priceGroupID);
 
-                    //Inserting the record in Subscription Table
-                    ret = this.db.executeUpdatePreparedStatement(pst_insert_subscription_dtls);
-                    //Logging the inserting row
-                    if (ret == 1) {
-                        recordCounter++;
-                        jrnlNoOfCopies[j] = jrnlNoOfCopies[j] + noCopies;
-                    } else {
-                        logger.fatal("Failed to insert subscription deatils for: " + subscriberNumber + " Name: " + subscriberName);
-                        break;
+                        //Inserting the record in Subscription Table
+                        ret = this.db.executeUpdatePreparedStatement(pst_insert_subscription_dtls);
+                        //Logging the inserting row
+                        if (ret == 1) {
+                            recordCounter++;
+                            jrnlNoOfCopies[j] = jrnlNoOfCopies[j] + noCopies;
+                        } else {
+                            logger.fatal("Failed to insert subscription deatils for: " + subscriberNumber + " Name: " + subscriberName);
+                            break;
+                        }
                     }
                 }
             }
@@ -291,5 +293,16 @@ public class migrateEBALL extends MigrationBase{
         }
 
         //this.CloseFile();
+    }
+
+    public int getTotalNoOfCopiesEBALL(String[] datacolumns) {
+        int noCopies = 0;
+        int[] jrnlArr = {13, 14, 15, 16, 17, 18, 19, 20, 21};   //Data Columns frm excel
+        for (int j = 0; j < jrnlArr.length; j++) {
+            if (!datacolumns[jrnlArr[j]].equalsIgnoreCase("0") && !datacolumns[jrnlArr[j]].isEmpty()) {
+                noCopies = noCopies + Integer.parseInt(datacolumns[jrnlArr[j]]);
+            }
+        }
+        return noCopies;
     }
 }

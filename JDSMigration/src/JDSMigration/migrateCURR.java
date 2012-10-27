@@ -62,12 +62,9 @@ public class migrateCURR extends MigrationBase {
             }
 
             try {
-                SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 
                 String subno = datacolumns[0];
-                String CURRYR = datacolumns[26];
-                int copies = datacolumns[27].isEmpty() ? 0 : Integer.parseInt(datacolumns[27]);
-                String DATE_CURR = datacolumns[28];
+                int copies = getCopiesCURR(datacolumns);
                 float amount = Float.parseFloat(datacolumns[29]);
 
                 java.sql.Date subdate = util.dateStringToSqlDate(null);
@@ -87,30 +84,12 @@ public class migrateCURR extends MigrationBase {
                 }
 
 
-
-                String CSY = "0";
-                Date csy = dateFormat.parse("01/01/1900");
-                if (!(CURRYR.isEmpty() || CURRYR.equals("0") || DATE_CURR.isEmpty())) {
-                    CSY = DATE_CURR;
-                    csy = dateFormat.parse(CSY);
-                }
-
-                String CEY = "0";
-                Date cey = dateFormat.parse("01/01/1900");
-                if (!(CSY.equals("0"))) {
-                    Calendar temp = Calendar.getInstance();
-
-                    temp.setTime(dateFormat.parse(CSY));
-                    if (!(CURRYR.isEmpty() || CURRYR.equals("0"))) {
-                        temp.add(Calendar.DAY_OF_YEAR, Integer.parseInt(CURRYR) * 365);
-                    }
-                    cey = temp.getTime();
-                    CEY = dateFormat.format(cey);
-                }
+                String CSY = getCSYCURR(datacolumns);
+                String CEY = getCEYCURR(datacolumns);
 
                 // Start year < 1st-Jan-2013 and End year > 31-July-2012
                 // csy.compareTo(dateFormat.parse("01/01/2013")) < 0 && cey.compareTo(dateFormat.parse("31/07/2012")) > 0
-                if (cey.compareTo(dateFormat.parse("01/01/2012")) > 0 && copies > 0) {
+                if ( checkIfValidSubscriptionCURR(datacolumns) && copies > 0) {
                     count = count + Integer.parseInt(datacolumns[27]);
                     //logger.info(subno);
 
@@ -121,26 +100,9 @@ public class migrateCURR extends MigrationBase {
                         continue;
                     }
                     int subscription_id = this.insertSubscription(subscriber_id, 0, amount, subdate, corr_balance);
-
                     logger.debug("Inserted Subscription with id: " + subscription_id);
-                    Calendar cal = Calendar.getInstance();
-                    cal.setTime(csy);
-                    int startMonth = cal.get(Calendar.MONTH) + 1;
-                    int startYear = cal.get(Calendar.YEAR);
 
-                    cal.setTime(cey);
-                    int endMonth = cal.get(Calendar.MONTH) + 1;
-                    int endYear = cal.get(Calendar.YEAR);
-
-
-                    this.insertSubscriptionDetails(subscription_id,
-                            11,
-                            copies,
-                            startYear,
-                            startMonth,
-                            endYear,
-                            endMonth,
-                            1);
+                    this.insertSubscriptionDetailsForCURR(subscription_id, datacolumns);
                     logger.debug("Inserted Subscription details for subscription id: " + subscription_id);
 
                 }
@@ -153,4 +115,117 @@ public class migrateCURR extends MigrationBase {
         logger.info("CURR: " + count);
         this.conn.commit();
     }
+
+    public boolean insertSubscriptionDetailsForCURR(int subscription_id, String[] datacolumns) throws SQLException, ParseException{
+
+        boolean status = this.insertSubscriptionDetails(subscription_id,
+                            11,
+                            getCopiesCURR(datacolumns),
+                            getstartYearCURR(datacolumns),
+                            getstartMonthCURR(datacolumns),
+                            getendYearCURR(datacolumns),
+                            getendMonthCURR(datacolumns),
+                            1);
+        return status;
+    }
+
+    public int getstartYearCURR(String[] datacolumns) throws ParseException{
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(getcsyCURR(datacolumns));
+        int startMonth = cal.get(Calendar.MONTH) + 1;
+        int startYear = cal.get(Calendar.YEAR);
+        return startYear;
+    }
+
+    public int getstartMonthCURR(String[] datacolumns) throws ParseException{
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(getcsyCURR(datacolumns));
+        int startMonth = cal.get(Calendar.MONTH) + 1;
+        int startYear = cal.get(Calendar.YEAR);
+        return startMonth;
+    }
+
+    public int getendYearCURR(String[] datacolumns) throws ParseException{
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(getceyCURR(datacolumns));
+        int endMonth = cal.get(Calendar.MONTH) + 1;
+        int endYear = cal.get(Calendar.YEAR);
+
+        return endYear;
+    }
+
+    public int getendMonthCURR(String[] datacolumns) throws ParseException{
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(getceyCURR(datacolumns));
+        int endMonth = cal.get(Calendar.MONTH) + 1;
+        int endYear = cal.get(Calendar.YEAR);
+
+        return endMonth;
+    }
+
+    public int getCopiesCURR(String[] datacolumns){
+        return datacolumns[27].isEmpty() ? 0 : Integer.parseInt(datacolumns[27]);
+    }
+
+    public boolean checkIfValidSubscriptionCURR(String[] datacolumns) throws ParseException{
+        Date cey = getceyCURR(datacolumns);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        if(cey.compareTo(dateFormat.parse("01/01/2012")) > 0){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    public String getCSYCURR(String[] datacolumns) throws ParseException {
+        String CURRYR = datacolumns[26];
+        String DATE_CURR = datacolumns[28];
+        String CSY = "0";
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        Date csy = dateFormat.parse("01/01/1900");
+        if (!(CURRYR.isEmpty() || CURRYR.equals("0") || DATE_CURR.isEmpty())) {
+            CSY = DATE_CURR;
+            csy = dateFormat.parse(CSY);
+        }
+        return CSY;
+    }
+
+    public Date getcsyCURR(String[] datacolumns) throws ParseException{
+        String CSY = getCSYCURR(datacolumns);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        Date csy = dateFormat.parse("01/01/1900");
+        csy = dateFormat.parse(CSY);
+        return csy;
+    }
+
+    public String getCEYCURR(String[] datacolumns) throws ParseException{
+        String CURRYR = datacolumns[26];
+        String DATE_CURR = datacolumns[28];
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        String CEY = "0";
+        Date cey = getceyCURR(datacolumns);
+        CEY = dateFormat.format(cey);
+
+        return CEY;
+    }
+
+    public Date getceyCURR(String[] datacolumns) throws ParseException{
+        String CURRYR = datacolumns[26];
+        String DATE_CURR = datacolumns[28];
+        String CEY = "0";
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        Date cey = dateFormat.parse("01/01/1900");
+        if (!(getCSYCURR(datacolumns).equals("0"))) {
+            Calendar temp = Calendar.getInstance();
+
+            temp.setTime(dateFormat.parse(getCSYCURR(datacolumns)));
+            if (!(CURRYR.isEmpty() || CURRYR.equals("0"))) {
+                temp.add(Calendar.DAY_OF_YEAR, Integer.parseInt(CURRYR) * 365);
+            }
+            cey = temp.getTime();
+            CEY = dateFormat.format(cey);
+        }
+        return cey;
+    }
+
 }

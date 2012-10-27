@@ -210,6 +210,7 @@ public class migrateJGRANT extends MigrationBase{
                 insertedSubscribers++;
             }
             */
+            if(getTotalNoOfCopiesJGRANT(datacolumns) > 0){
 
             /*----------------------------------------------------------------*/
             /*---Insert Subscription ---*/
@@ -273,6 +274,7 @@ public class migrateJGRANT extends MigrationBase{
                     }
                 }
             }
+            }
             /*----------------------------------------------------------------*/
             if(recordCounter >= COMMIT_BATCH_SIZE){
                 logger.debug("Commiting database after " + String.valueOf(insertedSubscribers) + " rows");
@@ -289,5 +291,16 @@ public class migrateJGRANT extends MigrationBase{
         }
 
         //this.CloseFile();
+    }
+
+    public int getTotalNoOfCopiesJGRANT(String[] datacolumns) {
+        int noCopies = 0;
+        int[] jrnlArr = {10, 11, 12, 13, 14, 15, 16, 17, 18};   //Data Columns frm excel
+        for (int j = 0; j < jrnlArr.length; j++) {
+            if (!datacolumns[jrnlArr[j]].equalsIgnoreCase("0") && !datacolumns[jrnlArr[j]].isEmpty()) {
+                noCopies = noCopies + Integer.parseInt(datacolumns[jrnlArr[j]]);
+            }
+        }
+        return noCopies;
     }
 }

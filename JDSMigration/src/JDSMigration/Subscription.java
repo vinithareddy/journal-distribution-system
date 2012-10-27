@@ -12,6 +12,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import jxl.read.biff.BiffException;
@@ -39,6 +41,18 @@ public class Subscription extends MigrationBase {
         this.dataFile = this.dataFolder + "\\jnls.xls";
         this.conn = this.db.getConnection();
 
+    }
+
+    public int getTotalNoOfCopies(String[] datacolumns) {
+        int noCopies = 0;
+        int[] jrnlArr = {4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 27};
+        //int[] jrnlArr = {4, 6, 8, 10, 12, 14, 16, 18, 20};
+        for (int j = 0; j < jrnlArr.length; j++) {
+            if (!datacolumns[jrnlArr[j]].equalsIgnoreCase("0") && !datacolumns[jrnlArr[j]].isEmpty()) {
+                noCopies = noCopies + Integer.parseInt(datacolumns[jrnlArr[j]]);
+            }
+        }
+        return noCopies;
     }
 
     //Migration
@@ -77,36 +91,12 @@ public class Subscription extends MigrationBase {
 
             totalRows++;
 
-            //migrate only indian subscribers
-            //if(datacolumns[2].equalsIgnoreCase("FI") || datacolumns[2].equalsIgnoreCase("FP"))
-            //continue;
-
-//------------------------------------------------------------------------------------------------------------------------------
-            //Insert Subscription
-//------------------------------------------------------------------------------------------------------------------------------
-            // check if end year is < 2012, else do not migrate the records
-            int startYear = Integer.parseInt(datacolumns[31]);
-            logger.debug("End year field has: " + datacolumns[32]);
-            int endYear = Integer.parseInt(datacolumns[32]) > 0 ? Integer.parseInt(datacolumns[32]) : startYear;
-
-            if (endYear < 2012) {
-                logger.debug("Skipping record for subscriber " + datacolumns[0] + " subsription end year is " + endYear);
-                continue;
-            } //else if (endYear - startYear + 1 > 5) {
-            //logger.debug("Skipping record since subscription period > 5 years for subscriber " + datacolumns[0]);
-            //continue;
-            //}
-            logger.debug("Start Year:" + datacolumns[31]);
-            logger.debug("End Year:" + endYear);
-
-
-            //Subscriber Number from excel
+            // Check if subscriber exists
+            logger.debug("Migrating subscription for subscriber Number: " + datacolumns[0]);
             this.subscriberNumber = datacolumns[0];
-
             int subscriberId = 0;
             pst_select_subscriber.setString(1, datacolumns[0]);
             ResultSet rs_subscriber = this.db.executeQueryPreparedStatement(pst_select_subscriber);
-            logger.debug("Migrating subscription for subscriber Number: " + datacolumns[0]);
             try {
                 rs_subscriber.first();
                 subscriberId = rs_subscriber.getInt(1);
@@ -116,9 +106,7 @@ public class Subscription extends MigrationBase {
                 continue;
             }
 
-
-
-            //Inward Number from excel
+            // Get the inward number
             int inwardId = 0;
             pst_select_inward.setString(1, datacolumns[1]);
             ResultSet rs_inward = this.db.executeQueryPreparedStatement(pst_select_inward);
@@ -126,12 +114,11 @@ public class Subscription extends MigrationBase {
                 inwardId = rs_inward.getInt(1);
             }
 
+            // Get the amount
             float amount = Float.parseFloat(datacolumns[29]);
-            //Current Date, Amount and Paid Flag is mapped to Remarks currently
-            //String remarks = ""; //"DATE_CURR = " + datacolumns[28] + "\n" + "AMOUNT = " + datacolumns[29] + "\n" + "PAID_FLAG = " + datacolumns[30];
 
+            // Get the balance
             Date subdate = util.dateStringToSqlDate(null);
-            // handle invalid subscriber ids
             try {
                 if (!corr_subscriber.isEmpty() && Integer.parseInt(corr_subscriber) == Integer.parseInt(this.subscriberNumber)) {
                     subdate = util.dateStringToSqlDate(corr_sub_date);
@@ -148,165 +135,292 @@ public class Subscription extends MigrationBase {
                 corr_balance = (float) 0;
             }
 
+//------------------------------------------------------------------------------------------------------------------------------
+            //Insert Subscription
+//------------------------------------------------------------------------------------------------------------------------------
+            // check if end year is < 2012, else do not migrate the records
+            int startYear = Integer.parseInt(datacolumns[31]);
+            logger.debug("End year field has: " + datacolumns[32]);
+            int endYear = Integer.parseInt(datacolumns[32]) > 0 ? Integer.parseInt(datacolumns[32]) : startYear;
+
+            if("7123".equals(this.subscriberNumber)){
+                logger.debug(this.subscriberNumber);
+            }
             if("2521".equals(this.subscriberNumber)){
                 logger.debug(this.subscriberNumber);
             }
+            if("2503".equals(this.subscriberNumber)){
+                logger.debug(this.subscriberNumber);
+            }
+
+            //migrateCURR mCURR = new migrateCURR();
+            //migrateRES mRES = new migrateRES();
+
+            int subscriptionID = 0;
+
+            try {
+            if ((endYear >= 2012 || checkIfValidSubscriptionCURR(datacolumns) || checkIfValidSubscriptionRES(datacolumns))
+                    && getTotalNoOfCopies(datacolumns) > 0) {
+
+                // Insert subscription
+
+                logger.debug("Start Year:" + datacolumns[31]);
+                logger.debug("End Year:" + endYear);
+
+                /*
+                int paramIndex = 0;
+                pst_insert_subscription.setInt(++paramIndex, subscriberId);
+                pst_insert_subscription.setInt(++paramIndex, inwardId);
+                pst_insert_subscription.setBoolean(++paramIndex, true);
+                pst_insert_subscription.setFloat(++paramIndex, amount);
+                pst_insert_subscription.setDate(++paramIndex, subdate);
+                pst_insert_subscription.setFloat(++paramIndex, corr_balance);
 
 
+                //Inserting the record in Subscription Table
+                int ret = this.db.executeUpdatePreparedStatement(pst_insert_subscription);
 
-            int paramIndex = 0;
-            pst_insert_subscription.setInt(++paramIndex, subscriberId);
-            pst_insert_subscription.setInt(++paramIndex, inwardId);
-            //pst_insert_subscription.setString(++paramIndex, remarks);
-            pst_insert_subscription.setBoolean(++paramIndex, true);
-            pst_insert_subscription.setFloat(++paramIndex, amount);
-            pst_insert_subscription.setDate(++paramIndex, subdate);
-            pst_insert_subscription.setFloat(++paramIndex, corr_balance);
+                //Logging the inserting row
+                if (ret == 1) {
+                    insertedRows++;
+                    commitCounter++;
+                } else {
+                    logger.fatal("Failed to insert subscription");
+                    break;
+                }
 
 
-            //Inserting the record in Subscription Table
-            int ret = this.db.executeUpdatePreparedStatement(pst_insert_subscription);
+                //Getting back the subsciption Id
+                ResultSet rs_sub = pst_insert_subscription.getGeneratedKeys();
+                rs_sub.first();
+                int subscriptionID = rs_sub.getInt(1);
 
-            //Logging the inserting row
-            if (ret == 1) {
+                if (inwardId != 0) {
+                    logger.error("No Inward Number found for Subscriber:" + datacolumns[0] + " and Subscription:" + subscriptionID);
+                }
+                */
+
+                subscriptionID = this.insertSubscription(subscriberId, inwardId, amount, subdate, corr_balance);
+                logger.debug("Inserted Subscription with id: " + subscriptionID);
                 insertedRows++;
                 commitCounter++;
-            } else {
-                logger.fatal("Failed to insert subscription");
-                break;
-            }
+    //------------------------------------------------------------------------------------------------------------------------------
+                //Insert Subscription Details
+    //------------------------------------------------------------------------------------------------------------------------------
+
+                //Start year
+                // if datacoloumn[31] = 0
+                int startYr = Integer.parseInt(datacolumns[31]);
+                int _tempStrtYr = Integer.parseInt(datacolumns[31]);
+
+                if (_tempStrtYr > 100) { // start year is rightly filled with 4 digit year
+
+                 if (_tempStrtYr > 100 && _tempStrtYr < 1000) {
+                     //Many recordshave 3 digit year
+                     logger.error("Start year for subscription " +
+                             subscriptionID + " is 3 digit " + datacolumns[31] + " but it is updated in the table"); } startYr = _tempStrtYr; }
+                else {
+                 if (_tempStrtYr > 50 && _tempStrtYr < 100) {
+                     // start year is filled with 2 digit such as 79, which means it is 1979
+                     startYr = 1900 + _tempStrtYr;
+                 } else if (_tempStrtYr <= 50 && _tempStrtYr > 0){
+                     startYr = 2000 + _tempStrtYr;
+                 } }
 
 
-            //Getting back the subsciption Id
-            ResultSet rs_sub = pst_insert_subscription.getGeneratedKeys();
-            rs_sub.first();
-            int subscriptionID = rs_sub.getInt(1);
+                //End year
+                int _tempEndYr = Integer.parseInt(datacolumns[32]);
+                int endYr = _tempEndYr;
 
-            if (inwardId != 0) {
-                logger.error("No Inward Number found for Subscriber:" + datacolumns[0] + " and Subscription:" + subscriptionID);
-            }
-//------------------------------------------------------------------------------------------------------------------------------
-            //Insert Subscription Details
-//------------------------------------------------------------------------------------------------------------------------------
-
-            //Start year
-            // if datacoloumn[31] = 0
-            int startYr = Integer.parseInt(datacolumns[31]);
-            int _tempStrtYr = Integer.parseInt(datacolumns[31]);
-
-            if (_tempStrtYr > 100) { // start year is rightly filled with 4 digit year
-
-             if (_tempStrtYr > 100 && _tempStrtYr < 1000) {
-                 //Many recordshave 3 digit year
-                 logger.error("Start year for subscription " +
-                         subscriptionID + " is 3 digit " + datacolumns[31] + " but it is updated in the table"); } startYr = _tempStrtYr; }
-            else {
-             if (_tempStrtYr > 50 && _tempStrtYr < 100) {
-                 // start year is filled with 2 digit such as 79, which means it is 1979
-                 startYr = 1900 + _tempStrtYr;
-             } else if (_tempStrtYr <= 50 && _tempStrtYr > 0){
-                 startYr = 2000 + _tempStrtYr;
-             } }
-
-
-
-            //End year
-            int _tempEndYr = Integer.parseInt(datacolumns[32]);
-            int endYr = _tempEndYr;
-
-            if (_tempEndYr == 0) { // in case of only one year subscription, only start year is filled
-                //_tempEndYr = startYr;
-                endYr = startYr;
-            }
-
-            /*
-             * else { if (_tempEndYr > 100) { // end year is rightly filled with
-             * 4 digit year if (_tempStrtYr > 100 && _tempStrtYr < 1000) {
-             * //Many records have 3 digit year logger.error("End year for
-             * subscription " + subscriptionID + " is 3 digit " +
-             * datacolumns[32] + " but it is updated in the table"); } endYr =
-             * _tempEndYr; } else { if (_tempEndYr > 50 && _tempEndYr < 100) {
-             * // end year is filled with 2 digit such as 79, which means it is
-             * 1979 endYr = 1900 + _tempEndYr; } else if (_tempEndYr <= 50 &&
-             * _tempEndYr > 0) { endYr = 2000 + _tempEndYr; } } }
-             */
-
-//---------------------------------------------------------
-            //Journal Group IDs
-            //  Pramanna - Column -> 4   GrpID -> 3
-            //  JAA      - Column -> 6   GrpID -> 3
-            //  MS       - Column -> 8   GrpID -> 3
-            //  EPS      - Column -> 10  GrpID -> 3
-            //  BMS      - Column -> 12  GrpID -> 3
-            //  CS       - Column -> 14  GrpID -> 3
-            //  S        - Column -> 16  GrpID -> 3
-            //  JB       - Column -> 18  GrpID -> 3
-            //  JG       - Column -> 20  GrpID -> 3
-            //  RES      - Column -> 22  GrpID -> 3
-            //  AS       - Column -> 25  GrpID -> 3
-            //  CURR     - Column -> 27  GrpID -> 3
-            //  ALL      - Column -> No  GrpID -> 12
-            //  Except MS  ------        GrpID -> 13
-//---------------------------------------------------------
-
-            int[] jrnlArr = {4, 6, 8, 10, 12, 14, 16, 18, 20}; //Data Columns frm excel
-            //int[] jrnlArr = {4}; //Data Columns frm excel
-            int[] jrnlGrpIDArr = {1, 2, 3, 4, 6, 5, 7, 8, 9, 12, 13}; //Journal Group IDs
-            int allGrpFlag = 0;
-            int noCopies = 0;
-            if (!datacolumns[4].isEmpty()) {
-                noCopies = Integer.parseInt(datacolumns[4]); //For ALL and ALL but CS - Journal Grp the no. of copies should be same for all the jrnls
-            } else {
-                noCopies = 0;
-            }
-
-            /*
-             * If all journals have the same copy count and is not null or empty
-             * then we consider that he has subscribed to all journals
-             */
-            for (int j = 0; j < jrnlArr.length; j++) {
-                if (!datacolumns[jrnlArr[j]].equalsIgnoreCase("0") && !datacolumns[jrnlArr[j]].isEmpty()) {
-                    if (noCopies == Integer.parseInt(datacolumns[jrnlArr[j]])) {
-                        ++allGrpFlag;
-                    }
+                if (_tempEndYr == 0) { // in case of only one year subscription, only start year is filled
+                    //_tempEndYr = startYr;
+                    endYr = startYr;
                 }
-            }
-            if (allGrpFlag == 12) {
-                // Journal Group for all the journals required by a subscriber
-                insertedRowsSubDtls = migrateSubDtls(subscriptionID, jrnlGrpIDArr[11], noCopies, 1, startYr, endYr);
-            } else {
-                if (allGrpFlag == 11 && (datacolumns[8].equalsIgnoreCase("0") || datacolumns[14].isEmpty())) {
-                    // Journal Group for all the journals except CS
-                    insertedRowsSubDtls = migrateSubDtls(subscriptionID, jrnlGrpIDArr[12], Integer.parseInt(datacolumns[jrnlArr[1]]), 1, startYr, endYr);
+
+                /*
+                 * else { if (_tempEndYr > 100) { // end year is rightly filled with
+                 * 4 digit year if (_tempStrtYr > 100 && _tempStrtYr < 1000) {
+                 * //Many records have 3 digit year logger.error("End year for
+                 * subscription " + subscriptionID + " is 3 digit " +
+                 * datacolumns[32] + " but it is updated in the table"); } endYr =
+                 * _tempEndYr; } else { if (_tempEndYr > 50 && _tempEndYr < 100) {
+                 * // end year is filled with 2 digit such as 79, which means it is
+                 * 1979 endYr = 1900 + _tempEndYr; } else if (_tempEndYr <= 50 &&
+                 * _tempEndYr > 0) { endYr = 2000 + _tempEndYr; } } }
+                 */
+
+    //---------------------------------------------------------
+                //Journal Group IDs
+                //  0:  Pramanna - Column -> 4   GrpID -> 1
+                //  1:  JAA      - Column -> 6   GrpID -> 2
+                //  2:  MS       - Column -> 8   GrpID -> 3
+                //  3:  EPS      - Column -> 10  GrpID -> 4
+                //  4:  BMS      - Column -> 12  GrpID -> 6
+                //  5:  CS       - Column -> 14  GrpID -> 5
+                //  6:  S        - Column -> 16  GrpID -> 7
+                //  7:  JB       - Column -> 18  GrpID -> 8
+                //  8:  JG       - Column -> 20  GrpID -> 9
+                //  9:  RES      - Column -> 22  GrpID -> 10
+                //  10: CURR     - Column -> 27  GrpID -> 11
+                //  11: ALL      - Column -> No  GrpID -> 12
+                //  12: All Except CURR  ------  GrpID -> 13
+    //---------------------------------------------------------
+
+                //int[] jrnlArr = {4, 6, 8, 10, 12, 14, 16, 18, 20}; //Data Columns frm excel
+                int[] jrnlArr =     {4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 27};
+                int[] jrnlGrpIDArr ={1, 2, 3, 4, 6, 5, 7, 8, 9, 10, 11, 12, 13}; //Journal Group IDs
+                int allGrpFlag = 0;
+                int noCopies = 0;
+                if (!datacolumns[4].isEmpty()) {
+                    noCopies = Integer.parseInt(datacolumns[4]); //For ALL and ALL but CS - Journal Grp the no. of copies should be same for all the jrnls
                 } else {
-                    //String dateRes = datacolumns[23];
-                    //String dateCurr = datacolumns[28];
-                    //String dateStr = null;
-                    int startMonth = 1;
+                    noCopies = 0;
+                }
 
-                    // if CURR_DATE or RES_DATE is set, it means it could start from middle of the year
-                    /*if ((!datacolumns[22].isEmpty() && !datacolumns[22].equals("0"))
-                            || (!datacolumns[27].isEmpty() && !datacolumns[27].equals("0"))) {
-                        if (!dateRes.isEmpty()) {
-                            dateStr = dateRes;
-                        } else if (!dateCurr.isEmpty()) {
-                            dateStr = dateCurr;
-                        } else {
-                            dateStr = "1/1/2012";
+                /*
+                 * If all journals have the same copy count and is not null or empty
+                 * then we consider that he has subscribed to all journals
+                 */
+                for (int j = 0; j < jrnlArr.length; j++) {
+                    if (!datacolumns[jrnlArr[j]].equalsIgnoreCase("0") && !datacolumns[jrnlArr[j]].isEmpty()) {
+                        if (noCopies == Integer.parseInt(datacolumns[jrnlArr[j]])) {
+                            allGrpFlag++;
                         }
-                        String[] splitDate = dateStr.split("/");
-                        startMonth = Integer.parseInt(splitDate[0]);
-                    }*/
+                    }
+                }
+
+                // Check if the start year and end year for all the journals is the same
+
+                if (allGrpFlag == 11) {
+                    int period = endYr - startYr;
+
+                    int sYrCURR = getstartYearCURR(datacolumns);
+                    int eYrCURR = getendYearCURR(datacolumns);
+                    int eMonCURR = getendMonthCURR(datacolumns);
+                    int sMonCURR = getstartMonthCURR(datacolumns);
+                    int periodCURR;
+                    if(eMonCURR != 12){
+                        periodCURR = eYrCURR - sYrCURR - 1;
+                    }else {
+                        periodCURR = eYrCURR - sYrCURR;
+                    }
+
+                    int sYrRESO = getstartYearRES(datacolumns);
+                    int eYrRESO = getendYearRES(datacolumns);
+                    int eMonRESO = getendMonthRES(datacolumns);
+                    int sMonRESO = getstartMonthRES(datacolumns);
+                    int periodRESO;
+                    if(eMonRESO!=12){
+                        periodRESO = eYrRESO - sYrRESO - 1;
+                    }else {
+                        periodRESO = eYrRESO - sYrRESO;
+                    }
+
+                    if(period > 0 || periodCURR > 0 || periodRESO > 0){
+                        logger.debug("This is not a ALL GROUPS");
+                        allGrpFlag = 0;
+                    }
+                }
+
+                // Check if the start year and end year for all the journals is the same
+                if (allGrpFlag == 10) {
+                    int period = endYr - startYr;
+                    int sYrRESO = getstartYearRES(datacolumns);
+                    int eYrRESO = getendYearRES(datacolumns);
+                    int eMonRESO = getendMonthRES(datacolumns);
+                    int sMonRESO = getstartMonthRES(datacolumns);
+                    int periodRESO;
+                    if(eMonRESO!=12){
+                        periodRESO = eYrRESO - sYrRESO - 1;
+                    }else {
+                        periodRESO = eYrRESO - sYrRESO;
+                    }
+                    if(period > 0 || periodRESO > 0){
+                        logger.debug("This is not a ALL GROUPS");
+                        allGrpFlag = 0;
+                    }
+                }
 
 
-                    for (int j = 0; j < jrnlArr.length; j++) {
-                        // Journal Group for individual journals
-                        if (!datacolumns[jrnlArr[j]].equalsIgnoreCase("0") && !datacolumns[jrnlArr[j]].isEmpty()) {
-                            insertedRowsSubDtls = migrateSubDtls(subscriptionID, jrnlGrpIDArr[j], Integer.parseInt(datacolumns[jrnlArr[j]]), startMonth, startYr, endYr);
+                if (allGrpFlag == 11) {
+                    // Journal Group for all the journals required by a subscriber
+                    insertedRowsSubDtls = migrateSubDtls(subscriptionID, jrnlGrpIDArr[11], noCopies, 1, startYr, endYr);
+                    commitCounter++;
+                } else {
+                    if (allGrpFlag == 10 && (datacolumns[27].equalsIgnoreCase("0") || datacolumns[27].isEmpty())) {
+                    //if (allGrpFlag == 11) {
+                        // Journal Group for all the journals except current science
+                        insertedRowsSubDtls = migrateSubDtls(subscriptionID, jrnlGrpIDArr[12], noCopies, 1, startYr, endYr);
+                        commitCounter++;
+                    } else {
+                        int startMonth = 1;
+
+                        for (int j = 0; j < jrnlArr.length; j++) {
+                            // Handle RESO
+                            if(j == 9){
+                                try {
+                                    if ( checkIfValidSubscriptionRES(datacolumns) && getCopiesRES(datacolumns) > 0){
+                                        if(subscriptionID == 0){
+                                            subscriptionID = this.insertSubscription(subscriberId, inwardId, amount, subdate, corr_balance);
+                                            logger.debug("Inserted Subscription with id: " + subscriptionID);
+                                            commitCounter++;
+                                        }
+                                        insertSubscriptionDetailsForRES(subscriptionID, datacolumns);
+                                    }
+                                }catch(ParseException e){
+                                    logger.fatal(e.toString());
+                                    logger.debug("Skipping record for subscriber " + datacolumns[0] + " : issue with parsing date");
+                                }
+
+                            }
+                            // Handle CURR
+                            else if(j == 10){
+                                try {
+                                    if(checkIfValidSubscriptionCURR(datacolumns) && getCopiesCURR(datacolumns) > 0) {
+                                        if(subscriptionID == 0){
+                                            subscriptionID = this.insertSubscription(subscriberId, inwardId, amount, subdate, corr_balance);
+                                            logger.debug("Inserted Subscription with id: " + subscriptionID);
+                                            commitCounter++;
+                                        }
+                                        insertSubscriptionDetailsForCURR(subscriptionID, datacolumns);
+                                        commitCounter++;
+                                    }
+                                }catch(ParseException e){
+                                    logger.fatal(e.toString());
+                                    logger.debug("Skipping record for subscriber " + datacolumns[0] + " : issue with parsing date");
+                                }
+                            }
+                            // Handle all other journals
+                            else {
+                                // Journal Group for individual journals
+                                if(!datacolumns[jrnlArr[j]].equalsIgnoreCase("0") && !datacolumns[jrnlArr[j]].isEmpty()) {
+                                    insertedRowsSubDtls = migrateSubDtls(subscriptionID, jrnlGrpIDArr[j], Integer.parseInt(datacolumns[jrnlArr[j]]), startMonth, startYr, endYr);
+                                }
+                            }
                         }
                     }
                 }
             }
+            }
+            catch(ParseException e){
+                logger.fatal(e.toString());
+                logger.debug("Skipping record for subscriber " + datacolumns[0] + " : issue with parsing date");
+            }
+
+
+            if(subscriptionID == 0) {
+                logger.debug("Skipping record for subscriber " + datacolumns[0]);
+
+                /*
+                if(endYear < 2012) {
+                    logger.debug("Skipping record for subscriber " + datacolumns[0] + " subsription end year is " + endYear);
+                }
+                if(getTotalNoOfCopies(datacolumns) <= 0) {
+                    logger.debug("Skipping record for subscriber, no of copies: " + getTotalNoOfCopies(datacolumns));
+                }
+                */
+            }
+
             // commit in bulk, its faster
             if (commitCounter == COMMIT_SIZE) {
                 conn.commit();
@@ -402,4 +516,240 @@ public class Subscription extends MigrationBase {
         //conn.commit();
         return insertedRowsSubDtls;
     }
+
+    public boolean insertSubscriptionDetailsForCURR(int subscription_id, String[] datacolumns) throws SQLException, ParseException{
+
+        boolean status = this.insertSubscriptionDetails(subscription_id,
+                            11,
+                            getCopiesCURR(datacolumns),
+                            getstartYearCURR(datacolumns),
+                            getstartMonthCURR(datacolumns),
+                            getendYearCURR(datacolumns),
+                            getendMonthCURR(datacolumns),
+                            1);
+        return status;
+    }
+
+    public int getstartYearCURR(String[] datacolumns) throws ParseException{
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(getcsyCURR(datacolumns));
+        int startMonth = cal.get(Calendar.MONTH) + 1;
+        int startYear = cal.get(Calendar.YEAR);
+        return startYear;
+    }
+
+    public int getstartMonthCURR(String[] datacolumns) throws ParseException{
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(getcsyCURR(datacolumns));
+        int startMonth = cal.get(Calendar.MONTH) + 1;
+        int startYear = cal.get(Calendar.YEAR);
+        return startMonth;
+    }
+
+    public int getendYearCURR(String[] datacolumns) throws ParseException{
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(getceyCURR(datacolumns));
+        int endMonth = cal.get(Calendar.MONTH) + 1;
+        int endYear = cal.get(Calendar.YEAR);
+
+        return endYear;
+    }
+
+    public int getendMonthCURR(String[] datacolumns) throws ParseException{
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(getceyCURR(datacolumns));
+        int endMonth = cal.get(Calendar.MONTH) + 1;
+        int endYear = cal.get(Calendar.YEAR);
+
+        return endMonth;
+    }
+
+    public int getCopiesCURR(String[] datacolumns){
+        return datacolumns[27].isEmpty() ? 0 : Integer.parseInt(datacolumns[27]);
+    }
+
+    public boolean checkIfValidSubscriptionCURR(String[] datacolumns) throws ParseException{
+        java.util.Date cey = getceyCURR(datacolumns);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        if(cey.compareTo(dateFormat.parse("01/01/2012")) > 0){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    public String getCSYCURR(String[] datacolumns) throws ParseException {
+        String CURRYR = datacolumns[26];
+        String DATE_CURR = datacolumns[28];
+        String CSY = "0";
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        java.util.Date csy = dateFormat.parse("01/01/1900");
+        if (!(CURRYR.isEmpty() || CURRYR.equals("0") || DATE_CURR.isEmpty())) {
+            CSY = DATE_CURR;
+            csy = dateFormat.parse(CSY);
+        }
+        return CSY;
+    }
+
+    public java.util.Date getcsyCURR(String[] datacolumns) throws ParseException{
+        String CSY = getCSYCURR(datacolumns);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        java.util.Date csy = dateFormat.parse("01/01/1900");
+        csy = dateFormat.parse(CSY);
+        return csy;
+    }
+
+    public String getCEYCURR(String[] datacolumns) throws ParseException{
+        String CURRYR = datacolumns[26];
+        String DATE_CURR = datacolumns[28];
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        String CEY = "0";
+        java.util.Date cey = getceyCURR(datacolumns);
+        CEY = dateFormat.format(cey);
+
+        return CEY;
+    }
+
+    public java.util.Date getceyCURR(String[] datacolumns) throws ParseException{
+        String CURRYR = datacolumns[26];
+        String DATE_CURR = datacolumns[28];
+        String CEY = "0";
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        java.util.Date cey = dateFormat.parse("01/01/1900");
+        if (!(getCSYCURR(datacolumns).equals("0"))) {
+            Calendar temp = Calendar.getInstance();
+
+            temp.setTime(dateFormat.parse(getCSYCURR(datacolumns)));
+            if (!(CURRYR.isEmpty() || CURRYR.equals("0"))) {
+                temp.add(Calendar.DAY_OF_YEAR, Integer.parseInt(CURRYR) * 365);
+            }
+            cey = temp.getTime();
+            CEY = dateFormat.format(cey);
+        }
+        return cey;
+    }
+
+        public boolean insertSubscriptionDetailsForRES(int subscription_id, String[] datacolumns) throws SQLException, ParseException{
+
+        boolean status = this.insertSubscriptionDetails(subscription_id,
+                            10,
+                            getCopiesRES(datacolumns),
+                            getstartYearRES(datacolumns),
+                            getstartMonthRES(datacolumns),
+                            getendYearRES(datacolumns),
+                            getendMonthRES(datacolumns),
+                            1);
+        return status;
+    }
+
+    public int getstartYearRES(String[] datacolumns) throws ParseException{
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(getcsyRES(datacolumns));
+        int startMonth = cal.get(Calendar.MONTH) + 1;
+        int startYear = cal.get(Calendar.YEAR);
+        return startYear;
+    }
+
+    public int getstartMonthRES(String[] datacolumns) throws ParseException{
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(getcsyRES(datacolumns));
+        int startMonth = cal.get(Calendar.MONTH) + 1;
+        int startYear = cal.get(Calendar.YEAR);
+        return startMonth;
+    }
+
+    public int getendYearRES(String[] datacolumns) throws ParseException{
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(getceyRES(datacolumns));
+        int endMonth = cal.get(Calendar.MONTH) + 1;
+        int endYear = cal.get(Calendar.YEAR);
+
+        return endYear;
+    }
+
+    public int getendMonthRES(String[] datacolumns) throws ParseException{
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(getceyRES(datacolumns));
+        int endMonth = cal.get(Calendar.MONTH) + 1;
+        int endYear = cal.get(Calendar.YEAR);
+
+        return endMonth;
+    }
+
+    public int getCopiesRES(String[] datacolumns){
+        return datacolumns[22].isEmpty() ? 0 : Integer.parseInt(datacolumns[22]);
+    }
+
+    public boolean checkIfValidSubscriptionRES(String[] datacolumns) throws ParseException{
+        java.util.Date cey = getceyRES(datacolumns);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        if(cey.compareTo(dateFormat.parse("01/01/2012")) > 0){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    public String getCSYRES(String[] datacolumns) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        String CURRYR = datacolumns[21];
+        String DATE_CURR = datacolumns[23];
+        String CSY = "0";
+        java.util.Date csy = dateFormat.parse("01/01/1900");
+        if (!(CURRYR.isEmpty() || CURRYR.equals("0") || DATE_CURR.isEmpty())) {
+            CSY = DATE_CURR;
+            csy = dateFormat.parse(CSY);
+        }
+        return CSY;
+    }
+
+    public java.util.Date getcsyRES(String[] datacolumns) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        String CURRYR = datacolumns[21];
+        String DATE_CURR = datacolumns[23];
+        String CSY = "0";
+        java.util.Date csy = dateFormat.parse("01/01/1900");
+        if (!(CURRYR.isEmpty() || CURRYR.equals("0") || DATE_CURR.isEmpty())) {
+            CSY = DATE_CURR;
+            csy = dateFormat.parse(CSY);
+        }
+        return csy;
+    }
+
+    public String getCEYRES(String[] datacolumns) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        String CURRYR = datacolumns[21];
+        String CEY = "0";
+        java.util.Date cey = dateFormat.parse("01/01/1900");
+        if (!(getCSYRES(datacolumns).equals("0"))) {
+            Calendar temp = Calendar.getInstance();
+
+            temp.setTime(dateFormat.parse(getCSYRES(datacolumns)));
+            if (!(CURRYR.isEmpty() || CURRYR.equals("0"))) {
+                temp.add(Calendar.DAY_OF_YEAR, Integer.parseInt(CURRYR) * 365);
+            }
+            cey = temp.getTime();
+            CEY = dateFormat.format(cey);
+        }
+        return CEY;
+    }
+
+    public java.util.Date getceyRES(String[] datacolumns) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        String CURRYR = datacolumns[21];
+        String CEY = "0";
+        java.util.Date cey = dateFormat.parse("01/01/1900");
+        if (!(getCSYRES(datacolumns).equals("0"))) {
+            Calendar temp = Calendar.getInstance();
+
+            temp.setTime(dateFormat.parse(getCSYRES(datacolumns)));
+            if (!(CURRYR.isEmpty() || CURRYR.equals("0"))) {
+                temp.add(Calendar.DAY_OF_YEAR, Integer.parseInt(CURRYR) * 365);
+            }
+            cey = temp.getTime();
+            CEY = dateFormat.format(cey);
+        }
+        return cey;
+    }
+
 }

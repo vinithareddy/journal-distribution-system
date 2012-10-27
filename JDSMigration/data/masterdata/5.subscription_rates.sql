@@ -73,21 +73,21 @@ insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate)
 insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (11, 9, 2013, 5, 6000);
 
 /* For Indian Personal */
-insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (1, 11, 2012, 2, 700);
-insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (2, 11, 2012, 2, 400);
-insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (3, 11, 2012, 2, 400);
-insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (4, 11, 2012, 2, 500);
-insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (5, 11, 2012, 2, 500);
-insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (6, 11, 2012, 2, 500);
-insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (7, 11, 2012, 2, 500);
-insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (8, 11, 2012, 2, 500);
-insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (9, 11, 2012, 2, 400);
-insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (10, 11, 2012, 2, 400);
-insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (11, 11, 2012, 2, 1250);
-insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (10, 11, 2012, 3, 650);
-insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (10, 11, 2012, 5, 1010);
-insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (11, 11, 2012, 3, 1750);
-insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (11, 11, 2012, 5, 3000);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (1, 11, 2013, 2, 700);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (2, 11, 2013, 2, 400);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (3, 11, 2013, 2, 400);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (4, 11, 2013, 2, 500);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (5, 11, 2013, 2, 500);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (6, 11, 2013, 2, 500);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (7, 11, 2013, 2, 500);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (8, 11, 2013, 2, 500);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (9, 11, 2013, 2, 400);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (10, 11, 2013, 2, 400);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (11, 11, 2013, 2, 1250);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (10, 11, 2013, 3, 650);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (10, 11, 2013, 5, 1010);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (11, 11, 2013, 3, 1750);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (11, 11, 2013, 5, 3000);
 
 /*----2012---------------------------------------------------------------------------------------------------------*/
 /* For Industry Corporates */

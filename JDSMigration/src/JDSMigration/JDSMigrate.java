@@ -21,7 +21,7 @@ public class JDSMigrate {
     private static final Logger logger = Logger.getLogger(JDSMigrate.class);
 
     // set this to override all other migration flags
-    private boolean MIGRATE_ALL = false;
+    private boolean MIGRATE_ALL = true;
 
     private boolean INIT_MASTER_DATA = true;
 
@@ -36,21 +36,21 @@ public class JDSMigrate {
     private boolean MIGRATE_JGRANT = MIGRATE_ALL && true;
     private boolean MIGRATE_EXCHANGE = MIGRATE_ALL && true;
 
-    private boolean CURRMEM = MIGRATE_ALL && true;
-    private boolean CURTWAS = MIGRATE_ALL && true;
-    private boolean MIGRATE_CURR = MIGRATE_ALL && true;
-    private boolean MIGRATE_CURRIEX = MIGRATE_ALL && true;
+    private boolean CURRMEM = MIGRATE_ALL || true;
+    private boolean CURTWAS = MIGRATE_ALL || true;
+    private boolean MIGRATE_CURR = MIGRATE_ALL || false;
+    private boolean MIGRATE_CURRIEX = MIGRATE_ALL || true;
     private boolean MIGRATE_CLIFESUB = MIGRATE_ALL && true;
-    private boolean MIGRATE_CURRWC = MIGRATE_ALL && true;
-    private boolean MIGRATE_CURREB = MIGRATE_ALL && true;
-    private boolean MIGRATE_CURRGRAN = MIGRATE_ALL && true;
-    private boolean MIGRATE_CURRFEX = MIGRATE_ALL && true;
+    private boolean MIGRATE_CURRWC = MIGRATE_ALL || true;
+    private boolean MIGRATE_CURREB = MIGRATE_ALL || true;
+    private boolean MIGRATE_CURRGRAN = MIGRATE_ALL || true;
+    private boolean MIGRATE_CURRFEX = MIGRATE_ALL || true;
     private boolean MIGRATE_HON = MIGRATE_ALL && true;
     private boolean MIGRATE_MEMBER = MIGRATE_ALL && true;
 
-    private boolean MIGRATE_RES = MIGRATE_ALL && true;
-    private boolean MIGRATE_RESOCOMP = MIGRATE_ALL && true;
-    private boolean MIGRATE_RESOEB = MIGRATE_ALL && true;
+    private boolean MIGRATE_RES = MIGRATE_ALL || false;
+    private boolean MIGRATE_RESOCOMP = MIGRATE_ALL || true;
+    private boolean MIGRATE_RESOEB = MIGRATE_ALL || true;
 
     private boolean CIRCULATION_FIGURES = MIGRATE_ALL && true;
 
@@ -130,10 +130,11 @@ public class JDSMigrate {
             CurtWas _curtwas = new CurtWas();
             _curtwas.Migrate();
         }
+        /*
         if (_jdsmigrate.MIGRATE_CURR) {
             migrateCURR _migrateCURR = new migrateCURR();
             _migrateCURR.migrate();
-        }
+        }*/
         if (_jdsmigrate.MIGRATE_CURRIEX) {
             CURRIEX _migrateiex = new CURRIEX();
             _migrateiex.Migrate();
@@ -166,11 +167,11 @@ public class JDSMigrate {
             member _migrate = new member();
             _migrate.Migrate();
         }
-
+        /*
         if (_jdsmigrate.MIGRATE_RES) {
             migrateRES _migrateRES = new migrateRES();
             _migrateRES.migrate();
-        }
+        }*/
         if (_jdsmigrate.MIGRATE_RESOCOMP) {
             RESOCOMP _resocomp = new RESOCOMP();
             _resocomp.Migrate();
