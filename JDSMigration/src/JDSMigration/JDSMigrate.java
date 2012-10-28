@@ -26,7 +26,7 @@ public class JDSMigrate {
     private boolean INIT_MASTER_DATA = true;
 
     private boolean MIGRATE_INWARD = MIGRATE_ALL && true;
-    private boolean MIGRATE_SUBSCRIBER = MIGRATE_ALL || true;
+    private boolean MIGRATE_SUBSCRIBER = MIGRATE_ALL && true;
     private boolean MIGRATE_SUBSCRIPTION = MIGRATE_ALL && true;
     private boolean MIGRATE_CORR = MIGRATE_ALL && true;
     private boolean MIGRATE_FELLOWS = MIGRATE_ALL && true;
@@ -36,21 +36,21 @@ public class JDSMigrate {
     private boolean MIGRATE_JGRANT = MIGRATE_ALL && true;
     private boolean MIGRATE_EXCHANGE = MIGRATE_ALL && true;
 
-    private boolean CURRMEM = MIGRATE_ALL || true;
-    private boolean CURTWAS = MIGRATE_ALL || true;
-    private boolean MIGRATE_CURR = MIGRATE_ALL || false;
-    private boolean MIGRATE_CURRIEX = MIGRATE_ALL || true;
+    private boolean CURRMEM = MIGRATE_ALL && true;
+    private boolean CURTWAS = MIGRATE_ALL && true;
+    //private boolean MIGRATE_CURR = MIGRATE_ALL && false;
+    private boolean MIGRATE_CURRIEX = MIGRATE_ALL && true;
     private boolean MIGRATE_CLIFESUB = MIGRATE_ALL && true;
-    private boolean MIGRATE_CURRWC = MIGRATE_ALL || true;
-    private boolean MIGRATE_CURREB = MIGRATE_ALL || true;
-    private boolean MIGRATE_CURRGRAN = MIGRATE_ALL || true;
-    private boolean MIGRATE_CURRFEX = MIGRATE_ALL || true;
+    private boolean MIGRATE_CURRWC = MIGRATE_ALL && true;
+    private boolean MIGRATE_CURREB = MIGRATE_ALL && true;
+    private boolean MIGRATE_CURRGRAN = MIGRATE_ALL && true;
+    private boolean MIGRATE_CURRFEX = MIGRATE_ALL && true;
     private boolean MIGRATE_HON = MIGRATE_ALL && true;
     private boolean MIGRATE_MEMBER = MIGRATE_ALL && true;
 
-    private boolean MIGRATE_RES = MIGRATE_ALL || false;
-    private boolean MIGRATE_RESOCOMP = MIGRATE_ALL || true;
-    private boolean MIGRATE_RESOEB = MIGRATE_ALL || true;
+    //private boolean MIGRATE_RES = MIGRATE_ALL && false;
+    private boolean MIGRATE_RESOCOMP = MIGRATE_ALL && true;
+    private boolean MIGRATE_RESOEB = MIGRATE_ALL && true;
 
     private boolean CIRCULATION_FIGURES = MIGRATE_ALL && true;
 

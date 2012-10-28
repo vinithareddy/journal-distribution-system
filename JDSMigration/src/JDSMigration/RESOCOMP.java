@@ -71,6 +71,9 @@ public class RESOCOMP extends MigrationBase {
             if (datacolumns[4].isEmpty() == false) {
                 address = address == null ? datacolumns[4] : address + "\n" + datacolumns[4];
             }
+            if(address == null){
+                address = "";
+            }
 
 
             if (subscriberType.equalsIgnoreCase("I") || (subscriberType.isEmpty() && !subscriberType.equalsIgnoreCase("F"))) {
