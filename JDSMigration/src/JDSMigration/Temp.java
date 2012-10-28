@@ -82,6 +82,7 @@ public class Temp extends MigrationBase {
             String agentCode = datacolumns[0];
             String subscribercode = datacolumns[1];
             String subscriberNumber = datacolumns[2];
+            String remarksAgent = datacolumns[3];
             String subscriberName = datacolumns[7];
             String department = datacolumns[8];
             String institute = datacolumns[9];
@@ -90,6 +91,7 @@ public class Temp extends MigrationBase {
             String cityAndPin = datacolumns[11];
             String country = datacolumns[13];
             String email = datacolumns[55];
+            String agent = datacolumns[46];
             if(email.isEmpty()){
                 String temp = datacolumns[3];
                 email = temp.replaceAll("Another Email: ", "");
@@ -215,7 +217,26 @@ public class Temp extends MigrationBase {
                     logger.debug("pin Code is : " + pin);
                 }
             }
+            
+            int agentId = 0;
+            if (subscriberName.startsWith("(") || subscriberName.startsWith("[Ref") 
+                    || subscriberName.startsWith("(Ref") || subscriberName.startsWith("(REF")){
+                if(!department.equals("")|| department != null){
+                   agentId = getAgentID(department, address, cityID,  stateID, pin, countryID);
+                }
+            }else if (!remarksAgent.isEmpty()
+                        && (remarksAgent.toUpperCase().indexOf("KUMARI") > -1
+                        || remarksAgent.toUpperCase().indexOf("MEERA TRUST") > -1
+                        || remarksAgent.toUpperCase().indexOf("KALM") > -1)) {
+                     agentId = this.getAgentID("Kumari Ali Mera Trust", "", 0, 0, 0, 0);
 
+             }else if (!agent.isEmpty()
+                        && agent.toUpperCase().indexOf("KLAM") > -1){
+                 agentId = this.getAgentID("Kumari Ali Mera Trust", "", 0, 0, 0, 0);
+             }else if (!agent.isEmpty()){
+                 agentId = this.getAgentID(agent, "", 0, 0, 0, 0);
+             }
+             
             int paramIndex = 0;
             pst_insert.setString(++paramIndex, subscribercode);
             pst_insert.setString(++paramIndex, subscriberNumber);

@@ -102,7 +102,8 @@ public class Corr extends MigrationBase {
 
                 //logger.debug("REF_NO:" + refNo);
                 if (!refNo.isEmpty() && refNo.toUpperCase().indexOf("KVPY") > -1) {
-                    int agentID = this.getAgentID("KVPY");
+                    //int agentID = this.getAgentID("KVPY");
+                    int agentID = 2;
                     pst.setInt(1, agentID);
                     pst.setString(2, subscriberNumber);
                     if (pst.executeUpdate() == 1) {
@@ -115,7 +116,8 @@ public class Corr extends MigrationBase {
                         && (refNo.toUpperCase().indexOf("KUMARI") > -1
                         || refNo.toUpperCase().indexOf("MEERA TRUST") > -1
                         || refNo.toUpperCase().indexOf("KALM") > -1)) {
-                    int agentID = this.getAgentID("Kumari Ali Mera Trust");
+                    //int agentID = this.getAgentID("Kumari Ali Mera Trust");
+                    int agentID = 1;
                     pst.setInt(1, agentID);
                     pst.setString(2, subscriberNumber);
                     if (pst.executeUpdate() == 1) {

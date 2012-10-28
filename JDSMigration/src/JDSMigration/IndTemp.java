@@ -82,7 +82,7 @@ public class IndTemp extends MigrationBase {
             columns = _line.split(Pattern.quote("\t"));
             System.arraycopy(columns, 0, datacolumns, 0, columns.length);
 
-            String agentCode = datacolumns[0];
+            String agentName = datacolumns[46];
             String subscribercode = datacolumns[1];
             String subscriberNumber = datacolumns[2];
             String subscriberName = datacolumns[7];
@@ -239,6 +239,30 @@ public class IndTemp extends MigrationBase {
                 }
             }
 
+            int agentId = 0;
+            if (!agentName.isEmpty()
+                        && agentName.toUpperCase().indexOf("KVPY") > -1 ){
+                 agentId = this.getAgentID("KVPY", "", 0, 0, 0, 0);
+             }else if (!agentName.isEmpty()
+                        && (agentName.toUpperCase().indexOf("SR") > -1 
+                            || agentName.toUpperCase().indexOf("RF") > -1 
+                            || agentName.toUpperCase().indexOf("SRF") > -1)){
+                 agentId = this.getAgentID("Summer Research Fellow", "", 0, 0, 0, 0);
+             }else if (!agentName.isEmpty() && agentName.equals("DRP")){
+                 agentId = this.getAgentID(agentName, "", 0, 0, 0, 0);
+             }else if (!agentName.isEmpty() && agentName.equals("DP")){
+                 agentId = this.getAgentID(agentName, "", 0, 0, 0, 0);
+             }else if (!agentName.isEmpty()
+                        && (agentName.toUpperCase().indexOf("IPT") > -1
+                            || agentName.toUpperCase().indexOf("IAPT") > -1)){
+                 agentId = this.getAgentID("IAPT", "", 0, 0, 0, 0);
+             }else if (!agentName.isEmpty()
+                        && agentName.toUpperCase().indexOf("SWB") > -1){
+                 agentId = this.getAgentID("SWB", "", 0, 0, 0, 0);
+             }else if (!agentName.isEmpty() && agentName.equals("JWNST")){
+                 agentId = this.getAgentID(agentName, "", 0, 0, 0, 0);
+             }
+            
 
             int paramIndex = 0;
             pst_insert.setString(++paramIndex, subscribercode);

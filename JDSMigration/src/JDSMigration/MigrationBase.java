@@ -44,6 +44,8 @@ public class MigrationBase implements IMigrate {
     public HashMap<String, String> agentMap = new HashMap<>();
     public String sql_city = "select id from cities where city = ?";
     private String insert_city = "insert into cities(city)values(?)";
+    public String sql_agent = "select id from agents where agentName = ?";
+    private String insert_agent = "insert into agents (agentName, address, cityId, stateId, countryId, pinCode, discount) VALUES (?, ?, ?, ?, ?, ?, 10)";
     public String sql_distrcit = "select id from districts where district = ?";
     public String sql_state = "select id from states where state = ?";
     public String sql_country = "select id from countries where country = ?";
@@ -90,7 +92,8 @@ public class MigrationBase implements IMigrate {
     private PreparedStatement pst_insert_subscription_dtls = null;
     private PreparedStatement pst_insert_subscriber = null;
     private PreparedStatement pst_insert_city = null;
-
+    private PreparedStatement pst_insert_agent = null;
+    
     public MigrationBase() throws SQLException {
 
         try {
@@ -360,11 +363,13 @@ public class MigrationBase implements IMigrate {
         countryMap.put("South America", "Chile");
 
         
+        agentMap.put("A&A Periodical Subscription Agency Pvt. Ltd.", "A&A Periodical Subscription Agency Pvt. Ltd.");
         agentMap.put("A&A Periodical", "A&A Periodical Subscription Agency Pvt. Ltd.");
         agentMap.put("A&A Periodical Sub Agency (P) Ltd", "A&A Periodical Subscription Agency Pvt. Ltd.");
         agentMap.put("A&A Periodical Sub Agency P Limited", "A&A Periodical Subscription Agency Pvt. Ltd.");
         agentMap.put("A&A Periodical Subs Agency P Ltd", "A&A Periodical Subscription Agency Pvt. Ltd.");
         agentMap.put("A&A Periodical Subscription Agency", "A&A Periodical Subscription Agency Pvt. Ltd.");
+        agentMap.put("Alliance Books Supplers Pvt Ltd", "Alliance Books Suppliers Pvt. Ltd.");
         agentMap.put("Alliance Books Supplers Pvt Ltd", "Alliance Books Suppliers Pvt. Ltd.");
         agentMap.put("Alliance Books Supplier (P) Limited", "Alliance Books Suppliers Pvt. Ltd.");
         agentMap.put("Alliance Books Suppliers (P) Ltd.,", "Alliance Books Suppliers Pvt. Ltd.");
@@ -612,6 +617,7 @@ public class MigrationBase implements IMigrate {
         pst_insert_subscription_dtls = this.conn.prepareStatement(sql_insert_subscriptiondetails);
         pst_insert_subscriber = this.conn.prepareStatement(sql_insert_subscriber_dt, Statement.RETURN_GENERATED_KEYS);
         pst_insert_city = this.conn.prepareStatement(insert_city, Statement.RETURN_GENERATED_KEYS);
+        pst_insert_agent = this.conn.prepareStatement(insert_agent, Statement.RETURN_GENERATED_KEYS);
 
     }
 
@@ -701,6 +707,52 @@ public class MigrationBase implements IMigrate {
 
     }
 
+    public int getAgentID(String agentName, String address, int cityID, int stateID, int pin, int countryID) throws SQLException {
+        if (agentName.isEmpty()) {
+            return 0;
+        }
+
+        //trim of any spaces are the ends
+        agentName = agentName.trim();
+        
+        String agentNameTemp = agentName;
+        int agentid = 0;
+        if (this.agentMap.containsKey(agentName)) {
+            agentName = this.agentMap.get(agentName);
+        }
+        if (agentName == null){
+            agentName = agentNameTemp;
+        }            
+        PreparedStatement pst = this.conn.prepareStatement(sql_agent);
+        pst.setString(1, agentName);
+        ResultSet rs = db.executeQueryPreparedStatement(pst);
+        if (rs.isBeforeFirst()) {
+            rs.first();
+            agentid = rs.getInt(1);
+        } else {
+            // if the city is not present in the city table, check the district table
+            //try {
+            invalidcitylog.error(agentName);
+            //Path path = Paths.get("logs\\invalidCities.log");
+            //Files.write(path, citynames, StandardCharsets.UTF_8);
+            pst_insert_agent.setString(1, agentName);
+            pst_insert_agent.setString(2, address);
+            pst_insert_agent.setInt(3, cityID);
+            pst_insert_agent.setInt(4, stateID);
+            pst_insert_agent.setInt(5, countryID);
+            pst_insert_agent.setInt(6, pin);
+            int rc = pst_insert_agent.executeUpdate();
+            if (rc == 1) {
+                ResultSet _rs = pst_insert_agent.getGeneratedKeys();
+                if (_rs.first()) {
+                    agentid = _rs.getInt(1);
+                }
+            }
+            //}
+        }
+        return agentid;
+    }
+    
     public int getCountryID(String countryName) throws SQLException {
         if (this.countryMap.containsKey(countryName)) {
             countryName = this.countryMap.get(countryName);
@@ -766,23 +818,6 @@ public class MigrationBase implements IMigrate {
 
         String sql = "delete from " + table;
         this.db.executeUpdate(sql);
-    }
-
-    public int getAgentID(String agentName) throws SQLException {
-        String sql = "select id from agents where agentName=? LIMIT 1";
-        int agentID;
-        try {
-            PreparedStatement pst = this.conn.prepareStatement(sql);
-            pst.setString(1, agentName);
-            ResultSet rs = pst.executeQuery();
-            rs.first();
-            agentID = rs.getInt(1);
-        } catch (SQLException e) {
-            agentID = 0;
-        }
-
-        return agentID;
-
     }
 
     public int getSubscriberID(int subscriberNumber) {
