@@ -5,13 +5,6 @@ ALTER TABLE year AUTO_INCREMENT = 1;
 
 insert into year
 (year) VALUES
-('2005'), 
-('2006'), 
-('2007'), 
-('2008'), 
-('2009'), 
-('2010'), 
-('2011'), 
 ('2012'), 
 ('2013'), 
 ('2014'), 

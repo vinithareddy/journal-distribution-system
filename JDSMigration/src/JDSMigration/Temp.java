@@ -30,8 +30,8 @@ public class Temp extends MigrationBase {
     private String sql_insert = "insert IGNORE into subscriber(subtype, subscriberNumber"
             + ",subscriberName, department"
             + ",institution, shippingAddress, invoiceAddress"
-            + ",city, state, pincode, country, deactive, email)values"
-            + "((select id from subscriber_type where subtypecode = ?),?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            + ",city, state, pincode, country, deactive, email, agent)values"
+            + "((select id from subscriber_type where subtypecode = ?),?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     PreparedStatement pst_insert = null;
 
     public Temp() throws SQLException{
@@ -253,6 +253,7 @@ public class Temp extends MigrationBase {
             //pst_insert.setInt(++paramIndex, 0);
             pst_insert.setInt(++paramIndex, 0);
             pst_insert.setString(++paramIndex, email);
+            pst_insert.setInt(++paramIndex, agentId);
             pst_insert.addBatch();
             recordCounter++;
 
