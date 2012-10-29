@@ -45,8 +45,8 @@ public class Subscription extends MigrationBase {
 
     public int getTotalNoOfCopies(String[] datacolumns) {
         int noCopies = 0;
-        int[] jrnlArr = {4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 27};
-        //int[] jrnlArr = {4, 6, 8, 10, 12, 14, 16, 18, 20};
+        //int[] jrnlArr = {4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 27};
+        int[] jrnlArr = {4, 6, 8, 10, 12, 14, 16, 18, 20};
         for (int j = 0; j < jrnlArr.length; j++) {
             if (!datacolumns[jrnlArr[j]].equalsIgnoreCase("0") && !datacolumns[jrnlArr[j]].isEmpty()) {
                 noCopies = noCopies + Integer.parseInt(datacolumns[jrnlArr[j]]);
@@ -143,62 +143,38 @@ public class Subscription extends MigrationBase {
             logger.debug("End year field has: " + datacolumns[32]);
             int endYear = Integer.parseInt(datacolumns[32]) > 0 ? Integer.parseInt(datacolumns[32]) : startYear;
 
+            // Used to show subscription but the details were empty
             if("7123".equals(this.subscriberNumber)){
                 logger.debug(this.subscriberNumber);
             }
+            // Has 2 subscriptions which have all 1-11 journals
             if("2521".equals(this.subscriberNumber)){
+                logger.debug(this.subscriberNumber);
+            }
+            // Used to show subscription but the details were empty
+            if("2503".equals(this.subscriberNumber)){
                 logger.debug(this.subscriberNumber);
             }
             if("2503".equals(this.subscriberNumber)){
                 logger.debug(this.subscriberNumber);
             }
 
-            //migrateCURR mCURR = new migrateCURR();
-            //migrateRES mRES = new migrateRES();
-
             int subscriptionID = 0;
 
             try {
-            if ((endYear >= 2012 || checkIfValidSubscriptionCURR(datacolumns) || checkIfValidSubscriptionRES(datacolumns))
-                    && getTotalNoOfCopies(datacolumns) > 0) {
+            //if ((endYear >= 2012 || checkIfValidSubscriptionCURR(datacolumns) || checkIfValidSubscriptionRES(datacolumns))
+            //        && getTotalNoOfCopies(datacolumns) > 0)
+            if(
+                (endYear >= 2012 && getTotalNoOfCopies(datacolumns) > 0) ||
+                (checkIfValidSubscriptionCURR(datacolumns) && getCopiesCURR(datacolumns) > 0) ||
+                (checkIfValidSubscriptionRES(datacolumns) && getCopiesRES(datacolumns) > 0))
+
+            {
 
                 // Insert subscription
 
                 logger.debug("Start Year:" + datacolumns[31]);
                 logger.debug("End Year:" + endYear);
-
-                /*
-                int paramIndex = 0;
-                pst_insert_subscription.setInt(++paramIndex, subscriberId);
-                pst_insert_subscription.setInt(++paramIndex, inwardId);
-                pst_insert_subscription.setBoolean(++paramIndex, true);
-                pst_insert_subscription.setFloat(++paramIndex, amount);
-                pst_insert_subscription.setDate(++paramIndex, subdate);
-                pst_insert_subscription.setFloat(++paramIndex, corr_balance);
-
-
-                //Inserting the record in Subscription Table
-                int ret = this.db.executeUpdatePreparedStatement(pst_insert_subscription);
-
-                //Logging the inserting row
-                if (ret == 1) {
-                    insertedRows++;
-                    commitCounter++;
-                } else {
-                    logger.fatal("Failed to insert subscription");
-                    break;
-                }
-
-
-                //Getting back the subsciption Id
-                ResultSet rs_sub = pst_insert_subscription.getGeneratedKeys();
-                rs_sub.first();
-                int subscriptionID = rs_sub.getInt(1);
-
-                if (inwardId != 0) {
-                    logger.error("No Inward Number found for Subscriber:" + datacolumns[0] + " and Subscription:" + subscriptionID);
-                }
-                */
 
                 subscriptionID = this.insertSubscription(subscriberId, inwardId, amount, subdate, corr_balance);
                 logger.debug("Inserted Subscription with id: " + subscriptionID);
