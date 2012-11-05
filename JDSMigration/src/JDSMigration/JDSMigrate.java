@@ -22,7 +22,7 @@ public class JDSMigrate {
     private static final Logger logger = Logger.getLogger(JDSMigrate.class);
 
     // set this to override all other migration flags
-    private boolean MIGRATE_ALL = false;
+    private boolean MIGRATE_ALL = true;
 
     private boolean INIT_MASTER_DATA = true;
 
