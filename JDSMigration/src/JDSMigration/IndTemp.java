@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.regex.Matcher;
@@ -33,16 +34,18 @@ public class IndTemp extends MigrationBase {
     private String sql_insert = "insert IGNORE into subscriber(subtype, subscriberNumber"
             + ",subscriberName, department"
             + ",institution, shippingAddress"
-            + ",city, state, pincode, country, deactive, email, agent)values"
-            + "((select id from subscriber_type where subtypecode = ?),?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            + ",city, state, pincode, country, deactive, email)values"
+            + "((select id from subscriber_type where subtypecode = ?),?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     PreparedStatement pst_insert = null;
+    HashMap<String, String> agentSubscriberMap;
 
-    public IndTemp() throws SQLException{
-        //super(); // call the base class constructor
+    public IndTemp(HashMap<String, String> _agentSubscriberMap) throws SQLException{
+        super(); // call the base class constructor
         //this.dataFile = this.dataFolder + "\\subscriber\\temp.txt";
         this.dataFile = this.dataFolder + "\\subscriber\\indtemp.txt";
         this.conn = this.db.getConnection();
         conn.setAutoCommit(false);
+        agentSubscriberMap = _agentSubscriberMap;
 
     }
 
@@ -262,8 +265,9 @@ public class IndTemp extends MigrationBase {
              }else if (!agentName.isEmpty() && agentName.equals("JWNST")){
                  agentId = this.getAgentID(agentName, "", 0, 0, 0, 0);
              }
-            
-
+            if (agentId != 0){
+                agentSubscriberMap.put(subscriberNumber, Integer.toString(agentId));
+            }
             int paramIndex = 0;
             pst_insert.setString(++paramIndex, subscribercode);
             pst_insert.setString(++paramIndex, subscriberNumber);
@@ -279,7 +283,6 @@ public class IndTemp extends MigrationBase {
             //pst_insert.setInt(++paramIndex, 0);
             pst_insert.setInt(++paramIndex, 0);
             pst_insert.setString(++paramIndex, email);
-            pst_insert.setInt(++paramIndex, agentId);
             pst_insert.addBatch();
             recordCounter++;
 

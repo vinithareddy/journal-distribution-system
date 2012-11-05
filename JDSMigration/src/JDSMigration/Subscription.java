@@ -33,13 +33,17 @@ public class Subscription extends MigrationBase {
     PreparedStatement pst_insert_subscription = null;
     PreparedStatement pst_select_inward = null;
     PreparedStatement pst_select_subscriber = null;
+    PreparedStatement pst_select_subscriber_agent = null;
     PreparedStatement pst_insert_subscription_dtls = null;
+    HashMap<String, String> agentSubscriberMap;
 
 //--------------------------------------------------------------------------------------------
     //Constructor
-    public Subscription() throws SQLException {
+    public Subscription(HashMap<String, String> _agentSubscriberMap) throws SQLException {
+        super();
         this.dataFile = this.dataFolder + "\\jnls.xls";
         this.conn = this.db.getConnection();
+        agentSubscriberMap = _agentSubscriberMap;
 
     }
 
@@ -68,6 +72,7 @@ public class Subscription extends MigrationBase {
 
         pst_select_inward = this.conn.prepareStatement(sql_select_inward);
         pst_select_subscriber = this.conn.prepareStatement(sql_select_subscriber);
+        pst_select_subscriber_agent = this.conn.prepareStatement(sql_select_subscriber_agent);
         pst_insert_subscription = this.conn.prepareStatement(sql_insert_subscription, Statement.RETURN_GENERATED_KEYS);
 
 
@@ -114,6 +119,18 @@ public class Subscription extends MigrationBase {
                 inwardId = rs_inward.getInt(1);
             }
 
+            // Get the agent Id if it exists
+            int agentId = 0;
+            if (this.agentSubscriberMap.containsKey(datacolumns[0])){
+                agentId = Integer.parseInt(agentSubscriberMap.get(datacolumns[0]));
+            }
+            logger.debug("Hashmap retrieval values-->" + subscriberNumber + "->" + Integer.toString(agentId));
+            
+//            pst_select_subscriber_agent.setString(1, datacolumns[0]);
+//            ResultSet rs_agent = this.db.executeQueryPreparedStatement(pst_select_subscriber_agent);
+//            if (rs_agent.first()) {
+//                agentId = rs_agent.getInt(1);
+//            }
             // Get the amount
             float amount = Float.parseFloat(datacolumns[29]);
 
@@ -176,7 +193,7 @@ public class Subscription extends MigrationBase {
                 logger.debug("Start Year:" + datacolumns[31]);
                 logger.debug("End Year:" + endYear);
 
-                subscriptionID = this.insertSubscription(subscriberId, inwardId, amount, subdate, corr_balance);
+                subscriptionID = this.insertSubscription(subscriberId, inwardId, amount, subdate, corr_balance, agentId);
                 logger.debug("Inserted Subscription with id: " + subscriptionID);
                 insertedRows++;
                 commitCounter++;
@@ -337,7 +354,7 @@ public class Subscription extends MigrationBase {
                                 try {
                                     if ( checkIfValidSubscriptionRES(datacolumns) && getCopiesRES(datacolumns) > 0){
                                         if(subscriptionID == 0){
-                                            subscriptionID = this.insertSubscription(subscriberId, inwardId, amount, subdate, corr_balance);
+                                            subscriptionID = this.insertSubscription(subscriberId, inwardId, amount, subdate, corr_balance, agentId);
                                             logger.debug("Inserted Subscription with id: " + subscriptionID);
                                             commitCounter++;
                                         }
@@ -354,7 +371,7 @@ public class Subscription extends MigrationBase {
                                 try {
                                     if(checkIfValidSubscriptionCURR(datacolumns) && getCopiesCURR(datacolumns) > 0) {
                                         if(subscriptionID == 0){
-                                            subscriptionID = this.insertSubscription(subscriberId, inwardId, amount, subdate, corr_balance);
+                                            subscriptionID = this.insertSubscription(subscriberId, inwardId, amount, subdate, corr_balance, agentId);
                                             logger.debug("Inserted Subscription with id: " + subscriptionID);
                                             commitCounter++;
                                         }
@@ -479,6 +496,7 @@ public class Subscription extends MigrationBase {
         pst_insert_subscription_dtls.setInt(++paramIndex1, endYr);
         pst_insert_subscription_dtls.setInt(++paramIndex1, endMonth);
         pst_insert_subscription_dtls.setInt(++paramIndex1, priceGroupID);
+        
 
         //Inserting the record in Subscription Table
         int retUpdStatus = this.db.executeUpdatePreparedStatement(pst_insert_subscription_dtls);

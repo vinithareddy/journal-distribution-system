@@ -61,12 +61,16 @@ public class MigrationBase implements IMigrate {
     //Select Statement for Subscriber Id
     public String sql_select_subscriber = "Select id from subscriber where subscriberNumber = ?";
 //--------------------------------------------------------------------------------------------
+        //Select Statement for Agent Subscriber
+    public String sql_select_subscriber_agent = "Select id from subscriber where subscriberNumber = ?";
+//--------------------------------------------------------------------------------------------
+    
     //Select Statement for Journal Group
     public String sql_select_journalGrp = "Select id from journal_groups where journalGroupName = ?";
 //--------------------------------------------------------------------------------------------
     //Insert Statement for Subscription
-    public String sql_insert_subscription = "insert into subscription(subscriberID,inwardID,legacy,legacy_amount,subscriptiondate,legacy_balance)"
-            + "values(?,?,?,?,?,?)";
+    public String sql_insert_subscription = "insert into subscription(subscriberID,inwardID,legacy,legacy_amount,subscriptiondate,legacy_balance, agentId)"
+            + "values(?,?,?,?,?,?,?)";
     public String sql_insert_subscription_no_dt = "insert into subscription(subscriberID,inwardID,legacy,legacy_amount,legacy_balance)"
             + "values(?,?,?,?,?)";
     public String sql_insert_subscription_free_subs = "insert into subscription(subscriberID,inwardID,legacy) values(?,?,?)";
@@ -997,7 +1001,7 @@ public class MigrationBase implements IMigrate {
 
     }
 
-    public int insertSubscription(int subscriberId, int inwardId, float amount, Date subdate, float corr_balance) throws SQLException {
+    public int insertSubscription(int subscriberId, int inwardId, float amount, Date subdate, float corr_balance, int agentId) throws SQLException {
         int paramIndex = 0;
         pst_insert_subscription.setInt(++paramIndex, subscriberId);
         pst_insert_subscription.setInt(++paramIndex, inwardId);
@@ -1006,6 +1010,7 @@ public class MigrationBase implements IMigrate {
         pst_insert_subscription.setFloat(++paramIndex, amount);
         pst_insert_subscription.setDate(++paramIndex, subdate);
         pst_insert_subscription.setFloat(++paramIndex, corr_balance);
+        pst_insert_subscription.setFloat(++paramIndex, agentId);
 
         //Inserting the record in Subscription Table
         int ret = this.db.executeUpdatePreparedStatement(pst_insert_subscription);

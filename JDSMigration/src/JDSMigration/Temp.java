@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.regex.Matcher;
@@ -30,16 +31,18 @@ public class Temp extends MigrationBase {
     private String sql_insert = "insert IGNORE into subscriber(subtype, subscriberNumber"
             + ",subscriberName, department"
             + ",institution, shippingAddress, invoiceAddress"
-            + ",city, state, pincode, country, deactive, email, agent)values"
-            + "((select id from subscriber_type where subtypecode = ?),?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            + ",city, state, pincode, country, deactive, email)values"
+            + "((select id from subscriber_type where subtypecode = ?),?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     PreparedStatement pst_insert = null;
+    HashMap<String, String> agentSubscriberMap;
 
-    public Temp() throws SQLException{
+    public Temp(HashMap<String, String> _agentSubscriberMap) throws SQLException{
         super(); // call the base class constructor
         this.dataFile = this.dataFolder + "\\subscriber\\temp.txt";
         //this.dataFile = this.dataFolder + "\\subscriber\\indtemp.txt";
         this.conn = this.db.getConnection();
         conn.setAutoCommit(false);
+        agentSubscriberMap = _agentSubscriberMap;
 
     }
 
@@ -236,7 +239,12 @@ public class Temp extends MigrationBase {
              }else if (!agent.isEmpty()){
                  agentId = this.getAgentID(agent, "", 0, 0, 0, 0);
              }
-             
+            
+            if (agentId != 0){
+                agentSubscriberMap.put(subscriberNumber, Integer.toString(agentId));
+                logger.debug(subscriberNumber + "->" + Integer.toString(agentId));
+            }
+            
             int paramIndex = 0;
             pst_insert.setString(++paramIndex, subscribercode);
             pst_insert.setString(++paramIndex, subscriberNumber);
@@ -253,7 +261,6 @@ public class Temp extends MigrationBase {
             //pst_insert.setInt(++paramIndex, 0);
             pst_insert.setInt(++paramIndex, 0);
             pst_insert.setString(++paramIndex, email);
-            pst_insert.setInt(++paramIndex, agentId);
             pst_insert.addBatch();
             recordCounter++;
 
@@ -267,6 +274,8 @@ public class Temp extends MigrationBase {
             } else {
                 insertedRows++;
             }
+            
+            
 
             if(recordCounter == COMMIT_BATCH_SIZE){
                 logger.debug("commiting database after " + String.valueOf(insertedRows) + " rows");

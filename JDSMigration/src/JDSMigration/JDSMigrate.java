@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.HashMap;
 import jxl.read.biff.BiffException;
 import org.apache.log4j.Logger;
 
@@ -21,13 +22,13 @@ public class JDSMigrate {
     private static final Logger logger = Logger.getLogger(JDSMigrate.class);
 
     // set this to override all other migration flags
-    private boolean MIGRATE_ALL = true;
+    private boolean MIGRATE_ALL = false;
 
     private boolean INIT_MASTER_DATA = true;
 
     private boolean MIGRATE_INWARD = MIGRATE_ALL && true;
     private boolean MIGRATE_SUBSCRIBER = MIGRATE_ALL && true;
-    private boolean MIGRATE_SUBSCRIPTION = MIGRATE_ALL && true;
+    private boolean MIGRATE_SUBSCRIPTION = MIGRATE_ALL || true;
     private boolean MIGRATE_CORR = MIGRATE_ALL && true;
     private boolean MIGRATE_FELLOWS = MIGRATE_ALL && true;
     private boolean MIGRATE_ASSOCIATES = MIGRATE_ALL && true;
@@ -36,10 +37,10 @@ public class JDSMigrate {
     private boolean MIGRATE_JGRANT = MIGRATE_ALL && true;
     private boolean MIGRATE_EXCHANGE = MIGRATE_ALL && true;
 
-    private boolean CURRMEM = MIGRATE_ALL && true;
-    private boolean CURTWAS = MIGRATE_ALL && true;
-    //private boolean MIGRATE_CURR = MIGRATE_ALL && false;
-    private boolean MIGRATE_CURRIEX = MIGRATE_ALL && true;
+    private boolean CURRMEM = MIGRATE_ALL || true;
+    private boolean CURTWAS = MIGRATE_ALL || true;
+    //private boolean MIGRATE_CURR = MIGRATE_ALL || false;
+    private boolean MIGRATE_CURRIEX = MIGRATE_ALL || true;
     private boolean MIGRATE_CLIFESUB = MIGRATE_ALL && true;
     private boolean MIGRATE_CURRWC = MIGRATE_ALL && true;
     private boolean MIGRATE_CURREB = MIGRATE_ALL && true;
@@ -48,9 +49,9 @@ public class JDSMigrate {
     private boolean MIGRATE_HON = MIGRATE_ALL && true;
     private boolean MIGRATE_MEMBER = MIGRATE_ALL && true;
 
-    //private boolean MIGRATE_RES = MIGRATE_ALL && false;
-    private boolean MIGRATE_RESOCOMP = MIGRATE_ALL && true;
-    private boolean MIGRATE_RESOEB = MIGRATE_ALL && true;
+    //private boolean MIGRATE_RES = MIGRATE_ALL || false;
+    private boolean MIGRATE_RESOCOMP = MIGRATE_ALL || true;
+    private boolean MIGRATE_RESOEB = MIGRATE_ALL || true;
 
     private boolean CIRCULATION_FIGURES = MIGRATE_ALL && true;
 
@@ -62,6 +63,7 @@ public class JDSMigrate {
             IllegalAccessException, Exception{
 
         JDSMigrate _jdsmigrate = new JDSMigrate();
+        HashMap<String, String> agentSubscriberMap = new HashMap<>();
 
         // This function sets up the master data as well clear all the transaction data
         if (_jdsmigrate.INIT_MASTER_DATA) {
@@ -83,15 +85,15 @@ public class JDSMigrate {
         }
         if (_jdsmigrate.MIGRATE_SUBSCRIBER) {
             // the subscriber table will be truncated here
-            IndTemp _subscriber = new IndTemp();
+            IndTemp _subscriber = new IndTemp(agentSubscriberMap);
             _subscriber.Migrate();
 
             // the subscriber table will ***NOT** be truncated here
-            Temp _subscriber2 = new Temp();
+            Temp _subscriber2 = new Temp(agentSubscriberMap);
             _subscriber2.Migrate();
         }
         if (_jdsmigrate.MIGRATE_SUBSCRIPTION) {
-            Subscription _subscription = new Subscription();
+            Subscription _subscription = new Subscription(agentSubscriberMap);
             _subscription.Migrate();
         }
         if (_jdsmigrate.MIGRATE_CORR) {

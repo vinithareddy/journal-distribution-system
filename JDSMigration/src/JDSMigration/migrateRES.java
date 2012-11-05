@@ -97,7 +97,7 @@ public class migrateRES extends MigrationBase {
                         logger.fatal("Unable to update subscription for subscriber " + subno + " No subscriber id found in DB");
                         continue;
                     }
-                    int subscription_id = this.insertSubscription(subscriber_id, 0, amount, subdate, corr_balance);
+                    int subscription_id = this.insertSubscription(subscriber_id, 0, amount, subdate, corr_balance, 0);
 
                     logger.debug("Inserted Subscription with id: " + subscription_id);
 
