@@ -64,7 +64,7 @@ public class MigrationBase implements IMigrate {
         //Select Statement for Agent Subscriber
     public String sql_select_subscriber_agent = "Select id from subscriber where subscriberNumber = ?";
 //--------------------------------------------------------------------------------------------
-    
+
     //Select Statement for Journal Group
     public String sql_select_journalGrp = "Select id from journal_groups where journalGroupName = ?";
 //--------------------------------------------------------------------------------------------
@@ -97,7 +97,7 @@ public class MigrationBase implements IMigrate {
     private PreparedStatement pst_insert_subscriber = null;
     private PreparedStatement pst_insert_city = null;
     private PreparedStatement pst_insert_agent = null;
-    
+
     public MigrationBase() throws SQLException {
 
         try {
@@ -366,7 +366,7 @@ public class MigrationBase implements IMigrate {
         countryMap.put("Italy - Europe", "Italy");
         countryMap.put("South America", "Chile");
 
-        
+
         agentMap.put("A&A Periodical Subscription Agency Pvt. Ltd.", "A&A Periodical Subscription Agency Pvt. Ltd.");
         agentMap.put("A&A Periodical", "A&A Periodical Subscription Agency Pvt. Ltd.");
         agentMap.put("A&A Periodical Sub Agency (P) Ltd", "A&A Periodical Subscription Agency Pvt. Ltd.");
@@ -718,7 +718,7 @@ public class MigrationBase implements IMigrate {
 
         //trim of any spaces are the ends
         agentName = agentName.trim();
-        
+
         String agentNameTemp = agentName;
         int agentid = 0;
         if (this.agentMap.containsKey(agentName)) {
@@ -726,7 +726,7 @@ public class MigrationBase implements IMigrate {
         }
         if (agentName == null){
             agentName = agentNameTemp;
-        }            
+        }
         PreparedStatement pst = this.conn.prepareStatement(sql_agent);
         pst.setString(1, agentName);
         ResultSet rs = db.executeQueryPreparedStatement(pst);
@@ -756,7 +756,7 @@ public class MigrationBase implements IMigrate {
         }
         return agentid;
     }
-    
+
     public int getCountryID(String countryName) throws SQLException {
         if (this.countryMap.containsKey(countryName)) {
             countryName = this.countryMap.get(countryName);
@@ -1010,7 +1010,7 @@ public class MigrationBase implements IMigrate {
         pst_insert_subscription.setFloat(++paramIndex, amount);
         pst_insert_subscription.setDate(++paramIndex, subdate);
         pst_insert_subscription.setFloat(++paramIndex, corr_balance);
-        pst_insert_subscription.setFloat(++paramIndex, agentId);
+        pst_insert_subscription.setInt(++paramIndex, agentId);
 
         //Inserting the record in Subscription Table
         int ret = this.db.executeUpdatePreparedStatement(pst_insert_subscription);
@@ -1109,7 +1109,7 @@ public class MigrationBase implements IMigrate {
         }
     }
 
-    
+
     boolean validateEmail(String to){
 
         String message = "";
