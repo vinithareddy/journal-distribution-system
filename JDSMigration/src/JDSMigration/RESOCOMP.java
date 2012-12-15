@@ -77,10 +77,10 @@ public class RESOCOMP extends MigrationBase {
 
 
             if (subscriberType.equalsIgnoreCase("I") || (subscriberType.isEmpty() && !subscriberType.equalsIgnoreCase("F"))) {
-                subscriberTypeID = 4; //code for indian institutes
+                subscriberTypeID = this.getSubTypeId("EI"); //code for indian institutes
                 subscriberTypeCode = "EI";
             } else if (!subscriberType.isEmpty() && subscriberType.equalsIgnoreCase("F")) {
-                subscriberTypeID = 5; //code for foreign institutes
+                subscriberTypeID = this.getSubTypeId("EF");; //code for foreign institutes
                 subscriberTypeCode = "EF";
             } else {
                 throw new Exception("Cannot determine subscriber type");
@@ -135,7 +135,7 @@ public class RESOCOMP extends MigrationBase {
                             1, //copies
                             2012, //start year
                             1, //start month
-                            2012, //end year
+                            2050, //end year
                             12, //end month
                             1); //price group id
 

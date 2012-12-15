@@ -77,7 +77,7 @@ public class CLIFESUB extends MigrationBase{
                 logger.warn("Found State with Id 0 " + datacolumns[8]);
                 address = address + " " + datacolumns[8];
             }
-            
+
             int subscriberid = this.insertSubscriber(
                     "LSP",
                     name,

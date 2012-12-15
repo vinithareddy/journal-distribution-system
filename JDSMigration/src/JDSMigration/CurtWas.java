@@ -98,7 +98,8 @@ public class CurtWas extends MigrationBase{
             pst.setString(++paramindex, address);
             pst.setString(++paramindex, address);
             pst.setInt(++paramindex, countryid);
-            pst.setInt(++paramindex, 13);
+            //pst.setInt(++paramindex, 13);
+            pst.setInt(++paramindex, this.getSubTypeId("FI"));
             pst.setString(++paramindex, department);
             pst.setString(++paramindex, institution);
             int upd_count = pst.executeUpdate();

@@ -151,7 +151,7 @@ public class RESOEB extends MigrationBase {
                             copies, //copies
                             2012, //start year
                             1, //start month
-                            2012, //end year
+                            2050, //end year
                             12, //end month
                             1); //price group id
 

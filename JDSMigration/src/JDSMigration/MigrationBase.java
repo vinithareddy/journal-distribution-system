@@ -50,6 +50,7 @@ public class MigrationBase implements IMigrate {
     public String sql_state = "select id from states where state = ?";
     public String sql_country = "select id from countries where country = ?";
     public String sql_india = "select id from countries where country = 'India'";
+    public String getSubtypeId = "select id from subscriber_type where subtypecode = ?";
     public String dataFile = null;
     private ExcelReader excelReader = null;
     public static final int COMMIT_SIZE = 1000;
@@ -1126,5 +1127,18 @@ public class MigrationBase implements IMigrate {
             success = false;
         }
         return success;
+    }
+
+    public int getSubTypeId(String subtypecode) throws SQLException {
+
+        PreparedStatement pst = this.conn.prepareStatement(getSubtypeId);
+        pst.setString(1, subtypecode);
+        ResultSet rs = db.executeQueryPreparedStatement(pst);
+        if (rs.isBeforeFirst()) {
+            rs.first();
+            return rs.getInt(1);
+        } else {
+            return 0;
+        }
     }
 }
