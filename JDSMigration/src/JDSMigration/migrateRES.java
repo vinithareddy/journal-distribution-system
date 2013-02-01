@@ -82,8 +82,12 @@ public class migrateRES extends MigrationBase {
                 }
 
                 String CSY = getCSYRES(datacolumns);
-
                 String CEY = getCEYRES(datacolumns);
+                boolean active = true;
+
+                if (Integer.parseInt(CEY) < Calendar.getInstance().get(Calendar.YEAR)) {
+                    active = false;
+                }
 
                 // Start year < 1st-Jan-2013 and End year > 31-July-2012
                 // csy.compareTo(dateFormat.parse("01/01/2013")) < 0 && cey.compareTo(dateFormat.parse("31/07/2012")) > 0

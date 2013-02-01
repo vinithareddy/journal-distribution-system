@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import jxl.read.biff.BiffException;
@@ -24,6 +25,7 @@ public class CurrMem extends MigrationBase{
     private static final Logger logger = Logger.getLogger(CurrMem.class.getName());
     private String insert_subscriber_sql;
     private String insert_subscription_sql;
+    private String insert_subscription_legacy_sql;
     private String insert_subscription_detail_sql;
     public CurrMem() throws SQLException, IOException, BiffException{
         this.dataFile = this.dataFolder + "\\CURRMEM.xls";
@@ -32,8 +34,10 @@ public class CurrMem extends MigrationBase{
                 + "department,institution,shippingaddress,invoiceAddress,city,state,country,pincode,subtype)values("
                 + "?,?,?,?,?,?,?,?,?,?,?,?)";
 
-        insert_subscription_sql = "insert into subscription(subscriberID,inwardID,legacy,legacy_amount) values "
-                + "(?, ?, ?, ?)";
+        insert_subscription_sql = "insert into subscription(subscriberID,inwardID) values "
+                + "(?, ?)";
+
+        insert_subscription_legacy_sql = "insert into subscription_legacy(subscription_id, amount) values (?, ?)";
 
         insert_subscription_detail_sql = "insert into subscriptiondetails(subscriptionID,journalGroupID,copies,startYear,startMonth,endMonth,endYear,journalPriceGroupID) "
                 + "values (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -47,6 +51,9 @@ public class CurrMem extends MigrationBase{
         //int commitCounter = 0;
         String[] datacolumns;
         int rownum = 0;
+        PreparedStatement pst = conn.prepareStatement(insert_subscriber_sql, Statement.RETURN_GENERATED_KEYS);
+        //PreparedStatement pst_sub = conn.prepareStatement(insert_subscription_sql, Statement.RETURN_GENERATED_KEYS);
+        //PreparedStatement pst_legacy = conn.prepareStatement(insert_subscription_legacy_sql);
 
         while (true) {
             datacolumns = this.getNextRow();
@@ -96,7 +103,7 @@ public class CurrMem extends MigrationBase{
                 address = address + " " + datacolumns[8];
             }
             int paramindex = 0;
-            PreparedStatement pst = conn.prepareStatement(insert_subscriber_sql, Statement.RETURN_GENERATED_KEYS);
+
 
             pst.setString(++paramindex, this.getNextSubscriberNumber());
             pst.setDate(++paramindex, util.dateStringToSqlDate(util.getDateString()));
@@ -119,24 +126,29 @@ public class CurrMem extends MigrationBase{
                 int subscriberId = rs.getInt(1);
 
                 this.conn.setAutoCommit(false);
-                paramindex = 0;
-                PreparedStatement pst_sub = conn.prepareStatement(insert_subscription_sql, Statement.RETURN_GENERATED_KEYS);
-                pst_sub.setInt(++paramindex, subscriberId);
-                pst_sub.setInt(++paramindex, 0);
-                pst_sub.setBoolean(++paramindex, true);
-                pst_sub.setFloat(++paramindex, amount);
+                //paramindex = 0;
 
-                upd_count = pst_sub.executeUpdate();
-                if(upd_count == 1){
-                    ResultSet rs1 = pst_sub.getGeneratedKeys();
-                    rs1.first();
-                    int subscriptionID = rs1.getInt(1);
+                //pst_sub.setInt(++paramindex, subscriberId);
+                //pst_sub.setInt(++paramindex, 0);
+                //pst_sub.setBoolean(++paramindex, true);
+                //pst_sub.setFloat(++paramindex, amount);
+
+                int subscriptionID = this.insertSubscription(subscriberId, 0);
+
+                //upd_count = pst_sub.executeUpdate();
+                if(subscriptionID > 0){
+                    //ResultSet rs1 = pst_sub.getGeneratedKeys();
+                    //rs1.first();
+
+                    //pst_legacy.setInt(1, subscriptionID);
+                    //pst_legacy.setFloat(2, amount);
+                    //pst_legacy.executeUpdate();
                     paramindex = 0;
                     PreparedStatement pst_sub_detail = conn.prepareStatement(insert_subscription_detail_sql);
                     pst_sub_detail.setInt(++paramindex, subscriptionID);
                     pst_sub_detail.setInt(++paramindex, 11);
                     pst_sub_detail.setInt(++paramindex, 1);
-                    pst_sub_detail.setInt(++paramindex, 2012);
+                    pst_sub_detail.setInt(++paramindex, Calendar.getInstance().get(Calendar.YEAR));
                     pst_sub_detail.setInt(++paramindex, 1);
                     pst_sub_detail.setInt(++paramindex, 12);
                     pst_sub_detail.setInt(++paramindex, 2050);

@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.Calendar;
 import jxl.read.biff.BiffException;
 import org.apache.log4j.Logger;
 
@@ -69,7 +70,7 @@ public class CURRIEX extends MigrationBase {
                 logger.debug("city is:" + city[0]);
                 logger.debug("city id is:" + cityid);
             }
-            
+
             if (cityid == 0){
                 logger.warn("Found City with Id 0 " + cityPin);
                 address = address + " " + cityPin;
@@ -93,13 +94,14 @@ public class CURRIEX extends MigrationBase {
                     null);
             if(subscriberid > 0){
                 logger.info("Successfully inserted subsciber data for:" + name);
+                //int subscription_id = this.insertSubscription(subscriberid);
                 int subscription_id = this.insertSubscription(subscriberid);
                 if(subscription_id > 0){
                     boolean isSuccess = this.insertSubscriptionDetails(
                             subscription_id,
                             11, //jgroup id
                             copies, //copies
-                            2012, //start year
+                            Calendar.getInstance().get(Calendar.YEAR), //start year
                             1, //start month
                             2050, //end year
                             12, //end month

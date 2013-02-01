@@ -1,3 +1,5 @@
+use jds;
+
 delete from inward;
 ALTER TABLE inward AUTO_INCREMENT = 1;
 
@@ -9,6 +11,9 @@ ALTER TABLE subscriptiondetails AUTO_INCREMENT = 1;
 
 delete from subscription;
 ALTER TABLE subscription AUTO_INCREMENT = 1;
+
+delete from subscription_legacy;
+ALTER TABLE subscription_legacy AUTO_INCREMENT = 1;
 
 delete from mailing_list;
 ALTER TABLE mailing_list AUTO_INCREMENT = 1;
@@ -42,6 +47,9 @@ ALTER TABLE print_order AUTO_INCREMENT = 1;
 
 delete from circulation_figure;
 ALTER TABLE circulation_figure AUTO_INCREMENT = 1;
+
+delete from inward_agent_details;
+ALTER TABLE inward_agent_details AUTO_INCREMENT = 1;
 
 delete from prl;
 ALTER TABLE prl AUTO_INCREMENT = 1;

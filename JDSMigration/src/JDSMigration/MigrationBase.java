@@ -62,19 +62,22 @@ public class MigrationBase implements IMigrate {
     //Select Statement for Subscriber Id
     public String sql_select_subscriber = "Select id from subscriber where subscriberNumber = ?";
 //--------------------------------------------------------------------------------------------
-        //Select Statement for Agent Subscriber
+    //Select Statement for Agent Subscriber
     public String sql_select_subscriber_agent = "Select id from subscriber where subscriberNumber = ?";
 //--------------------------------------------------------------------------------------------
-
     //Select Statement for Journal Group
     public String sql_select_journalGrp = "Select id from journal_groups where journalGroupName = ?";
 //--------------------------------------------------------------------------------------------
     //Insert Statement for Subscription
-    public String sql_insert_subscription = "insert into subscription(subscriberID,inwardID,legacy,legacy_amount,subscriptiondate,legacy_balance, agentId)"
-            + "values(?,?,?,?,?,?,?)";
-    public String sql_insert_subscription_no_dt = "insert into subscription(subscriberID,inwardID,legacy,legacy_amount,legacy_balance)"
-            + "values(?,?,?,?,?)";
-    public String sql_insert_subscription_free_subs = "insert into subscription(subscriberID,inwardID,legacy) values(?,?,?)";
+    public String sql_insert_subscription = "insert into subscription(subscriberID,inwardID,subscriptiondate,agentId)"
+            + "values(?,?,?,?)";
+
+    public String sql_insert_subscription_no_dt = "insert into subscription(subscriberID,inwardID)"
+            + "values(?,?)";
+
+    public String sql_insert_legacy_subscription_info = "insert into subscription_legacy(subscription_id,legacy_amount,legacy_balance) values (?,?,?)";
+
+    public String sql_insert_subscription_free_subs = "insert into subscription(subscriberID,inwardID) values(?,?)";
 //--------------------------------------------------------------------------------------------
     //Insert Statement for Subscription Details
     public String sql_insert_subscriptiondetails = "insert into subscriptiondetails(subscriptionID, "
@@ -98,6 +101,7 @@ public class MigrationBase implements IMigrate {
     private PreparedStatement pst_insert_subscriber = null;
     private PreparedStatement pst_insert_city = null;
     private PreparedStatement pst_insert_agent = null;
+    private PreparedStatement pst_insert_legacy_subscription_info = null;
 
     public MigrationBase() throws SQLException {
 
@@ -623,6 +627,7 @@ public class MigrationBase implements IMigrate {
         pst_insert_subscriber = this.conn.prepareStatement(sql_insert_subscriber_dt, Statement.RETURN_GENERATED_KEYS);
         pst_insert_city = this.conn.prepareStatement(insert_city, Statement.RETURN_GENERATED_KEYS);
         pst_insert_agent = this.conn.prepareStatement(insert_agent, Statement.RETURN_GENERATED_KEYS);
+        pst_insert_legacy_subscription_info = this.conn.prepareStatement(sql_insert_legacy_subscription_info);
 
     }
 
@@ -725,7 +730,7 @@ public class MigrationBase implements IMigrate {
         if (this.agentMap.containsKey(agentName)) {
             agentName = this.agentMap.get(agentName);
         }
-        if (agentName == null){
+        if (agentName == null) {
             agentName = agentNameTemp;
         }
         PreparedStatement pst = this.conn.prepareStatement(sql_agent);
@@ -737,7 +742,7 @@ public class MigrationBase implements IMigrate {
         } else {
             // if the city is not present in the city table, check the district table
             //try {
-            invalidcitylog.error(agentName);
+            logger.error(agentName);
             //Path path = Paths.get("logs\\invalidCities.log");
             //Files.write(path, citynames, StandardCharsets.UTF_8);
             pst_insert_agent.setString(1, agentName);
@@ -793,7 +798,7 @@ public class MigrationBase implements IMigrate {
 
     }
 
-        public int getIndiaID() throws SQLException {
+    public int getIndiaID() throws SQLException {
 
         PreparedStatement pst = this.conn.prepareStatement(sql_india);
         ResultSet rs = db.executeQueryPreparedStatement(pst);
@@ -1004,14 +1009,18 @@ public class MigrationBase implements IMigrate {
 
     public int insertSubscription(int subscriberId, int inwardId, float amount, Date subdate, float corr_balance, int agentId) throws SQLException {
         int paramIndex = 0;
+        int sub_id;
+
         pst_insert_subscription.setInt(++paramIndex, subscriberId);
         pst_insert_subscription.setInt(++paramIndex, inwardId);
         //pst_insert_subscription.setString(++paramIndex, remarks);
-        pst_insert_subscription.setBoolean(++paramIndex, true);
-        pst_insert_subscription.setFloat(++paramIndex, amount);
+        //pst_insert_subscription.setBoolean(++paramIndex, true);
+        //pst_insert_subscription.setFloat(++paramIndex, amount);
         pst_insert_subscription.setDate(++paramIndex, subdate);
-        pst_insert_subscription.setFloat(++paramIndex, corr_balance);
+        //pst_insert_subscription.setFloat(++paramIndex, corr_balance);
         pst_insert_subscription.setInt(++paramIndex, agentId);
+
+
 
         //Inserting the record in Subscription Table
         int ret = this.db.executeUpdatePreparedStatement(pst_insert_subscription);
@@ -1019,7 +1028,12 @@ public class MigrationBase implements IMigrate {
             //Getting back the subsciption Id
             ResultSet rs_sub = pst_insert_subscription.getGeneratedKeys();
             rs_sub.first();
-            return rs_sub.getInt(1);  //return subscription id
+            sub_id = rs_sub.getInt(1);  //return subscription id
+            pst_insert_legacy_subscription_info.setInt(1, sub_id);
+            pst_insert_legacy_subscription_info.setFloat(2, amount);
+            pst_insert_legacy_subscription_info.setFloat(3, corr_balance);
+            pst_insert_legacy_subscription_info.executeUpdate();
+            return sub_id;
         } else {
             throw (new SQLException("Failed to add subscription"));
         }
@@ -1028,11 +1042,13 @@ public class MigrationBase implements IMigrate {
 
     public int insertSubscription(int subscriberId) throws SQLException {
         int paramIndex = 0;
+        int sub_id;
         pst_insert_subscription_no_dt.setInt(++paramIndex, subscriberId);
         pst_insert_subscription_no_dt.setInt(++paramIndex, 0);
-        pst_insert_subscription_no_dt.setBoolean(++paramIndex, true);
-        pst_insert_subscription_no_dt.setFloat(++paramIndex, 0);
-        pst_insert_subscription_no_dt.setFloat(++paramIndex, 0);
+
+        //pst_insert_subscription_no_dt.setBoolean(++paramIndex, true);
+        //pst_insert_subscription_no_dt.setFloat(++paramIndex, 0);
+        //pst_insert_subscription_no_dt.setFloat(++paramIndex, 0);
 
         //Inserting the record in Subscription Table
         int ret = pst_insert_subscription_no_dt.executeUpdate();
@@ -1040,7 +1056,40 @@ public class MigrationBase implements IMigrate {
             //Getting back the subsciption Id
             ResultSet rs_sub = pst_insert_subscription_no_dt.getGeneratedKeys();
             rs_sub.first();
-            return rs_sub.getInt(1);  //return subscription id
+            sub_id = rs_sub.getInt(1);  //return subscription id
+            pst_insert_legacy_subscription_info.setInt(1, sub_id);
+            pst_insert_legacy_subscription_info.setFloat(2, 0);
+            pst_insert_legacy_subscription_info.setFloat(3, 0);
+            pst_insert_legacy_subscription_info.executeUpdate();
+            return sub_id;
+        } else {
+            throw (new SQLException("Failed to add subscription"));
+        }
+
+    }
+
+    public int insertSubscription(int subscriberId, int inwardID) throws SQLException {
+        int paramIndex = 0;
+        int sub_id;
+        pst_insert_subscription_no_dt.setInt(++paramIndex, subscriberId);
+        pst_insert_subscription_no_dt.setInt(++paramIndex, inwardID);
+
+        //pst_insert_subscription_no_dt.setBoolean(++paramIndex, true);
+        //pst_insert_subscription_no_dt.setFloat(++paramIndex, 0);
+        //pst_insert_subscription_no_dt.setFloat(++paramIndex, 0);
+
+        //Inserting the record in Subscription Table
+        int ret = pst_insert_subscription_no_dt.executeUpdate();
+        if (ret == 1) {
+            //Getting back the subsciption Id
+            ResultSet rs_sub = pst_insert_subscription_no_dt.getGeneratedKeys();
+            rs_sub.first();
+            sub_id = rs_sub.getInt(1);  //return subscription id
+            pst_insert_legacy_subscription_info.setInt(1, sub_id);
+            pst_insert_legacy_subscription_info.setFloat(2, 0);
+            pst_insert_legacy_subscription_info.setFloat(3, 0);
+            pst_insert_legacy_subscription_info.executeUpdate();
+            return sub_id;
         } else {
             throw (new SQLException("Failed to add subscription"));
         }
@@ -1071,18 +1120,19 @@ public class MigrationBase implements IMigrate {
     }
 
     public void executeMasterDataScripts() throws IOException, SQLException {
-        String files[] = new String[11];
-        files[0] = "data" + "\\masterdata\\1.journals.sql";
-        files[1] = "data" + "\\masterdata\\2.journal_groups.sql";
-        files[2] = "data" + "\\masterdata\\3.journal_group_contents.sql";
-        files[3] = "data" + "\\masterdata\\4.subscriber_types.sql";
-        files[4] = "data" + "\\masterdata\\5.subscription_rates.sql";
-        files[5] = "data" + "\\masterdata\\6.cities.sql";
-        files[6] = "data" + "\\masterdata\\7.countries.sql";
-        files[7] = "data" + "\\masterdata\\8.states.sql";
-        files[8] = "data" + "\\masterdata\\9.year.sql";
-        files[9] = "data" + "\\masterdata\\10.districts.sql";
-        files[10] = "data" + "\\masterdata\\truncate_transaction_data.sql";
+        String files[] = new String[1];
+        /*files[0] = "data" + "\\masterdata\\1.journals.sql";
+         files[1] = "data" + "\\masterdata\\2.journal_groups.sql";
+         files[2] = "data" + "\\masterdata\\3.journal_group_contents.sql";
+         files[3] = "data" + "\\masterdata\\4.subscriber_types.sql";
+         files[4] = "data" + "\\masterdata\\5.subscription_rates.sql";
+         files[5] = "data" + "\\masterdata\\6.cities.sql";
+         files[6] = "data" + "\\masterdata\\7.countries.sql";
+         files[7] = "data" + "\\masterdata\\8.states.sql";
+         files[8] = "data" + "\\masterdata\\9.year.sql";
+         files[9] = "data" + "\\masterdata\\10.districts.sql";
+         files[0] = "data" + "\\masterdata\\jds_schema_data.sql";*/
+        files[0] = "data" + "\\masterdata\\truncate_transaction_data.sql";
 
         for (int j = 0; j < files.length; j++) {
             String s;
@@ -1103,22 +1153,27 @@ public class MigrationBase implements IMigrate {
                 // we ensure that there is no spaces before or after the request string
                 // in order to not execute empty statements
                 if (!inst[i].trim().equals("")) {
-                    this.db.executeUpdate(inst[i]);
+                    try {
+                        this.db.executeUpdate(inst[i]);
+                    } catch (SQLException ex) {
+                        logger.error(ex);
+                        throw ex;
+                    }
+
                     //System.out.println(">>"+inst[i]);
                 }
             }
         }
     }
 
-
-    boolean validateEmail(String to){
+    boolean validateEmail(String to) {
 
         String message = "";
         boolean success = false;
         try {
             //new InternetAddress(to).validate();
             Address[] toUser = InternetAddress.parse(to, false);
-            for(Address s: toUser){
+            for (Address s : toUser) {
                 new InternetAddress(s.toString()).validate();
             }
             success = true;
@@ -1140,5 +1195,20 @@ public class MigrationBase implements IMigrate {
         } else {
             return 0;
         }
+    }
+
+    public int getCorrectedYear(int year) {
+        int corrected_year = 0;
+        if (year > 100) { // start year is rightly filled with 4 digit year
+            corrected_year = year;
+        } else {
+            if (year > 50 && year < 100) {
+                // start year is filled with 2 digit such as 79, which means it is 1979
+                corrected_year = 1900 + year;
+            } else if (year > 0 && year <= 50) {
+                corrected_year = 2000 + year;
+            }
+        }
+        return corrected_year;
     }
 }

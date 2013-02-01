@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.Calendar;
 import jxl.read.biff.BiffException;
 import org.apache.log4j.Logger;
 
@@ -65,7 +66,7 @@ public class CURRFEX extends MigrationBase{
             if (datacolumns[7].isEmpty() == false) {
                 address = address == null ? datacolumns[7] : address + "\n" + datacolumns[7];
             }
-                  
+
             if (cityid == 0){
                 logger.warn("Found City with Id 0 " + datacolumns[8]);
                 address = address + " " + datacolumns[8];
@@ -94,7 +95,7 @@ public class CURRFEX extends MigrationBase{
                             subscription_id,
                             11, //jgroup id
                             copies, //copies
-                            2012, //start year
+                            Calendar.getInstance().get(Calendar.YEAR), //start year
                             1, //start month
                             2050, //end year
                             12, //end month

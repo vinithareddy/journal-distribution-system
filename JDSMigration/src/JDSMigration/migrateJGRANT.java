@@ -40,6 +40,7 @@ public class migrateJGRANT extends MigrationBase{
         //subscriberNumberStart = getLastSubscriberId() + 1;
     }
 
+    @Override
     public void Migrate() throws FileNotFoundException, IOException, BiffException, SQLException, ParseException, InvocationTargetException, IllegalAccessException {
 
         this.openExcel(dataFile);
@@ -69,8 +70,9 @@ public class migrateJGRANT extends MigrationBase{
             totalRows++;
 
             // This is the first row, which has all the column names
-            if(totalRows == 0)
+            if(totalRows == 0) {
                 continue;
+            }
 
             /*----------------------------------------------------------------*/
             /*---Insert Subscriber ---*/
@@ -216,16 +218,19 @@ public class migrateJGRANT extends MigrationBase{
             /*---Insert Subscription ---*/
             /*----------------------------------------------------------------*/
             int inwardId = 0;
-            paramIndex = 0;
-            pst_insert_subscription.setInt(++paramIndex, subscriberid);
-            pst_insert_subscription.setInt(++paramIndex, inwardId);
-            pst_insert_subscription.setBoolean(++paramIndex, true);
+            int ret;
+            //paramIndex = 0;
+            //pst_insert_subscription.setInt(++paramIndex, subscriberid);
+            //pst_insert_subscription.setInt(++paramIndex, inwardId);
+            //pst_insert_subscription.setBoolean(++paramIndex, true);
 
             //Inserting the record in Subscription Table
-            int ret = this.db.executeUpdatePreparedStatement(pst_insert_subscription);
+            //int ret = this.db.executeUpdatePreparedStatement(pst_insert_subscription);
+
+            int subscriptionID = this.insertSubscription(subscriberid, inwardId);
 
             //Logging the inserting row
-            if (ret == 1) {
+            if (subscriptionID > 0) {
                 recordCounter++;
                 insertedSubscriptions++;
             } else {
@@ -234,9 +239,9 @@ public class migrateJGRANT extends MigrationBase{
             }
 
             //Getting back the subsciption Id
-            ResultSet rs_sub = pst_insert_subscription.getGeneratedKeys();
-            rs_sub.first();
-            int subscriptionID = rs_sub.getInt(1);
+            //ResultSet rs_sub = pst_insert_subscription.getGeneratedKeys();
+            //rs_sub.first();
+            //int subscriptionID = rs_sub.getInt(1);
 
             /*----------------------------------------------------------------*/
             /*---Insert Subscription details---*/

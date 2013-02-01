@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.Calendar;
 import jxl.read.biff.BiffException;
 import org.apache.log4j.Logger;
 
@@ -16,7 +17,7 @@ import org.apache.log4j.Logger;
  * @author Shailendra
  */
 public class member extends MigrationBase{
-    
+
     private static final Logger logger = Logger.getLogger(member.class.getName());
 
     public member() throws SQLException, IOException, BiffException {
@@ -39,7 +40,7 @@ public class member extends MigrationBase{
             }
             rownum++;
             logger.info("Migrating row: " + rownum);
-            
+
             String name = datacolumns[1] + " " + datacolumns[2] + " " + datacolumns[3];
             String address = datacolumns[6] + " " + datacolumns[7];
             String institute = datacolumns[5];
@@ -51,7 +52,7 @@ public class member extends MigrationBase{
             String cityPin = datacolumns[8];
 
             int copies = 1;
-            
+
 //            if (datacolumns[4].isEmpty() == false) {
 //                address = address == null ? datacolumns[4] : address + "\n" + datacolumns[4];
 //            }
@@ -72,33 +73,33 @@ public class member extends MigrationBase{
             if (stateid == 0){
                 logger.warn("Found State with Id 0 " + datacolumns[10]);
                 address = address + " " + datacolumns[10];
-            }            
+            }
             int subscriberid = this.insertSubscriber(
                     "MEMBER",
-                    name, 
-                    department, 
-                    institute, 
-                    address, 
-                    address, 
-                    cityid, 
-                    stateid, 
-                    pin, 
-                    countryid, 
+                    name,
+                    department,
+                    institute,
+                    address,
+                    address,
+                    cityid,
+                    stateid,
+                    pin,
+                    countryid,
                     null);
             if(subscriberid > 0){
                 logger.info("Successfully inserted subsciber data for:" + name);
                 int subscription_id = this.insertSubscription(subscriberid);
                 if(subscription_id > 0){
                     boolean isSuccess = this.insertSubscriptionDetails(
-                            subscription_id, 
+                            subscription_id,
                             11, //jgroup id
                             copies, //copies
-                            2012, //start year
+                            Calendar.getInstance().get(Calendar.YEAR), //start year
                             1, //start month
                             2050, //end year
                             12, //end month
                             1); //price group id
-                    
+
                     if(isSuccess){
                         logger.info("Subscription inserted successfully for: " + name);
                         success++;
@@ -109,7 +110,7 @@ public class member extends MigrationBase{
             }else{
                 logger.fatal("Failed to insert subscriber for: " + name);
             }
-            
+
         }
         logger.info("Total rows: " + (rownum - 1));
         logger.info("Success: " + success);

@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.Calendar;
 import jxl.read.biff.BiffException;
 import org.apache.log4j.Logger;
 
@@ -109,23 +110,25 @@ public class CurtWas extends MigrationBase{
                 int subscriberId = rs.getInt(1);
 
                 this.conn.setAutoCommit(false);
-                paramindex = 0;
-                PreparedStatement pst_sub = conn.prepareStatement(insert_subscription_sql, Statement.RETURN_GENERATED_KEYS);
-                pst_sub.setInt(++paramindex, subscriberId);
-                pst_sub.setInt(++paramindex, 0);
-                pst_sub.setBoolean(++paramindex, true);
 
-                upd_count = pst_sub.executeUpdate();
-                if(upd_count == 1){
-                    ResultSet rs1 = pst_sub.getGeneratedKeys();
-                    rs1.first();
-                    int subscriptionID = rs1.getInt(1);
+                int subscriptionID = this.insertSubscription(subscriberId, 0);
+                //paramindex = 0;
+                //PreparedStatement pst_sub = conn.prepareStatement(insert_subscription_sql, Statement.RETURN_GENERATED_KEYS);
+                //pst_sub.setInt(++paramindex, subscriberId);
+                //pst_sub.setInt(++paramindex, 0);
+                //pst_sub.setBoolean(++paramindex, true);
+
+                //upd_count = pst_sub.executeUpdate();
+                if(subscriptionID > 0){
+                    //ResultSet rs1 = pst_sub.getGeneratedKeys();
+                    //rs1.first();
+
                     paramindex = 0;
                     PreparedStatement pst_sub_detail = conn.prepareStatement(insert_subscription_detail_sql);
                     pst_sub_detail.setInt(++paramindex, subscriptionID);
                     pst_sub_detail.setInt(++paramindex, 11);
                     pst_sub_detail.setInt(++paramindex, 1);
-                    pst_sub_detail.setInt(++paramindex, 2012);
+                    pst_sub_detail.setInt(++paramindex, Calendar.getInstance().get(Calendar.YEAR));
                     pst_sub_detail.setInt(++paramindex, 1);
                     pst_sub_detail.setInt(++paramindex, 12);
                     pst_sub_detail.setInt(++paramindex, 2050);

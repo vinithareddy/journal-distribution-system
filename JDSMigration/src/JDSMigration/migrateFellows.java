@@ -20,16 +20,14 @@ import org.apache.log4j.Logger;
  *
  * @author aloko
  */
-public class migrateFellows extends MigrationBase{
+public class migrateFellows extends MigrationBase {
 
     private static final Logger logger = Logger.getLogger(migrateFellows.class.getName());
+    private int COMMIT_BATCH_SIZE = 1000;
+    // Fellows do not have a subscriber no, hence we take the last subscriber ID and start from there
+    int subscriberNumberStart;
 
-        private int COMMIT_BATCH_SIZE = 1000;
-
-        // Fellows do not have a subscriber no, hence we take the last subscriber ID and start from there
-        int subscriberNumberStart;
-
-        public migrateFellows() throws SQLException {
+    public migrateFellows() throws SQLException {
         this.dataFile = this.dataFolder + "\\CIR_FEL.xls";
         this.conn = this.db.getConnection();
         conn.setAutoCommit(false);
@@ -40,7 +38,7 @@ public class migrateFellows extends MigrationBase{
     public void Migrate() throws FileNotFoundException, IOException, BiffException, SQLException, ParseException, InvocationTargetException, IllegalAccessException {
 
         this.openExcel(dataFile);
-        logger.debug("able to open file" + dataFile.toString());
+        //logger.debug("able to open file" + dataFile.toString());
 
         String[] datacolumns = null;
         int totalRows = 0;
@@ -51,9 +49,10 @@ public class migrateFellows extends MigrationBase{
 
         PreparedStatement pst_insert_subscriber = null,
                 pst_insert_subscription = null,
-                pst_insert_subscription_dtls = null;
+                pst_insert_subscription_dtls = null, pst_insert_subscription_legacy = null;
         pst_insert_subscriber = this.conn.prepareStatement(sql_insert_subscriber_dt, com.mysql.jdbc.Statement.RETURN_GENERATED_KEYS);
         pst_insert_subscription = this.conn.prepareStatement(sql_insert_subscription_free_subs, Statement.RETURN_GENERATED_KEYS);
+        pst_insert_subscription_legacy = this.conn.prepareStatement(sql_insert_legacy_subscription_info);
         pst_insert_subscription_dtls = this.conn.prepareStatement(sql_insert_subscriptiondetails);
 
         //int subscriberNumber = subscriberNumberStart;
@@ -66,24 +65,25 @@ public class migrateFellows extends MigrationBase{
             totalRows++;
 
             // This is the first row, which has all the column names
-            if(totalRows == 0)
+            if (totalRows == 0) {
                 continue;
+            }
 
             /*----------------------------------------------------------------*/
             /*---Insert Subscriber ---*/
             /*----------------------------------------------------------------*/
             // Extract data
-            String agentCode    = "0";
-            String subtype      = "FELJM";
-            String subscriberName   = datacolumns[1] + " " + datacolumns[2] + " " + datacolumns[3];
-            String department       = datacolumns[4];
-            String institution      = datacolumns[5];
-            String shippingAddress      = datacolumns[6] + " " + datacolumns[7];
-            String cityAndPin   = datacolumns[8];
-            String pincode      = datacolumns[9];
-            String state        = datacolumns[10];
-            String country      = datacolumns[11];
-            String email        = "";
+            String agentCode = "0";
+            String subtype = "FELJM";
+            String subscriberName = datacolumns[1] + " " + datacolumns[2] + " " + datacolumns[3];
+            String department = datacolumns[4];
+            String institution = datacolumns[5];
+            String shippingAddress = datacolumns[6] + " " + datacolumns[7];
+            String cityAndPin = datacolumns[8];
+            String pincode = datacolumns[9];
+            String state = datacolumns[10];
+            String country = datacolumns[11];
+            String email = "";
 
             //subscriberName, department, institution and address have "" quotes, remove them
             subscriberName = subscriberName.replaceAll("\"", "");
@@ -93,11 +93,10 @@ public class migrateFellows extends MigrationBase{
 
             // City has to be extracted from "cityAndpin" field. Do this only for those cityAndpin for which the pincode exists in a separate field
             // For cityAndpin for which the pincode does not exist, means this is a foreign country
-            int cityID=0;
-            if(!pincode.isEmpty())
-            {
+            int cityID = 0;
+            if (!pincode.isEmpty()) {
                 String city = null;
-                try{
+                try {
                     city = cityAndPin.replaceAll(pincode, "");
 
                     if (this.cityMap.containsKey(city)) {
@@ -106,30 +105,25 @@ public class migrateFellows extends MigrationBase{
 
                     cityID = this.getCityID(city);
 
-                    if(cityID == 0)
-                    {
+                    if (cityID == 0) {
                         logger.warn("Found city " + city + " which does not have a entry in the database");
                         shippingAddress = shippingAddress + " " + cityAndPin;
                     }
-                }catch(NumberFormatException e){
+                } catch (NumberFormatException e) {
                     logger.warn("Exception: " + e.getMessage() + " for cityAndPin " + cityAndPin);
                 }
-            }
-            else
-            {
+            } else {
                 shippingAddress = shippingAddress + " " + cityAndPin;
             }
 
             // Now get the stateID
             int stateID = 0;
-            if(!state.isEmpty())
-            {
+            if (!state.isEmpty()) {
                 if (this.stateMap.containsKey(state)) {
                     state = this.stateMap.get(state);
                 }
                 stateID = this.getStateID(state);
-                if(stateID == 0)
-                {
+                if (stateID == 0) {
                     logger.warn("Found state " + state + " which does not have a entry in the database");
                     shippingAddress = shippingAddress + " " + state;
                 }
@@ -137,30 +131,26 @@ public class migrateFellows extends MigrationBase{
 
             // Now get the countryID
             int countryID = 0;
-            if(!country.isEmpty())
-            {
+            if (!country.isEmpty()) {
                 if (this.countryMap.containsKey(country)) {
                     country = this.countryMap.get(country);
                 }
                 countryID = this.getCountryID(country);
-                if(countryID == 0)
-                {
+                if (countryID == 0) {
                     logger.warn("Found country " + country + " which does not have a entry in the database");
                     shippingAddress = country + " " + country;
                 }
-            }
-            else {
+            } else {
                 countryID = this.getIndiaID();
                 logger.warn("Found country " + country + " which does not have a entry in the database. Setting to India");
             }
 
             // Replace the space in the pincode and convert to integer
             int pin = 0;
-            if(!pincode.isEmpty())
-            {
-                try{
+            if (!pincode.isEmpty()) {
+                try {
                     pin = this.getPinCode(pincode.replaceAll(" ", ""));
-                }catch(NumberFormatException e){
+                } catch (NumberFormatException e) {
                     logger.warn("Exception: " + e.getMessage() + " for pincode " + pincode);
                     pin = 0;
                     shippingAddress = shippingAddress + " " + pincode;
@@ -198,25 +188,29 @@ public class migrateFellows extends MigrationBase{
             recordCounter++;
             insertedSubscribers++;
             /*
-            int ret = this.db.executeUpdatePreparedStatement(pst_insert_subscriber);
-            if (ret == 0) {
-                logger.fatal("Failed to insert subscriber: " + subscriberNumber + " Name: " + subscriberName);
-                break;
-            } else {
-                recordCounter++;
-                insertedSubscribers++;
-            }
-            */
+             int ret = this.db.executeUpdatePreparedStatement(pst_insert_subscriber);
+             if (ret == 0) {
+             logger.fatal("Failed to insert subscriber: " + subscriberNumber + " Name: " + subscriberName);
+             break;
+             } else {
+             recordCounter++;
+             insertedSubscribers++;
+             }
+             */
 
-            if(getTotalNoOfCopiesFellows(datacolumns) > 0){
+            if (getTotalNoOfCopiesFellows(datacolumns) > 0) {
                 /*----------------------------------------------------------------*/
                 /*---Insert Subscription ---*/
                 /*----------------------------------------------------------------*/
                 int inwardId = 0;
+                int ret;
                 paramIndex = 0;
-                pst_insert_subscription.setInt(++paramIndex, subscriberid);
+
+                int subscriptionID = this.insertSubscription(subscriberid, inwardId);
+
+                /*pst_insert_subscription.setInt(++paramIndex, subscriberid);
                 pst_insert_subscription.setInt(++paramIndex, inwardId);
-                pst_insert_subscription.setBoolean(++paramIndex, true);
+                //pst_insert_subscription.setBoolean(++paramIndex, true);
 
                 //Inserting the record in Subscription Table
                 int ret = this.db.executeUpdatePreparedStatement(pst_insert_subscription);
@@ -225,6 +219,10 @@ public class migrateFellows extends MigrationBase{
                 if (ret == 1) {
                     recordCounter++;
                     insertedSubscriptions++;
+                    pst_insert_subscription_legacy.setInt(1, ret);
+                    pst_insert_subscription_legacy.setFloat(2, 0);
+                    pst_insert_subscription_legacy.setFloat(3, 0);
+                    pst_insert_subscription_legacy.executeUpdate();
                 } else {
                     logger.fatal("Failed to insert subscription for: " + subscriberNumber + " Name: " + subscriberName);
                     break;
@@ -233,7 +231,7 @@ public class migrateFellows extends MigrationBase{
                 //Getting back the subsciption Id
                 ResultSet rs_sub = pst_insert_subscription.getGeneratedKeys();
                 rs_sub.first();
-                int subscriptionID = rs_sub.getInt(1);
+                int subscriptionID = rs_sub.getInt(1);*/
 
                 /*----------------------------------------------------------------*/
                 /*---Insert Subscription details---*/
@@ -273,7 +271,7 @@ public class migrateFellows extends MigrationBase{
                 }
             }
             /*----------------------------------------------------------------*/
-            if(recordCounter >= COMMIT_BATCH_SIZE){
+            if (recordCounter >= COMMIT_BATCH_SIZE) {
                 logger.debug("Commiting database after " + String.valueOf(insertedSubscribers) + " rows");
                 conn.commit();
                 recordCounter = 0;

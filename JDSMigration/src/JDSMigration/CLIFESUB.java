@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.Calendar;
 import jxl.read.biff.BiffException;
 import org.apache.log4j.Logger;
 
@@ -98,7 +99,7 @@ public class CLIFESUB extends MigrationBase{
                             subscription_id,
                             11, //jgroup id
                             copies, //copies
-                            2012, //start year
+                            Calendar.getInstance().get(Calendar.YEAR), //start year
                             1, //start month
                             2050, //end year
                             12, //end month
