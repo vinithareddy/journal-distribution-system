@@ -26,9 +26,9 @@ public class JDSMigrate {
 
     private boolean INIT_MASTER_DATA = true;
 
-    private boolean MIGRATE_INWARD = MIGRATE_ALL && true;
+    private boolean MIGRATE_INWARD = true;
     private boolean MIGRATE_SUBSCRIBER = true;
-    private boolean MIGRATE_SUBSCRIPTION = true;
+    private boolean MIGRATE_SUBSCRIPTION = MIGRATE_ALL && true;
     private boolean MIGRATE_CORR = MIGRATE_ALL && true;
     private boolean MIGRATE_FELLOWS = MIGRATE_ALL && true;
     private boolean MIGRATE_ASSOCIATES = MIGRATE_ALL && true;
@@ -73,12 +73,14 @@ public class JDSMigrate {
         if (_jdsmigrate.MIGRATE_INWARD) {
             OldInward _oldinward = new OldInward("INW2009.txt");
             _oldinward.Migrate();
-            String[] inwardFiles = {"INW2010.txt", "INW2011.txt", "INW2012.txt", "NEWINW.txt"};
+            String[] inwardFiles = {"INW2010.txt", "INW2011.txt", "INW2012.txt"};
             Inward _inward;
             for (int i = 0; i < inwardFiles.length; i++) {
                 _inward = new Inward(inwardFiles[i]);
                 _inward.Migrate();
             }
+            NewInward newInward = new NewInward();
+            newInward.Migrate();
 
         }
         if (_jdsmigrate.MIGRATE_SUBSCRIBER) {

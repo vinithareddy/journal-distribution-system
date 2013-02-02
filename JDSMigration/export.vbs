@@ -24,7 +24,10 @@ files = Array("CLIFESUB", _
               "JGRANT", _
               "JNLS", _
               "MEMBER", _
-              "RESOCOMP")
+              "RESOCOMP", _
+              "TEMP", _
+              "INDTEMP", _
+              "NEWINW")
 for each file in files
     wscript.echo("Exporting file " & file)
     Set objWB = excel.WorkBooks.Open(datafolder_in & "\" & file & ".DBF")

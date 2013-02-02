@@ -78,8 +78,8 @@ public class Subscription extends MigrationBase {
 
 
         // truncate the old data
-        this.truncateTable("subscription");
-        this.truncateTable("subscriptiondetails");
+        //this.truncateTable("subscription");
+        //this.truncateTable("subscriptiondetails");
 
         int[] jrnlArr = {4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 27};
         int[] jrnlGrpIDArr = {1, 2, 3, 4, 6, 5, 7, 8, 9, 10, 11, 12, 13}; //Journal Group IDs

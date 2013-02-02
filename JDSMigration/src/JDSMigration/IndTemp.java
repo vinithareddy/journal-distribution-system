@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import jxl.read.biff.BiffException;
 import org.apache.log4j.Logger;
 
 /**
@@ -24,13 +25,13 @@ import org.apache.log4j.Logger;
  */
 public class IndTemp extends MigrationBase {
 
-    private String dataFile = null;
+    //private String dataFile = null;
     private int COMMIT_BATCH_SIZE = 1000;
     private static final Logger logger = Logger.getLogger(IndTemp.class.getName());
     int totalRows = 0;
     int insertedRows = 0;
     int duplicateRows = 0;
-    Connection conn = null;
+    //Connection conn = null;
     private String sql_insert = "insert IGNORE into subscriber(subtype, subscriberNumber"
             + ",subscriberName, department"
             + ",institution, shippingAddress"
@@ -42,7 +43,7 @@ public class IndTemp extends MigrationBase {
     public IndTemp(HashMap<String, String> _agentSubscriberMap) throws SQLException{
         super(); // call the base class constructor
         //this.dataFile = this.dataFolder + "\\subscriber\\temp.txt";
-        this.dataFile = this.dataFolder + "\\subscriber\\indtemp.txt";
+        this.dataFile = this.dataFolder + "\\indtemp.xls";
         this.conn = this.db.getConnection();
         conn.setAutoCommit(false);
         agentSubscriberMap = _agentSubscriberMap;
@@ -50,45 +51,53 @@ public class IndTemp extends MigrationBase {
     }
 
     @Override
-    public void Migrate() throws FileNotFoundException, IOException, ParseException, SQLException {
+    public void Migrate() throws FileNotFoundException, IOException, ParseException, SQLException, BiffException {
 
-        this.openFile(dataFile);
-        String _line = null;
+        this.openExcel(dataFile);
+        //String _line = null;
         int lineNum = 0;
-        int numOfCols = 57;
+        int excelRow = 0;
         int recordCounter = 0;
         List DuplicateList = new ArrayList();
 
-        String[] datacolumns = new String[numOfCols];
+        String[] datacolumns;
         pst_insert = this.conn.prepareStatement(sql_insert);
 
         //conn.setAutoCommit(false);
 
         // truncate the old data
-        this.truncateTable("Subscriber");
+        //this.truncateTable("Subscriber");
 
         while (true) {
-            _line = this.getNextLine();
+            datacolumns = this.getNextRow();
             lineNum++;
-            if(lineNum == 1){
-                continue;
-            }
-            String[] columns = new String[numOfCols];
-            if (_line == null) {
+            excelRow = lineNum + 1;
+            //String[] columns = new String[numOfCols];
+            if (datacolumns == null) {
                 break;
             }
-            for (int i = 0; i < numOfCols; i++) {
+
+            String subscriberName = datacolumns[7];
+            String subscriberNumber = datacolumns[2];
+
+            if(subscriberName == null || subscriberName.length() ==0){
+                // if there is no subscriber name we skip the record
+                logger.error("Skipping record. No subscriber name for subscriber:" + subscriberNumber + " at row no: " + excelRow);
+                continue;
+            }
+
+            /*for (int i = 0; i < numOfCols; i++) {
                 columns[i] = "";
                 datacolumns[i] = "";
-            }
+            }*/
             totalRows++;
-            columns = _line.split(Pattern.quote("\t"));
-            System.arraycopy(columns, 0, datacolumns, 0, columns.length);
+            //columns = _line.split(Pattern.quote("\t"));
+            //System.arraycopy(columns, 0, datacolumns, 0, columns.length);
 
             String agentName = datacolumns[46];
             String subscribercode = datacolumns[1];
-            String subscriberNumber = datacolumns[2];
-            String subscriberName = datacolumns[7];
+
+
             String department = datacolumns[8];
             String institute = datacolumns[9];
             String address = datacolumns[10];
@@ -247,8 +256,8 @@ public class IndTemp extends MigrationBase {
                         && agentName.toUpperCase().indexOf("KVPY") > -1 ){
                  agentId = this.getAgentID("KVPY", "", 0, 0, 0, 0);
              }else if (!agentName.isEmpty()
-                        && (agentName.toUpperCase().indexOf("SR") > -1 
-                            || agentName.toUpperCase().indexOf("RF") > -1 
+                        && (agentName.toUpperCase().indexOf("SR") > -1
+                            || agentName.toUpperCase().indexOf("RF") > -1
                             || agentName.toUpperCase().indexOf("SRF") > -1)){
                  agentId = this.getAgentID("Summer Research Fellow", "", 0, 0, 0, 0);
              }else if (!agentName.isEmpty() && agentName.equals("DRP")){

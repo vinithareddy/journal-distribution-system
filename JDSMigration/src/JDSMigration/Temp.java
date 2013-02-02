@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import jxl.read.biff.BiffException;
 import org.apache.log4j.Logger;
 
 /**
@@ -36,9 +37,9 @@ public class Temp extends MigrationBase {
     PreparedStatement pst_insert = null;
     HashMap<String, String> agentSubscriberMap;
 
-    public Temp(HashMap<String, String> _agentSubscriberMap) throws SQLException{
+    public Temp(HashMap<String, String> _agentSubscriberMap) throws SQLException {
         super(); // call the base class constructor
-        this.dataFile = this.dataFolder + "\\subscriber\\temp.txt";
+        this.dataFile = this.dataFolder + "\\temp.xls";
         //this.dataFile = this.dataFolder + "\\subscriber\\indtemp.txt";
         this.conn = this.db.getConnection();
         conn.setAutoCommit(false);
@@ -47,16 +48,16 @@ public class Temp extends MigrationBase {
     }
 
     @Override
-    public void Migrate() throws FileNotFoundException, IOException, ParseException, SQLException {
+    public void Migrate() throws FileNotFoundException, IOException, ParseException, SQLException, BiffException {
 
-        this.openFile(dataFile);
+        this.openExcel(dataFile);
         String _line = null;
         int lineNum = 0;
-        int numOfCols = 57;
+        int excelRow = 0;
         int recordCounter = 0;
         List DuplicateList = new ArrayList();
 
-        String[] datacolumns = new String[numOfCols];
+        String[] datacolumns;
         pst_insert = this.conn.prepareStatement(sql_insert);
 
         //conn.setAutoCommit(false);
@@ -65,28 +66,34 @@ public class Temp extends MigrationBase {
         //this.truncateTable("Subscriber");
 
         while (true) {
-            _line = this.getNextLine();
+            datacolumns = this.getNextRow();
             lineNum++;
-            if(lineNum == 1){
-                continue;
-            }
-            String[] columns = new String[numOfCols];
-            if (_line == null) {
+            excelRow = lineNum + 1;
+            if (datacolumns == null) {
                 break;
             }
-            for (int i = 0; i < numOfCols; i++) {
-                columns[i] = "";
-                datacolumns[i] = "";
+
+            String subscriberNumber = datacolumns[2];
+            String subscriberName = datacolumns[7];
+            if (subscriberName == null || subscriberName.length() == 0) {
+                // if there is no subscriber name we skip the record
+                logger.error("Skipping record. No subscriber name for subscriber:" + subscriberNumber + " at row no: " + excelRow);
+                continue;
             }
+
+            /*for (int i = 0; i < numOfCols; i++) {
+             columns[i] = "";
+             datacolumns[i] = "";
+             }*/
             totalRows++;
-            columns = _line.split(Pattern.quote("\t"));
-            System.arraycopy(columns, 0, datacolumns, 0, columns.length);
+            //columns = _line.split(Pattern.quote("\t"));
+            //System.arraycopy(columns, 0, datacolumns, 0, columns.length);
 
             String agentCode = datacolumns[0];
             String subscribercode = datacolumns[1];
-            String subscriberNumber = datacolumns[2];
+
             String remarksAgent = datacolumns[3];
-            String subscriberName = datacolumns[7];
+
             String department = datacolumns[8];
             String institute = datacolumns[9];
             String address = datacolumns[10];
@@ -95,30 +102,29 @@ public class Temp extends MigrationBase {
             String country = datacolumns[13];
             String email = datacolumns[55];
             String agent = datacolumns[46];
-            if(email.isEmpty()){
+            if (email.isEmpty()) {
                 String temp = datacolumns[3];
                 email = temp.replaceAll("Another Email: ", "");
             }
-            if(!validateEmail(email)){
+            if (!validateEmail(email)) {
                 email = "";
-                logger.warn("Found email ID " + email +" that is not valid for subscriber name: " + subscriberName);
+                logger.warn("Found email ID " + email + " that is not valid for subscriber name: " + subscriberName);
             }
 
             //skip foreign suscribers
             /*if(subscribercode.equalsIgnoreCase("FP") || subscribercode.equalsIgnoreCase("FI")){
-                logger.debug("Skipping foreign subscriber:" + subscriberNumber);
-                continue;
-            }*/
+             logger.debug("Skipping foreign subscriber:" + subscriberNumber);
+             continue;
+             }*/
 
-            if(subscribercode.equalsIgnoreCase("1P") ||
-               subscribercode.equalsIgnoreCase("P") ||
-               subscribercode.equalsIgnoreCase("I")
-               ){
+            if (subscribercode.equalsIgnoreCase("1P")
+                    || subscribercode.equalsIgnoreCase("P")
+                    || subscribercode.equalsIgnoreCase("I")) {
                 subscribercode = "IP";
             }
 
 
-            if(subscriberNumber.isEmpty() || Integer.parseInt(subscriberNumber) == 0){
+            if (subscriberNumber.isEmpty() || Integer.parseInt(subscriberNumber) == 0) {
                 logger.error("No Subscriber Number found for:" + subscriberName + " at line number:" + lineNum);
                 continue;
             }
@@ -159,16 +165,16 @@ public class Temp extends MigrationBase {
             }
             // get the city id
             cityID = this.getCityID(city);
-            if(cityID == 0){
+            if (cityID == 0) {
                 // if this is not a city, check if this is a state
                 //String state = city;
                 //if (this.stateMap.containsKey(state)) {
-                    //state = this.stateMap.get(state);
+                //state = this.stateMap.get(state);
                 //}
                 //stateID = this.getStateID(state);
                 //if(stateID == 0) {
-                    logger.warn("Found city/state " + city + " which does not have a entry in the database");
-                    address = (cityID == 0) ? address : address + "\n" + city;
+                logger.warn("Found city/state " + city + " which does not have a entry in the database");
+                address = (cityID == 0) ? address : address + "\n" + city;
                 //}
 
             } else {
@@ -176,75 +182,71 @@ public class Temp extends MigrationBase {
             }
 
             // get the country id, check the state hash map first, there are many cases where the state is mentioned in the country field
-            if(this.countryMap.containsKey(country)) {
+            if (this.countryMap.containsKey(country)) {
                 country = this.countryMap.get(country);
             }
             countryID = this.getCountryID(country);
             // If country is not found, check if this is a state
-            if(countryID == 0) {
+            if (countryID == 0) {
                 String state = country;
                 if (this.stateMap.containsKey(state)) {
                     state = this.stateMap.get(state);
                 }
                 stateID = this.getStateID(state);
                 // If state is also not found means we either have a country or a state which is not present in the db
-                if(stateID == 0) {
+                if (stateID == 0) {
                     logger.warn("Found state/country " + country + " which does not have a entry in the database");
                     address = (stateID > 0) ? address : address + "\n" + country;
-                }
-                // If we found a valid state, means the country is India.
+                } // If we found a valid state, means the country is India.
                 else {
                     country = "India";
                     countryID = this.getCountryID(country);
                 }
             }
 
-            if(countryID == 0 &&
-              (subscribercode.equalsIgnoreCase("IP") ||
-                    subscribercode.equalsIgnoreCase("II") ||
-                    subscribercode.equalsIgnoreCase("IC"))
-              ){
+            if (countryID == 0
+                    && (subscribercode.equalsIgnoreCase("IP")
+                    || subscribercode.equalsIgnoreCase("II")
+                    || subscribercode.equalsIgnoreCase("IC"))) {
                 countryID = this.getIndiaID();
             }
 
             // By default the pin is extracted from the pin column,
             // but in some cases the pin code is present in the citypin column
             // If the pin column is empty, then check if the cityPin column has the pin code
-            if(pin == 0)
-            {
+            if (pin == 0) {
                 pin = this.getPinCode(pin2);
-                if(pin == 0) {
+                if (pin == 0) {
                     logger.warn("Found pin to be 0 for subscriber number " + subscriberNumber);
-                }
-                else {
+                } else {
                     logger.debug("pin Code is : " + pin);
                 }
             }
-            
-            int agentId = 0;
-            if (subscriberName.startsWith("(") || subscriberName.startsWith("[Ref") 
-                    || subscriberName.startsWith("(Ref") || subscriberName.startsWith("(REF")){
-                if(!department.equals("")|| department != null){
-                   agentId = getAgentID(department, address, cityID,  stateID, pin, countryID);
-                }
-            }else if (!remarksAgent.isEmpty()
-                        && (remarksAgent.toUpperCase().indexOf("KUMARI") > -1
-                        || remarksAgent.toUpperCase().indexOf("MEERA TRUST") > -1
-                        || remarksAgent.toUpperCase().indexOf("KALM") > -1)) {
-                     agentId = this.getAgentID("Kumari Ali Mera Trust", "", 0, 0, 0, 0);
 
-             }else if (!agent.isEmpty()
-                        && agent.toUpperCase().indexOf("KLAM") > -1){
-                 agentId = this.getAgentID("Kumari Ali Mera Trust", "", 0, 0, 0, 0);
-             }else if (!agent.isEmpty()){
-                 agentId = this.getAgentID(agent, "", 0, 0, 0, 0);
-             }
-            
-            if (agentId != 0){
+            int agentId = 0;
+            if (subscriberName.startsWith("(") || subscriberName.startsWith("[Ref")
+                    || subscriberName.startsWith("(Ref") || subscriberName.startsWith("(REF")) {
+                if (!department.equals("") || department != null) {
+                    agentId = getAgentID(department, address, cityID, stateID, pin, countryID);
+                }
+            } else if (!remarksAgent.isEmpty()
+                    && (remarksAgent.toUpperCase().indexOf("KUMARI") > -1
+                    || remarksAgent.toUpperCase().indexOf("MEERA TRUST") > -1
+                    || remarksAgent.toUpperCase().indexOf("KALM") > -1)) {
+                agentId = this.getAgentID("Kumari Ali Mera Trust", "", 0, 0, 0, 0);
+
+            } else if (!agent.isEmpty()
+                    && agent.toUpperCase().indexOf("KLAM") > -1) {
+                agentId = this.getAgentID("Kumari Ali Mera Trust", "", 0, 0, 0, 0);
+            } else if (!agent.isEmpty()) {
+                agentId = this.getAgentID(agent, "", 0, 0, 0, 0);
+            }
+
+            if (agentId != 0) {
                 agentSubscriberMap.put(subscriberNumber, Integer.toString(agentId));
                 logger.debug(subscriberNumber + "->" + Integer.toString(agentId));
             }
-            
+
             int paramIndex = 0;
             pst_insert.setString(++paramIndex, subscribercode);
             pst_insert.setString(++paramIndex, subscriberNumber);
@@ -274,10 +276,10 @@ public class Temp extends MigrationBase {
             } else {
                 insertedRows++;
             }
-            
-            
 
-            if(recordCounter == COMMIT_BATCH_SIZE){
+
+
+            if (recordCounter == COMMIT_BATCH_SIZE) {
                 logger.debug("commiting database after " + String.valueOf(insertedRows) + " rows");
                 conn.commit();
                 recordCounter = 0;
@@ -290,7 +292,7 @@ public class Temp extends MigrationBase {
         logger.debug("Rows Inserted: " + insertedRows);
         logger.debug("Duplicate Rows: " + duplicateRows);
         ListIterator li = DuplicateList.listIterator();
-        while(li.hasNext()){
+        while (li.hasNext()) {
             logger.error("Subscriber id Skipped(duplicate rows): " + li.next());
         }
     }
