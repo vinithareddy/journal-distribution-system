@@ -56,8 +56,6 @@ public class JDSMigrate {
     private boolean CIRCULATION_FIGURES = MIGRATE_ALL && true;
 
 
-
-
     public static void main(String[] args) throws IOException, FileNotFoundException,
             ParseException, SQLException, BiffException, InvocationTargetException,
             IllegalAccessException, Exception{
@@ -75,7 +73,7 @@ public class JDSMigrate {
         if (_jdsmigrate.MIGRATE_INWARD) {
             OldInward _oldinward = new OldInward("INW2009.txt");
             _oldinward.Migrate();
-            String[] inwardFiles = {"INW2010.txt", "INW2011.txt", "NEWINW.txt"};
+            String[] inwardFiles = {"INW2010.txt", "INW2011.txt", "INW2012.txt", "NEWINW.txt"};
             Inward _inward;
             for (int i = 0; i < inwardFiles.length; i++) {
                 _inward = new Inward(inwardFiles[i]);

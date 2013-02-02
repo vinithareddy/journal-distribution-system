@@ -81,6 +81,9 @@ public class Subscription extends MigrationBase {
         this.truncateTable("subscription");
         this.truncateTable("subscriptiondetails");
 
+        int[] jrnlArr = {4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 27};
+        int[] jrnlGrpIDArr = {1, 2, 3, 4, 6, 5, 7, 8, 9, 10, 11, 12, 13}; //Journal Group IDs
+
         while (true) {
             datacolumns = this.getNextRow();
             corrdatacolumns = _corr.getCorrNextRow();
@@ -103,22 +106,36 @@ public class Subscription extends MigrationBase {
             logger.debug("Migrating subscription for subscriber Number: " + datacolumns[0]);
             this.subscriberNumber = datacolumns[0];
             int subscriberId = 0;
-            //String subscriber_id_sz;
-            if (subscriberid_cache.containsKey(this.subscriberNumber)) {
-                subscriberId = Integer.parseInt(subscriberid_cache.get(this.subscriberNumber).toString());
-            } else {
-                pst_select_subscriber.setString(1, datacolumns[0]);
-                ResultSet rs_subscriber = this.db.executeQueryPreparedStatement(pst_select_subscriber);
-                try {
-                    rs_subscriber.first();
-                    subscriberId = rs_subscriber.getInt(1);
-                    this.subscriberID = subscriberId;
-                    subscriberid_cache.put(this.subscriberNumber.toString(), subscriberId);
-                } catch (SQLException e) {
-                    logger.fatal("No Subscriber ID found for Subscriber Number " + datacolumns[0] + " in Subscriber DB Table. Row No: " + (excelRowNumber));
-                    continue;
+            boolean has_subscription = false;
+
+            for (int j = 0; j < jrnlArr.length; j++) {
+                if (!datacolumns[jrnlArr[j]].equalsIgnoreCase("0") && !datacolumns[jrnlArr[j]].isEmpty()) {
+                    has_subscription = true;
+                    break;
                 }
             }
+
+            if (has_subscription) {
+                if (subscriberid_cache.containsKey(this.subscriberNumber)) {
+                    subscriberId = Integer.parseInt(subscriberid_cache.get(this.subscriberNumber).toString());
+                } else {
+                    pst_select_subscriber.setString(1, datacolumns[0]);
+                    ResultSet rs_subscriber = this.db.executeQueryPreparedStatement(pst_select_subscriber);
+                    try {
+                        rs_subscriber.first();
+                        subscriberId = rs_subscriber.getInt(1);
+                        this.subscriberID = subscriberId;
+                        subscriberid_cache.put(this.subscriberNumber.toString(), subscriberId);
+                    } catch (SQLException e) {
+                        logger.fatal("No Subscriber ID found for Subscriber Number " + datacolumns[0] + " in Subscriber DB Table. Row No: " + (excelRowNumber));
+                        continue;
+                    }
+                }
+            }else{
+                logger.debug("No subscription for Subscriber Number " + datacolumns[0] + " Row No: " + (excelRowNumber));
+                continue;
+            }
+
 
 
             // Get the inward number
@@ -252,8 +269,8 @@ public class Subscription extends MigrationBase {
                     //---------------------------------------------------------
 
                     //int[] jrnlArr = {4, 6, 8, 10, 12, 14, 16, 18, 20}; //Data Columns frm excel
-                    int[] jrnlArr = {4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 27};
-                    int[] jrnlGrpIDArr = {1, 2, 3, 4, 6, 5, 7, 8, 9, 10, 11, 12, 13}; //Journal Group IDs
+                    //int[] jrnlArr = {4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 27};
+                    //int[] jrnlGrpIDArr = {1, 2, 3, 4, 6, 5, 7, 8, 9, 10, 11, 12, 13}; //Journal Group IDs
                     int allGrpFlag = 0;
                     int noCopies = 0;
                     if (!datacolumns[4].isEmpty()) {
