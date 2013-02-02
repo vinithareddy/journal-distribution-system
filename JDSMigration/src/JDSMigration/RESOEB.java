@@ -92,26 +92,27 @@ public class RESOEB extends MigrationBase {
                 throw new Exception("Cannot determine subscriber type");
             }
             */
-            subscriberTypeID = 3;
             subscriberTypeCode = "EBALL";
+            subscriberTypeID = this.getSubTypeId("EBALL");
 
             String cityPin = datacolumns[6];
             String country = datacolumns[8];
-
-            // get the country id if its a foreign subscriber
-            if (subscriberTypeID == 13) {
-                countryid = this.getCountryID(country);
-                address += "\n" + cityPin; //append citypin to the address
-                logger.debug("Country id is:" + countryid);
+            
+            if(datacolumns[15].equals("I")){
+                stateid = this.getStateID(datacolumns[8]);
+                countryid = this.getIndiaID();
             } else {
-                stateid = this.getStateID(datacolumns[7]);
-                if (cityPin.matches(".*\\d+$")) {
-                    String[] city = cityPin.split("\\d+", 2);
-                    cityid = this.getCityID(city[0]);
-                    logger.debug("city is:" + city[0]);
-                    logger.debug("city id is:" + cityid);
-                }
+                countryid = this.getCountryID(datacolumns[8]);
             }
+
+            //stateid = this.getStateID(datacolumns[7]);
+            if (cityPin.matches(".*\\d+$")) {
+                String[] city = cityPin.split("\\d+", 2);
+                cityid = this.getCityID(city[0]);
+                logger.debug("city is:" + city[0]);
+                logger.debug("city id is:" + cityid);
+            }
+            
             if (cityid == 0){
                 logger.warn("Found City with Id 0 " + cityPin);
                 address = address + " " + cityPin;

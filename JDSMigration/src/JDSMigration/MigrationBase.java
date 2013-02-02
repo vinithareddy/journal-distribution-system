@@ -1120,8 +1120,8 @@ public class MigrationBase implements IMigrate {
     }
 
     public void executeMasterDataScripts() throws IOException, SQLException {
-        String files[] = new String[1];
-        /*files[0] = "data" + "\\masterdata\\1.journals.sql";
+        String files[] = new String[11];
+         files[0] = "data" + "\\masterdata\\1.journals.sql";
          files[1] = "data" + "\\masterdata\\2.journal_groups.sql";
          files[2] = "data" + "\\masterdata\\3.journal_group_contents.sql";
          files[3] = "data" + "\\masterdata\\4.subscriber_types.sql";
@@ -1131,8 +1131,8 @@ public class MigrationBase implements IMigrate {
          files[7] = "data" + "\\masterdata\\8.states.sql";
          files[8] = "data" + "\\masterdata\\9.year.sql";
          files[9] = "data" + "\\masterdata\\10.districts.sql";
-         files[0] = "data" + "\\masterdata\\jds_schema_data.sql";*/
-        files[0] = "data" + "\\masterdata\\truncate_transaction_data.sql";
+         //files[10] = "data" + "\\masterdata\\jds_schema_data.sql";
+         files[10] = "data" + "\\masterdata\\truncate_transaction_data.sql";
 
         for (int j = 0; j < files.length; j++) {
             String s;
