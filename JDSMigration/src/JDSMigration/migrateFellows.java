@@ -28,7 +28,7 @@ public class migrateFellows extends MigrationBase {
     int subscriberNumberStart;
 
     public migrateFellows() throws SQLException {
-        this.dataFile = this.dataFolder + "\\CIR_FEL.xls";
+        this.dataFile = this.dataFolder + "\\feljm.xls";
         this.conn = this.db.getConnection();
         conn.setAutoCommit(false);
         //subscriberNumberStart = getLastSubscriberId() + 1;
@@ -75,15 +75,15 @@ public class migrateFellows extends MigrationBase {
             // Extract data
             String agentCode = "0";
             String subtype = "FELJM";
-            String subscriberName = datacolumns[1] + " " + datacolumns[2] + " " + datacolumns[3];
-            String department = datacolumns[4];
-            String institution = datacolumns[5];
-            String shippingAddress = datacolumns[6] + " " + datacolumns[7];
-            String cityAndPin = datacolumns[8];
-            String pincode = datacolumns[9];
-            String state = datacolumns[10];
-            String country = datacolumns[11];
-            String email = "";
+            String subscriberName = datacolumns[7] + " " + datacolumns[8] + " " + datacolumns[9];
+            String department = datacolumns[12];
+            String institution = datacolumns[13];
+            String shippingAddress = datacolumns[15] + " " + datacolumns[16];
+            String cityAndPin = datacolumns[16];
+            String pincode = datacolumns[17];
+            String state = datacolumns[18];
+            String country = datacolumns[19];
+            String email = datacolumns[20];
 
             //subscriberName, department, institution and address have "" quotes, remove them
             subscriberName = subscriberName.replaceAll("\"", "");
@@ -236,7 +236,7 @@ public class migrateFellows extends MigrationBase {
                 /*----------------------------------------------------------------*/
                 /*---Insert Subscription details---*/
                 /*----------------------------------------------------------------*/
-                int[] jrnlArr = {12, 13, 14, 15, 16, 17, 18, 19, 20};   //Data Columns frm excel
+                int[] jrnlArr = {37, 38, 39, 40, 41, 42, 43, 44, 45};   //Data Columns frm excel
                 int[] jrnlGrpIDArr = {1, 2, 3, 4, 5, 6, 7, 8, 9};       //Journal Group IDs
 
                 for (int j = 0; j < jrnlArr.length; j++) {
@@ -290,7 +290,7 @@ public class migrateFellows extends MigrationBase {
 
     public int getTotalNoOfCopiesFellows(String[] datacolumns) {
         int noCopies = 0;
-        int[] jrnlArr = {12, 13, 14, 15, 16, 17, 18, 19, 20};   //Data Columns frm excel
+        int[] jrnlArr = {37, 38, 39, 40, 41, 42, 43, 44, 45};   //Data Columns frm excel
         for (int j = 0; j < jrnlArr.length; j++) {
             if (!datacolumns[jrnlArr[j]].equalsIgnoreCase("0") && !datacolumns[jrnlArr[j]].isEmpty()) {
                 noCopies = noCopies + Integer.parseInt(datacolumns[jrnlArr[j]]);

@@ -1,4 +1,4 @@
-datafolder_in = "C:\Users\smahapat\Desktop\Jan2013"
+datafolder_in = "C:\Users\I038668\Desktop\personal\IAS\IAS Data\2013Feb01\CIRCULAT\JOURNAL"
 datafolder_out = datafolder_in & "\out"
 set fso = CreateObject("Scripting.FileSystemObject")
 set excel = createobject("excel.application")
@@ -8,7 +8,8 @@ If Not fso.FolderExists(datafolder_out) Then
    wscript.echo("A new folder has been created at: " & datafolder_out)
 End If
 excel.DefaultFilePath = datafolder_out
-files = Array("CLIFESUB", _
+files = Array("AS", _
+			  "CLIFESUB", _
               "CORR", _
               "CURREB", _
               "CURRFEX", _
@@ -19,12 +20,14 @@ files = Array("CLIFESUB", _
               "CURTWAS", _
               "EBALL", _
               "EXCHANGE", _
+			  "feljm", _
               "HON", _
               "HONFEL", _
               "JGRANT", _
               "JNLS", _
               "MEMBER", _
               "RESOCOMP", _
+			  "RESOEB", _
               "TEMP", _
               "INDTEMP", _
               "NEWINW")

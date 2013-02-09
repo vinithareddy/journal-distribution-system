@@ -26,8 +26,8 @@ public class JDSMigrate {
 
     private boolean INIT_MASTER_DATA = true;
 
-    private boolean MIGRATE_INWARD = true;
-    private boolean MIGRATE_SUBSCRIBER = true;
+    private boolean MIGRATE_INWARD = MIGRATE_ALL && true;
+    private boolean MIGRATE_SUBSCRIBER = MIGRATE_ALL && true;
     private boolean MIGRATE_SUBSCRIPTION = MIGRATE_ALL && true;
     private boolean MIGRATE_CORR = MIGRATE_ALL && true;
     private boolean MIGRATE_FELLOWS = MIGRATE_ALL && true;

@@ -34,7 +34,7 @@ public class migrateHONFEL extends MigrationBase{
         //int subscriberNumberStart;
 
         public migrateHONFEL() throws SQLException {
-        this.dataFile = this.dataFolder + "\\CIR_HF.xls";
+        this.dataFile = this.dataFolder + "\\HONFEL.xls";
         this.conn = this.db.getConnection();
         conn.setAutoCommit(false);
         //subscriberNumberStart = getLastSubscriberId() + 1;
@@ -88,7 +88,7 @@ public class migrateHONFEL extends MigrationBase{
             String pincode      = "";
             String state        = "";
             String country      = datacolumns[9];
-            String email        = "";
+            String email        = datacolumns[10];
 
             //subscriberName, department, institution and address have "" quotes, remove them
             subscriberName = subscriberName.replaceAll("\"", "");
@@ -243,7 +243,7 @@ public class migrateHONFEL extends MigrationBase{
                 /*----------------------------------------------------------------*/
                 /*---Insert Subscription details---*/
                 /*----------------------------------------------------------------*/
-                int[] jrnlArr = {10, 11, 12, 13, 14, 15, 16, 17, 18};   //Data Columns frm excel
+                int[] jrnlArr = {22, 23, 24, 25, 26, 27, 28, 29, 30};   //Data Columns frm excel
                 int[] jrnlGrpIDArr = {5, 3, 4, 1, 7, 8, 6, 9, 2};       //Journal Group IDs
 
                 for (int j = 0; j < jrnlArr.length; j++) {
@@ -297,7 +297,7 @@ public class migrateHONFEL extends MigrationBase{
 
     public int getTotalNoOfCopiesHONFEL(String[] datacolumns) {
         int noCopies = 0;
-        int[] jrnlArr = {10, 11, 12, 13, 14, 15, 16, 17, 18};   //Data Columns frm excel
+        int[] jrnlArr = {22, 23, 24, 25, 26, 27, 28, 29, 30};   //Data Columns frm excel
         for (int j = 0; j < jrnlArr.length; j++) {
             if (!datacolumns[jrnlArr[j]].equalsIgnoreCase("0") && !datacolumns[jrnlArr[j]].isEmpty()) {
                 noCopies = noCopies + Integer.parseInt(datacolumns[jrnlArr[j]]);

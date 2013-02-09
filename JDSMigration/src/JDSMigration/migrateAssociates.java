@@ -31,7 +31,7 @@ public class migrateAssociates extends MigrationBase{
         //int subscriberNumberStart;
 
         public migrateAssociates() throws SQLException {
-        this.dataFile = this.dataFolder + "\\CIR_AS.xls";
+        this.dataFile = this.dataFolder + "\\AS.xls";
         this.conn = this.db.getConnection();
         conn.setAutoCommit(false);
         //subscriberNumberStart = getLastSubscriberId() + 1;
@@ -77,15 +77,15 @@ public class migrateAssociates extends MigrationBase{
             // Extract data
             String agentCode    = "0";
             String subtype      = "AS";
-            String subscriberName   = datacolumns[1] + " " + datacolumns[2] + " " + datacolumns[3];
-            String department       = datacolumns[4];
-            String institution      = datacolumns[5];
-            String shippingAddress      = datacolumns[6] + " " + datacolumns[7];
-            String cityAndPin   = datacolumns[8];
-            String pincode      = datacolumns[9];
-            String state        = datacolumns[10];
-            String country      = datacolumns[11];
-            String email        = "";
+            String subscriberName   = datacolumns[1] + " " + datacolumns[3] + " " + datacolumns[4];
+            String department       = datacolumns[5];
+            String institution      = datacolumns[6];
+            String shippingAddress      = datacolumns[7] + " " + datacolumns[8];
+            String cityAndPin   = datacolumns[9];
+            String pincode      = datacolumns[10];
+            String state        = datacolumns[11];
+            String country      = datacolumns[12];
+            String email        = datacolumns[13];
 
             //subscriberName, department, institution and address have "" quotes, remove them
             subscriberName = subscriberName.replaceAll("\"", "");
@@ -241,7 +241,7 @@ public class migrateAssociates extends MigrationBase{
                 /*----------------------------------------------------------------*/
                 /*---Insert Subscription details---*/
                 /*----------------------------------------------------------------*/
-                int[] jrnlArr = {12, 13, 14, 15, 16, 17, 18, 19, 20};   //Data Columns frm excel
+                int[] jrnlArr = {27, 28, 29, 30, 31, 32, 33, 34, 35};   //Data Columns frm excel
                 int[] jrnlGrpIDArr = {1, 2, 5, 3, 4, 7, 8, 6, 9};       //Journal Group IDs
 
                 for (int j = 0; j < jrnlArr.length; j++) {
@@ -250,7 +250,7 @@ public class migrateAssociates extends MigrationBase{
                         int noCopies = Integer.parseInt(datacolumns[jrnlArr[j]]);
                         int startMonth = 1;
                         int endMonth = 12;
-                        int startYr = 2012;
+                        int startYr = 2009;
                         int endYr = 2050;
                         int priceGroupID = 1;
                         pst_insert_subscription_dtls.setInt(++paramIndex, subscriptionID);
@@ -295,7 +295,7 @@ public class migrateAssociates extends MigrationBase{
 
     public int getTotalNoOfCopiesAssociates(String[] datacolumns) {
         int noCopies = 0;
-        int[] jrnlArr = {12, 13, 14, 15, 16, 17, 18, 19, 20};
+        int[] jrnlArr = {27, 28, 29, 30, 31, 32, 33, 34, 35};
         for (int j = 0; j < jrnlArr.length; j++) {
             if (!datacolumns[jrnlArr[j]].equalsIgnoreCase("0") && !datacolumns[jrnlArr[j]].isEmpty()) {
                 noCopies = noCopies + Integer.parseInt(datacolumns[jrnlArr[j]]);
