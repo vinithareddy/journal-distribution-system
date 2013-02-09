@@ -6,6 +6,7 @@ package JDSMigration;
 
 //import java.util.*;
 import java.io.StringWriter;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -103,7 +104,7 @@ public final class util {
 
     }
 
-    public static String convertStringToXML(String errorMsg,String tagName) throws ParserConfigurationException, SQLException, TransformerException {
+    public static String convertStringToXML(String errorMsg, String tagName) throws ParserConfigurationException, SQLException, TransformerException {
 
         String xml = null;
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -127,5 +128,17 @@ public final class util {
 
         return xml;
 
+    }
+
+    public static String convertDateFormat(String date, String old_format, String new_format) throws ParseException {
+
+        String oldDateString = date;
+        String newDateString;
+
+        SimpleDateFormat sdf = new SimpleDateFormat(old_format);
+        java.util.Date d = sdf.parse(oldDateString);
+        sdf.applyPattern(new_format);
+        newDateString = sdf.format(d);
+        return newDateString;
     }
 }

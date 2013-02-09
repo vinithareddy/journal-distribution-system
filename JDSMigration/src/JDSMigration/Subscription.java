@@ -67,6 +67,8 @@ public class Subscription extends MigrationBase {
         this.openExcel(dataFile);
         int commitCounter = 0;
         Map<String, Object> subscriberid_cache = new HashMap<>();
+        Map<String, Object> subscriber_balance = new HashMap<>();
+
 
         String[] datacolumns;
         String[] corrdatacolumns;
@@ -96,7 +98,10 @@ public class Subscription extends MigrationBase {
             }
             if (corrdatacolumns != null) {
                 corr_subscriber = corrdatacolumns[3];
-                corr_sub_date = corrdatacolumns[14];
+                /* The DATE_SUBSN does not have the correct subscription dates, we will consider the
+                 * DATE_ACK, if this is null we'll take the DATE_REPLY field
+                 */
+                corr_sub_date = corrdatacolumns[7].length() > 0 ? corrdatacolumns[7] : corrdatacolumns[5];
             }
 
             totalRows++;
@@ -131,12 +136,10 @@ public class Subscription extends MigrationBase {
                         continue;
                     }
                 }
-            }else{
+            } else {
                 logger.debug("No subscription for Subscriber Number " + datacolumns[0] + " Row No: " + (excelRowNumber));
                 continue;
             }
-
-
 
             // Get the inward number
             int inwardId = 0;
@@ -165,8 +168,8 @@ public class Subscription extends MigrationBase {
             Date subdate = util.dateStringToSqlDate(null);
             try {
                 if (!corr_subscriber.isEmpty() && Integer.parseInt(corr_subscriber) == Integer.parseInt(this.subscriberNumber)) {
-                    subdate = util.dateStringToSqlDate(corr_sub_date);
-                    corr_balance = corrdatacolumns[15].isEmpty() == false ? Float.parseFloat(corrdatacolumns[15]) : (float) 0;
+                    subdate = util.dateStringToSqlDate(util.convertDateFormat(corr_sub_date, "MM/dd/yyyy", "dd/MM/yyyy"));
+                    corr_balance =  calculate_balance(corrdatacolumns);
                 } else {
                     corr_balance = (float) 0;
                 }
@@ -177,6 +180,9 @@ public class Subscription extends MigrationBase {
 
                 corr_balance = (float) 0;
             }
+
+
+
 
 //------------------------------------------------------------------------------------------------------------------------------
             //Insert Subscription
@@ -226,8 +232,8 @@ public class Subscription extends MigrationBase {
                         endYr = getCorrectedYear(endYr);
                     }
 
-                    logger.debug("Start Year:" + startYr);
-                    logger.debug("End Year:" + endYr);
+                    //logger.debug("Start Year:" + startYr);
+                    //logger.debug("End Year:" + endYr);
 
                     subscriptionID = this.insertSubscription(subscriberId, inwardId, amount, subdate, corr_balance, agentId);
                     logger.debug("Inserted Subscription with id: " + subscriptionID);
@@ -440,6 +446,25 @@ public class Subscription extends MigrationBase {
 //            logger.error("Period: " + _keys[3]);
 //            logger.error("-------------------------------");
         }
+
+        /*String insert_balance_sql = "insert into subscriber_balance_legacy (subscriber_id, balance) values (?, ?)";
+        PreparedStatement pst_insert_balance_sql = conn.prepareStatement(insert_balance_sql);
+        for (Map.Entry<String, Object> entry : subscriber_balance.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue().toString();
+            float balance = Float.parseFloat(value);
+            if (balance > 0) {
+                pst_insert_balance_sql.setInt(1, Integer.parseInt(key));
+                pst_insert_balance_sql.setFloat(2, balance);
+                pst_insert_balance_sql.addBatch();
+            }
+        }
+        pst_insert_balance_sql.executeBatch();
+        conn.commit();
+        conn.setAutoCommit(true);*/
+
+
+
         //logger.debug("Rows Inserted in SubscriptionDtls: " + insertedRowsSubDtls);
 
 
@@ -621,7 +646,7 @@ public class Subscription extends MigrationBase {
 
             temp.setTime(dateFormat.parse(getCSYCURR(datacolumns)));
             if (!(CURRYR.isEmpty() || CURRYR.equals("0"))) {
-                temp.add(Calendar.DAY_OF_YEAR, Integer.parseInt(CURRYR) * 365);
+                temp.add(Calendar.DAY_OF_YEAR, Integer.parseInt(CURRYR) * 364);
             }
             cey = temp.getTime();
             CEY = dateFormat.format(cey);
@@ -726,7 +751,7 @@ public class Subscription extends MigrationBase {
 
             temp.setTime(dateFormat.parse(getCSYRES(datacolumns)));
             if (!(CURRYR.isEmpty() || CURRYR.equals("0"))) {
-                temp.add(Calendar.DAY_OF_YEAR, Integer.parseInt(CURRYR) * 365);
+                temp.add(Calendar.DAY_OF_YEAR, Integer.parseInt(CURRYR) * 364);
             }
             cey = temp.getTime();
             CEY = dateFormat.format(cey);
@@ -744,11 +769,31 @@ public class Subscription extends MigrationBase {
 
             temp.setTime(dateFormat.parse(getCSYRES(datacolumns)));
             if (!(CURRYR.isEmpty() || CURRYR.equals("0"))) {
-                temp.add(Calendar.DAY_OF_YEAR, Integer.parseInt(CURRYR) * 365);
+                temp.add(Calendar.DAY_OF_YEAR, Integer.parseInt(CURRYR) * 364);
             }
             cey = temp.getTime();
             CEY = dateFormat.format(cey);
         }
         return cey;
+    }
+
+    private float calculate_balance(String[] _datacolumns) {
+        float balance = 0;
+        String chk_no = _datacolumns[18].trim();
+        String bal_amt = _datacolumns[15].trim();
+        String receipt_no = _datacolumns[16].trim();
+        String receipt_dt = _datacolumns[17].trim();
+        String dt_subsn = _datacolumns[14].trim();
+        String amount = _datacolumns[13].trim();
+
+        // chk_no should be blank
+        if (chk_no.isEmpty()
+                && bal_amt.isEmpty()
+                && receipt_no.isEmpty()
+                && receipt_dt.isEmpty()
+                && dt_subsn.isEmpty()) {
+            balance = Float.parseFloat(amount);
+        }
+        return balance;
     }
 }

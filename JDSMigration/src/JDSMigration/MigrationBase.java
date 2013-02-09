@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import jxl.read.biff.BiffException;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
@@ -71,12 +72,9 @@ public class MigrationBase implements IMigrate {
     //Insert Statement for Subscription
     public String sql_insert_subscription = "insert into subscription(subscriberID,inwardID,subscriptiondate,agentId)"
             + "values(?,?,?,?)";
-
     public String sql_insert_subscription_no_dt = "insert into subscription(subscriberID,inwardID)"
             + "values(?,?)";
-
-    public String sql_insert_legacy_subscription_info = "insert into subscription_legacy(subscription_id,legacy_amount,legacy_balance) values (?,?,?)";
-
+    public String sql_insert_legacy_subscription_info = "insert into subscription_legacy(subscription_id,legacy_amount, legacy_balance) values (?, ?, ?)";
     public String sql_insert_subscription_free_subs = "insert into subscription(subscriberID,inwardID) values(?,?)";
 //--------------------------------------------------------------------------------------------
     //Insert Statement for Subscription Details
@@ -102,6 +100,7 @@ public class MigrationBase implements IMigrate {
     private PreparedStatement pst_insert_city = null;
     private PreparedStatement pst_insert_agent = null;
     private PreparedStatement pst_insert_legacy_subscription_info = null;
+    private Map<String, Object> subscriberid_cache = new HashMap<>();
 
     public MigrationBase() throws SQLException {
 
@@ -832,21 +831,29 @@ public class MigrationBase implements IMigrate {
 
     public int getSubscriberID(int subscriberNumber) {
         int subID;
-        String sql = "select id from subscriber where subscribernumber=?";
+        if (subscriberid_cache.containsKey(String.valueOf(subscriberNumber))) {
+            subID = Integer.parseInt(subscriberid_cache.get(String.valueOf(subscriberNumber)).toString());
+        } else {
 
-        try {
-            PreparedStatement pst = this.conn.prepareStatement(sql);
-            pst.setInt(1, subscriberNumber);
-            ResultSet rs = pst.executeQuery();
-            rs.first();
-            subID = rs.getInt(1);
-        } catch (SQLException e) {
-            logger.fatal("Invalid subscriber id: " + subscriberNumber);
-            subID = 0;
+            String sql = "select id from subscriber where subscribernumber=?";
+
+            try {
+                PreparedStatement pst = this.conn.prepareStatement(sql);
+                pst.setInt(1, subscriberNumber);
+                ResultSet rs = pst.executeQuery();
+                rs.first();
+                subID = rs.getInt(1);
+                subscriberid_cache.put(String.valueOf(subscriberNumber), subID);
+            } catch (SQLException e) {
+                logger.fatal("Invalid subscriber id: " + subscriberNumber);
+                subID = 0;
+            }
         }
-        return subID;
+            return subID;
 
-    }
+        }
+
+
 
     public int getSubscriberTyeID(int subscriberID) {
         int subtypeID;
@@ -1121,18 +1128,18 @@ public class MigrationBase implements IMigrate {
 
     public void executeMasterDataScripts() throws IOException, SQLException {
         String files[] = new String[11];
-         files[0] = "data" + "\\masterdata\\1.journals.sql";
-         files[1] = "data" + "\\masterdata\\2.journal_groups.sql";
-         files[2] = "data" + "\\masterdata\\3.journal_group_contents.sql";
-         files[3] = "data" + "\\masterdata\\4.subscriber_types.sql";
-         files[4] = "data" + "\\masterdata\\5.subscription_rates.sql";
-         files[5] = "data" + "\\masterdata\\6.cities.sql";
-         files[6] = "data" + "\\masterdata\\7.countries.sql";
-         files[7] = "data" + "\\masterdata\\8.states.sql";
-         files[8] = "data" + "\\masterdata\\9.year.sql";
-         files[9] = "data" + "\\masterdata\\10.districts.sql";
-         //files[10] = "data" + "\\masterdata\\jds_schema_data.sql";
-         files[10] = "data" + "\\masterdata\\truncate_transaction_data.sql";
+        files[0] = "data" + "\\masterdata\\1.journals.sql";
+        files[1] = "data" + "\\masterdata\\2.journal_groups.sql";
+        files[2] = "data" + "\\masterdata\\3.journal_group_contents.sql";
+        files[3] = "data" + "\\masterdata\\4.subscriber_types.sql";
+        files[4] = "data" + "\\masterdata\\5.subscription_rates.sql";
+        files[5] = "data" + "\\masterdata\\6.cities.sql";
+        files[6] = "data" + "\\masterdata\\7.countries.sql";
+        files[7] = "data" + "\\masterdata\\8.states.sql";
+        files[8] = "data" + "\\masterdata\\9.year.sql";
+        files[9] = "data" + "\\masterdata\\10.districts.sql";
+        //files[10] = "data" + "\\masterdata\\jds_schema_data.sql";
+        files[10] = "data" + "\\masterdata\\truncate_transaction_data.sql";
 
         for (int j = 0; j < files.length; j++) {
             String s;

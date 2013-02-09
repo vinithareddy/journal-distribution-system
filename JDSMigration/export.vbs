@@ -1,6 +1,18 @@
-datafolder_in = "C:\Users\I038668\Desktop\personal\IAS\IAS Data\2013Feb01\CIRCULAT\JOURNAL"
+Wscript.StdOut.Write("Please enter the folder path of the .DBF files: ")
+datafolder_in = WScript.StdIn.ReadLine
+wscript.echo("Will convert .DBF files from " & datafolder_in )
+if datafolder_in = undefined then
+    wscript.quit()
+end if
+
 datafolder_out = datafolder_in & "\out"
 set fso = CreateObject("Scripting.FileSystemObject")
+
+If Not fso.FolderExists(datafolder_in) Then
+    wscript.echo("The folder does not exist at: " & datafolder_in)
+    wscript.quit()
+end if
+
 set excel = createobject("excel.application")
 
 If Not fso.FolderExists(datafolder_out) Then

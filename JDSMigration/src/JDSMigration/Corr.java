@@ -26,14 +26,14 @@ public class Corr extends MigrationBase {
         this.conn.setAutoCommit(false);
         this.openExcel(this.dataFile);
     }
-    
+
     public String[] getCorrNextRow() throws IOException, BiffException{
         return this.getNextRow();
     }
 
     @Override
     public void Migrate() throws FileNotFoundException, IOException, BiffException, SQLException {
-        
+
         int updatedRecords = 0;
         int commitSize = 0;
         int rowCount = 0;
@@ -63,7 +63,8 @@ public class Corr extends MigrationBase {
                 String subscriberNumber = data[3];
                 String refNo = data[11];
                 String SubscriptionDate = !data[5].isEmpty() ? data[5] : data[14];
-                if(SubscriptionDate.isEmpty()){
+
+                if (SubscriptionDate.isEmpty()) {
                     logger.error("No reply date or subscription date to calculate inward number");
                     continue;
                 }
@@ -76,9 +77,9 @@ public class Corr extends MigrationBase {
 
                 logger.debug("subscription year: " + subscriptionYear);
                 /*if (Integer.parseInt(subscriptionYear) < 2009) {
-                    logger.debug("Skipping record " + rowCount + "," + "year " + subscriptionYear + " less than 2009");
-                    continue;
-                }*/
+                 logger.debug("Skipping record " + rowCount + "," + "year " + subscriptionYear + " less than 2009");
+                 continue;
+                 }*/
                 try {
                     inwardMatcher.find();
                     String inwardNo = subscriptionYear.substring(2) + inwardMatcher.group(1) + "-" + String.format("%05d", Integer.parseInt(inwardMatcher.group(2)));
@@ -94,7 +95,7 @@ public class Corr extends MigrationBase {
                         }
 
                     }
-                }catch(Exception e){
+                } catch (NumberFormatException | SQLException e) {
                     logger.error("Invalid Inward Number: " + data[2]);
                     continue;
                 }
@@ -133,7 +134,7 @@ public class Corr extends MigrationBase {
                     conn.commit();
                     commitSize = 0;
                 }
-            } catch (Exception e) {
+            } catch (IOException | BiffException | SQLException e) {
                 logger.error("Exception at row: " + (rowCount + 1) + " " + String.valueOf(e));
             }
 
@@ -141,5 +142,9 @@ public class Corr extends MigrationBase {
         logger.debug("updated " + updatedRecords + " records as KVPY");
         conn.commit();
         conn.setAutoCommit(true);
+
+
     }
+
+
 }
