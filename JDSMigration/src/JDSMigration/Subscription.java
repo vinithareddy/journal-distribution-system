@@ -137,7 +137,7 @@ public class Subscription extends MigrationBase {
                     }
                 }
             } else {
-                logger.debug("No subscription for Subscriber Number " + datacolumns[0] + " Row No: " + (excelRowNumber));
+                logger.fatal("No subscription for Subscriber Number " + datacolumns[0] + " Row No: " + (excelRowNumber));
                 continue;
             }
 
@@ -174,9 +174,7 @@ public class Subscription extends MigrationBase {
                     corr_balance = (float) 0;
                 }
             } catch (NumberFormatException | ParseException | NullPointerException e) {
-                logger.fatal(e.toString());
-                logger.fatal("cannot update subscription date and balance for subscriber: " + this.subscriberNumber);
-                logger.fatal("subscriber in corr:" + corr_subscriber);
+                logger.fatal("cannot update subscription date and balance for subscriber: " + this.subscriberNumber + " date: " + e.toString() + " subscriber in corr:" + corr_subscriber);
 
                 corr_balance = (float) 0;
             }
@@ -205,6 +203,12 @@ public class Subscription extends MigrationBase {
                 logger.debug(this.subscriberNumber);
             }
             if ("2503".equals(this.subscriberNumber)) {
+                logger.debug(this.subscriberNumber);
+            }
+            if ("9905".equals(this.subscriberNumber)) {
+                logger.debug(this.subscriberNumber);
+            }
+            if ("5692".equals(this.subscriberNumber)) {
                 logger.debug(this.subscriberNumber);
             }
 
@@ -394,7 +398,7 @@ public class Subscription extends MigrationBase {
                                         }
                                     } catch (ParseException e) {
                                         logger.fatal(e.toString());
-                                        logger.debug("Skipping record for subscriber " + datacolumns[0] + " : issue with parsing date. Row No: " + excelRowNumber);
+                                        logger.fatal("Skipping record for subscriber " + datacolumns[0] + " : issue with parsing date. Row No: " + excelRowNumber);
                                     }
                                 } // Handle all other journals
                                 else {
@@ -414,16 +418,11 @@ public class Subscription extends MigrationBase {
 
 
             if (subscriptionID == 0) {
-                logger.debug("Skipping record for subscriber " + datacolumns[0]);
-
-                /*
-                 if(endYear < 2012) {
-                 logger.debug("Skipping record for subscriber " + datacolumns[0] + " subsription end year is " + endYear);
-                 }
-                 if(getTotalNoOfCopies(datacolumns) <= 0) {
-                 logger.debug("Skipping record for subscriber, no of copies: " + getTotalNoOfCopies(datacolumns));
-                 }
-                 */
+                String subscriptions = "";
+                for (int j = 0; j < jrnlArr.length; j++) {
+                    subscriptions = subscriptions + " " + (datacolumns[jrnlArr[j]]);
+                }
+                logger.fatal("no subscription inserted for subscriber " + datacolumns[0] + " Row No in JNLS: " + (excelRowNumber) + " Subscription: " + subscriptions);
             }
 
             // commit in bulk, its faster
@@ -439,7 +438,7 @@ public class Subscription extends MigrationBase {
         for (String key : invalidSubRates.keySet()) {
             String[] _keys = key.split(":");
             String _fs = "%s,%s,%s,%s";
-            System.out.println(String.format(_fs, _keys[0], _keys[1], _keys[2], _keys[3]));
+            logger.error(String.format(_fs, _keys[0], _keys[1], _keys[2], _keys[3]));
 //            logger.error("JouralGrpID=" + _keys[0]);
 //            logger.error("SubtypeID=" + _keys[1]);
 //            logger.error("year=" + _keys[2]);
@@ -516,7 +515,7 @@ public class Subscription extends MigrationBase {
 
         //Cases where start year and end year is zero but no. of copies are not zero - LOG IT
         if (startYr == 0) {
-            logger.error("No start year for subscription " + subscriptionID + "but subscription details are updated in the table");
+            logger.fatal("No start year for subscription " + subscriptionID + "but subscription details are updated in the table");
         }
         pst_insert_subscription_dtls = this.conn.prepareStatement(sql_insert_subscriptiondetails);
         pst_insert_subscription_dtls.setInt(++paramIndex1, subscriptionID);
@@ -607,11 +606,23 @@ public class Subscription extends MigrationBase {
         String CURRYR = datacolumns[26];
         String DATE_CURR = datacolumns[28];
         String CSY = "0";
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-        java.util.Date csy = dateFormat.parse("01/01/1900");
-        if (!(CURRYR.isEmpty() || CURRYR.equals("0") || DATE_CURR.isEmpty())) {
-            CSY = DATE_CURR;
-            csy = dateFormat.parse(CSY);
+
+        // This is a stray case in which CURRYR is not empty but DATE_CURR is empty. In such cases use the start year
+        // CURRYR defines the period for which the subscription is valid
+        // DATE_CURR defines the start year of subscription
+        if((DATE_CURR.isEmpty() || DATE_CURR == null) &&
+                !(CURRYR.isEmpty() || CURRYR.equals("0"))){
+            int startYr = Integer.parseInt(datacolumns[31]);
+            DATE_CURR = Integer.toString(this.getCorrectedYear(startYr));
+            DATE_CURR = "01/01/" + DATE_CURR;
+            return (DATE_CURR);
+        } else {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+            java.util.Date csy = dateFormat.parse("01/01/1900");
+            if (!(CURRYR.isEmpty() || CURRYR.equals("0") || DATE_CURR.isEmpty())) {
+                CSY = DATE_CURR;
+                csy = dateFormat.parse(CSY);
+            }
         }
         return CSY;
     }
@@ -708,7 +719,7 @@ public class Subscription extends MigrationBase {
     public boolean checkIfValidSubscriptionRES(String[] datacolumns) throws ParseException {
         java.util.Date cey = getceyRES(datacolumns);
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-        if (cey.compareTo(dateFormat.parse("01/01/2012")) > 0) {
+        if (cey.compareTo(dateFormat.parse("01/01/1900")) > 0) {
             return true;
         } else {
             return false;
@@ -716,14 +727,26 @@ public class Subscription extends MigrationBase {
     }
 
     public String getCSYRES(String[] datacolumns) throws ParseException {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+
         String CURRYR = datacolumns[21];
         String DATE_CURR = datacolumns[23];
         String CSY = "0";
-        java.util.Date csy = dateFormat.parse("01/01/1900");
-        if (!(CURRYR.isEmpty() || CURRYR.equals("0") || DATE_CURR.isEmpty())) {
-            CSY = DATE_CURR;
-            csy = dateFormat.parse(CSY);
+        // This is a stray case in which RESYR is not empty but DATE_RES is empty. In such cases use the start year
+        // RESYR defines the period for which the subscription is valid
+        // DATE_RES defines the start year of subscription
+        if((DATE_CURR.isEmpty() || DATE_CURR == null) &&
+                !(CURRYR.isEmpty() || CURRYR.equals("0"))){
+            int startYr = Integer.parseInt(datacolumns[31]);
+            DATE_CURR = Integer.toString(this.getCorrectedYear(startYr));
+            DATE_CURR = "01/01/" + DATE_CURR;
+            return (DATE_CURR);
+        } else {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+            java.util.Date csy = dateFormat.parse("01/01/1900");
+            if (!(CURRYR.isEmpty() || CURRYR.equals("0") || DATE_CURR.isEmpty())) {
+                CSY = DATE_CURR;
+                csy = dateFormat.parse(CSY);
+            }
         }
         return CSY;
     }
@@ -741,6 +764,7 @@ public class Subscription extends MigrationBase {
         return csy;
     }
 
+    /*
     public String getCEYRES(String[] datacolumns) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         String CURRYR = datacolumns[21];
@@ -758,6 +782,8 @@ public class Subscription extends MigrationBase {
         }
         return CEY;
     }
+    */
+
 
     public java.util.Date getceyRES(String[] datacolumns) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");

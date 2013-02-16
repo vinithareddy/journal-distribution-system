@@ -285,9 +285,9 @@ public class migrateAssociates extends MigrationBase{
         }
         conn.commit();
         logger.debug("Total Rows: " + totalRows);
-        logger.fatal("Subscribers Inserted: " + insertedSubscribers);
+        logger.debug("Subscribers Inserted: " + insertedSubscribers);
         for (int j = 0; j < jrnlNoOfCopies.length; j++) {
-            logger.fatal("Journal " + j + " no of copies " + jrnlNoOfCopies[j]);
+            logger.debug("Journal " + j + " no of copies " + jrnlNoOfCopies[j]);
         }
 
         //this.CloseFile();

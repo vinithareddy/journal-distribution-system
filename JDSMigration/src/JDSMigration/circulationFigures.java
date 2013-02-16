@@ -30,7 +30,7 @@ public class circulationFigures extends MigrationBase{
                                           " left join journal_groups on subscriptiondetails.journalGroupID = journal_groups.id" +
                                           " right join journal_group_contents on journal_group_contents.journalGroupId = journal_groups.id" +
                                           " left join journals on journal_group_contents.journalId = journals.id" +
-                                          " where subscriptiondetails.active = '1' and journals.journalCode = ? and subscriber_type.subtypecode = ?" +
+                                          " where journals.journalCode = ? and subscriber_type.subtypecode = ?" +
                                           " and datediff(date_format(concat(subscriptiondetails.endYear,'-',subscriptiondetails.endMonth,'-30'),'%Y/%m/%d'), date_format(curdate(),'%Y/%m/%d'))>= 0" +
                                           " and datediff(date_format(concat(subscriptiondetails.startYear,'-',subscriptiondetails.startMonth,'-1'),'%Y/%m/%d'), date_format(curdate(),'%Y/%m/%d'))<= 0" +
                                           " group by journals.journalCode and subscriber_type.subtypecode";
@@ -77,9 +77,9 @@ public class circulationFigures extends MigrationBase{
                     copies = rs3.getInt(2);
                     totalCopies = totalCopies + copies;
                 }
-                logger.fatal("Journal Code: " + journalCode + "->subtype: " + subtypecode + "-> Subscriber Count: " + subscriberCount + "-> Subscriber Copies: " + copies);
+                logger.debug("Journal Code: " + journalCode + "->subtype: " + subtypecode + "-> Subscriber Count: " + subscriberCount + "-> Subscriber Copies: " + copies);
             }
-            logger.fatal("Total copies: " + totalCopies);
+            logger.debug("Total copies: " + totalCopies);
         }
     }
 }

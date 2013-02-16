@@ -176,7 +176,7 @@ public class Subscriber extends MigrationBase {
 
             int ret = this.db.executeUpdatePreparedStatement(pst_insert);
             if (ret == 0) {
-                logger.error("Skipping Duplicate Subscriber : " + subscriberNumber + " Name: " + subscriberName);
+                logger.fatal("Skipping Duplicate Subscriber : " + subscriberNumber + " Name: " + subscriberName);
                 DuplicateList.add(subscriberName);
                 duplicateRows++;
             } else {

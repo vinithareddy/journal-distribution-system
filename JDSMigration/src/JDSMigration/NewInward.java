@@ -214,7 +214,7 @@ public class NewInward extends MigrationBase {
                 pst_insert.setDate(++paramIndex, inwardDate);
 
                 if (inwardPurpose == null) {
-                    logger.debug("No inward reason for: " + inwardNumber);
+                    logger.error("No inward reason for: " + inwardNumber);
                     inwardPurpose = "Others";
                     //continue;
                 }
@@ -232,7 +232,7 @@ public class NewInward extends MigrationBase {
                 } else if (inwardPurpose.contains("fellowship")) {
                     inwardPurpose = "New Subscription";
                 } else {
-                    logger.debug("Could not find inward reason " + inwardPurpose + " for inward " + inwardNumber);
+                    logger.error("Could not find inward reason " + inwardPurpose + " for inward " + inwardNumber);
                     //remarks = inwardPurpose;
                     remarks = (remarks == null) ? inwardPurpose : remarks + inwardPurpose;
                     inwardPurpose = "Others";

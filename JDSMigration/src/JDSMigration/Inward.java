@@ -25,7 +25,7 @@ public class Inward extends MigrationBase {
 
     public Inward(String file) throws SQLException{
         //super(); // call the base class constructor
-        this.dataFile = this.dataFolder + "\\inward\\" + file;        
+        this.dataFile = this.dataFolder + "\\inward\\" + file;
     }
 
     @Override
@@ -80,10 +80,10 @@ public class Inward extends MigrationBase {
         this.openFile(dataFile);
         String _line = null;
         while (true) {
-            
+
             try{
-                
-            
+
+
             _line = this.getNextLine();
             if (_line == null) {
                 break;
@@ -102,20 +102,20 @@ public class Inward extends MigrationBase {
 
             java.sql.Date inwardDate = util.dateStringToSqlDate(columns[1], "MM/dd/yyyy");
 
-            
+
             String From = columns[2];
             String City = columns[3];
             String inwardPurpose = columns[4].toLowerCase();
             String Currency = "INR";
             String szchqddNumber = columns[5];
             String remarks = null;
-            
+
             // if the from field is null skip the record
             if(From == null || From.isEmpty()){
                 logger.error("From field is empty, record skipped, rownumber = " + totalRows);
                 continue;
             }
-            
+
             String inwardNumber = columns[11] + "-" + String.format("%05d", Integer.parseInt(columns[0]));
 
             // replace all non word characters
@@ -216,7 +216,7 @@ public class Inward extends MigrationBase {
             pst_insert.setDate(++paramIndex, inwardDate);
 
             if (inwardPurpose == null) {
-                logger.debug("No inward reason for: " + inwardNumber);
+                logger.error("No inward reason for: " + inwardNumber);
                 inwardPurpose = "Others";
                 //continue;
             }
@@ -234,7 +234,7 @@ public class Inward extends MigrationBase {
             } else if(inwardPurpose.contains("fellowship")){
                 inwardPurpose = "New Subscription";
             }else {
-                logger.debug("Could not find inward reason " + inwardPurpose + " for inward " + inwardNumber);
+                logger.error("Could not find inward reason " + inwardPurpose + " for inward " + inwardNumber);
                 //remarks = inwardPurpose;
                 remarks = (remarks == null) ? inwardPurpose : remarks + inwardPurpose;
                 inwardPurpose = "Others";

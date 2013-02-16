@@ -82,7 +82,7 @@ public class IndTemp extends MigrationBase {
 
             if(subscriberName == null || subscriberName.length() ==0){
                 // if there is no subscriber name we skip the record
-                logger.error("Skipping record. No subscriber name for subscriber:" + subscriberNumber + " at row no: " + excelRow);
+                logger.fatal("Skipping record. No subscriber name for subscriber:" + subscriberNumber + " at row no: " + excelRow);
                 continue;
             }
 
@@ -113,11 +113,6 @@ public class IndTemp extends MigrationBase {
                 logger.warn("Found email ID " + email +" that is not valid for subscriber name: " + subscriberName);
             }
 
-            //skip foreign suscribers
-            /*if(subscribercode.equalsIgnoreCase("FP") || subscribercode.equalsIgnoreCase("FI")){
-                logger.debug("Skipping foreign subscriber:" + subscriberNumber);
-                continue;
-            }*/
             // This is exception1 that we are making as of now. This needs to be corrected in the original files
             if(subscribercode.equalsIgnoreCase("1P") ||
                subscribercode.equalsIgnoreCase("P") ||
@@ -132,7 +127,7 @@ public class IndTemp extends MigrationBase {
             }
 
             if(subscriberNumber.isEmpty() || Integer.parseInt(subscriberNumber) == 0){
-                logger.error("No Subscriber Number found for:" + subscriberName + " at line number:" + lineNum);
+                logger.fatal("No Subscriber Number found for:" + subscriberName + " at line number:" + lineNum);
                 continue;
             }
 
@@ -299,7 +294,7 @@ public class IndTemp extends MigrationBase {
 
             int ret = this.db.executeUpdatePreparedStatement(pst_insert);
             if (ret == 0) {
-                logger.error("Skipping Duplicate Subscriber : " + subscriberNumber + " Name: " + subscriberName);
+                logger.fatal("Skipping Duplicate Subscriber : " + subscriberNumber + " Name: " + subscriberName);
                 DuplicateList.add(subscriberNumber);
                 duplicateRows++;
             } else {

@@ -77,7 +77,7 @@ public class Temp extends MigrationBase {
             String subscriberName = datacolumns[7];
             if (subscriberName == null || subscriberName.length() == 0) {
                 // if there is no subscriber name we skip the record
-                logger.error("Skipping record. No subscriber name for subscriber:" + subscriberNumber + " at row no: " + excelRow);
+                logger.fatal("Skipping record. No subscriber name for subscriber:" + subscriberNumber + " at row no: " + excelRow);
                 continue;
             }
 
@@ -125,7 +125,7 @@ public class Temp extends MigrationBase {
 
 
             if (subscriberNumber.isEmpty() || Integer.parseInt(subscriberNumber) == 0) {
-                logger.error("No Subscriber Number found for:" + subscriberName + " at line number:" + lineNum);
+                logger.fatal("No Subscriber Number found for:" + subscriberName + " at line number:" + lineNum);
                 continue;
             }
 
@@ -270,7 +270,7 @@ public class Temp extends MigrationBase {
 
             int ret = this.db.executeUpdatePreparedStatement(pst_insert);
             if (ret == 0) {
-                logger.error("Skipping Duplicate Subscriber : " + subscriberNumber + " Name: " + subscriberName);
+                logger.fatal("Skipping Duplicate Subscriber : " + subscriberNumber + " Name: " + subscriberName);
                 DuplicateList.add(subscriberNumber);
                 duplicateRows++;
             } else {
