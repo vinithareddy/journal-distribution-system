@@ -74,7 +74,7 @@ public class MigrationBase implements IMigrate {
             + "values(?,?,?,?)";
     public String sql_insert_subscription_no_dt = "insert into subscription(subscriberID,inwardID)"
             + "values(?,?)";
-    public String sql_insert_legacy_subscription_info = "insert into subscription_legacy(subscription_id,legacy_amount, legacy_balance, legacy_proforma_invoice_no) values (?, ?, ?, ?)";
+    public String sql_insert_legacy_subscription_info = "insert into subscription_legacy(subscription_id,legacy_amount, legacy_balance, legacy_proforma_invoice_no, legacy_proforma_invoice_date) values (?, ?, ?, ?, ?)";
     public String sql_insert_subscription_free_subs = "insert into subscription(subscriberID,inwardID) values(?,?)";
 //--------------------------------------------------------------------------------------------
     //Insert Statement for Subscription Details
@@ -1014,7 +1014,7 @@ public class MigrationBase implements IMigrate {
 
     }
 
-    public int insertSubscription(int subscriberId, int inwardId, float amount, Date subdate, float corr_balance, int agentId, String legacy_proforma_invoice_no) throws SQLException {
+    public int insertSubscription(int subscriberId, int inwardId, float amount, Date subdate, float corr_balance, int agentId, String legacy_proforma_invoice_no, Date legacy_proforma_invoice_date) throws SQLException {
         int paramIndex = 0;
         int sub_id;
 
@@ -1040,6 +1040,7 @@ public class MigrationBase implements IMigrate {
             pst_insert_legacy_subscription_info.setFloat(2, amount);
             pst_insert_legacy_subscription_info.setFloat(3, corr_balance);
             pst_insert_legacy_subscription_info.setString(4, legacy_proforma_invoice_no);
+            pst_insert_legacy_subscription_info.setDate(5, legacy_proforma_invoice_date);
             pst_insert_legacy_subscription_info.executeUpdate();
             return sub_id;
         } else {
@@ -1069,6 +1070,7 @@ public class MigrationBase implements IMigrate {
             pst_insert_legacy_subscription_info.setFloat(2, 0);
             pst_insert_legacy_subscription_info.setFloat(3, 0);
             pst_insert_legacy_subscription_info.setString(4, "");
+            pst_insert_legacy_subscription_info.setString(5, null);
             pst_insert_legacy_subscription_info.executeUpdate();
             return sub_id;
         } else {
@@ -1098,6 +1100,7 @@ public class MigrationBase implements IMigrate {
             pst_insert_legacy_subscription_info.setFloat(2, 0);
             pst_insert_legacy_subscription_info.setFloat(3, 0);
             pst_insert_legacy_subscription_info.setString(4, "");
+            pst_insert_legacy_subscription_info.setString(5, null);
             pst_insert_legacy_subscription_info.executeUpdate();
             return sub_id;
         } else {

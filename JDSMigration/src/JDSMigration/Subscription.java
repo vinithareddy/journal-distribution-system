@@ -179,12 +179,20 @@ public class Subscription extends MigrationBase {
                 corr_balance = (float) 0;
             }
 
-            // Get the proforma_invoice_no
+            // Get the legacy_proforma_invoice_no
             String legacy_proforma_invoice_no = "";
             if(!(corrdatacolumns[10].isEmpty() || corrdatacolumns[10] == null)) {
                 legacy_proforma_invoice_no = corrdatacolumns[10];
             }
 
+            // Get the legacy_proforma_invoice_date
+            //Date legacy_proforma_invoice_date = util.dateStringToSqlDate(null);
+            Date legacy_proforma_invoice_date = null;
+            try {
+                legacy_proforma_invoice_date = util.dateStringToSqlDate(util.convertDateFormat(corrdatacolumns[5], "MM/dd/yyyy", "dd/MM/yyyy"));
+            } catch (NumberFormatException | ParseException | NullPointerException e) {
+                // Do nothing if there is an exception
+            }
 
 //------------------------------------------------------------------------------------------------------------------------------
             //Insert Subscription
@@ -243,7 +251,7 @@ public class Subscription extends MigrationBase {
                     //logger.debug("Start Year:" + startYr);
                     //logger.debug("End Year:" + endYr);
 
-                    subscriptionID = this.insertSubscription(subscriberId, inwardId, amount, subdate, corr_balance, agentId, legacy_proforma_invoice_no);
+                    subscriptionID = this.insertSubscription(subscriberId, inwardId, amount, subdate, corr_balance, agentId, legacy_proforma_invoice_no, legacy_proforma_invoice_date);
                     logger.debug("Inserted Subscription with id: " + subscriptionID);
                     insertedRows++;
                     commitCounter++;
@@ -377,7 +385,7 @@ public class Subscription extends MigrationBase {
                                     try {
                                         if (checkIfValidSubscriptionRES(datacolumns) && getCopiesRES(datacolumns) > 0) {
                                             if (subscriptionID == 0) {
-                                                subscriptionID = this.insertSubscription(subscriberId, inwardId, amount, subdate, corr_balance, agentId, legacy_proforma_invoice_no);
+                                                subscriptionID = this.insertSubscription(subscriberId, inwardId, amount, subdate, corr_balance, agentId, legacy_proforma_invoice_no, legacy_proforma_invoice_date);
                                                 logger.debug("Inserted Subscription with id: " + subscriptionID);
                                                 commitCounter++;
                                             }
@@ -393,7 +401,7 @@ public class Subscription extends MigrationBase {
                                     try {
                                         if (checkIfValidSubscriptionCURR(datacolumns) && getCopiesCURR(datacolumns) > 0) {
                                             if (subscriptionID == 0) {
-                                                subscriptionID = this.insertSubscription(subscriberId, inwardId, amount, subdate, corr_balance, agentId, legacy_proforma_invoice_no);
+                                                subscriptionID = this.insertSubscription(subscriberId, inwardId, amount, subdate, corr_balance, agentId, legacy_proforma_invoice_no, legacy_proforma_invoice_date);
                                                 logger.debug("Inserted Subscription with id: " + subscriptionID);
                                                 commitCounter++;
                                             }

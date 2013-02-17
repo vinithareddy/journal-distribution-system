@@ -89,6 +89,13 @@ public class migrateCURR extends MigrationBase {
                     legacy_proforma_invoice_no = corrdatacolumns[10];
                 }
 
+                // Get the legacy_proforma_invoice_date
+                java.sql.Date legacy_proforma_invoice_date = util.dateStringToSqlDate(null);
+                try {
+                    legacy_proforma_invoice_date = util.dateStringToSqlDate(util.convertDateFormat(corrdatacolumns[5], "MM/dd/yyyy", "dd/MM/yyyy"));
+                } catch (NumberFormatException | ParseException | NullPointerException e) {
+                    // Do nothing if there is an exception
+                }
 
                 String CSY = getCSYCURR(datacolumns);
                 String CEY = getCEYCURR(datacolumns);
@@ -110,7 +117,7 @@ public class migrateCURR extends MigrationBase {
                         logger.fatal("Unable to update subscription for subscriber " + subno + " No subscriber id found in DB");
                         continue;
                     }
-                    int subscription_id = this.insertSubscription(subscriber_id, 0, amount, subdate, corr_balance, 0, legacy_proforma_invoice_no);
+                    int subscription_id = this.insertSubscription(subscriber_id, 0, amount, subdate, corr_balance, 0, legacy_proforma_invoice_no, legacy_proforma_invoice_date);
                     logger.debug("Inserted Subscription with id: " + subscription_id);
 
                     this.insertSubscriptionDetailsForCURR(subscription_id, datacolumns);
