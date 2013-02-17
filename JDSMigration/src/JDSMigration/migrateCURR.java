@@ -83,6 +83,12 @@ public class migrateCURR extends MigrationBase {
                     corr_balance = (float) 0;
                 }
 
+                // Get the proforma_invoice_no
+                String legacy_proforma_invoice_no = "";
+                if(!(corrdatacolumns[10].isEmpty() || corrdatacolumns[10] == null)) {
+                    legacy_proforma_invoice_no = corrdatacolumns[10];
+                }
+
 
                 String CSY = getCSYCURR(datacolumns);
                 String CEY = getCEYCURR(datacolumns);
@@ -104,7 +110,7 @@ public class migrateCURR extends MigrationBase {
                         logger.fatal("Unable to update subscription for subscriber " + subno + " No subscriber id found in DB");
                         continue;
                     }
-                    int subscription_id = this.insertSubscription(subscriber_id, 0, amount, subdate, corr_balance, 0);
+                    int subscription_id = this.insertSubscription(subscriber_id, 0, amount, subdate, corr_balance, 0, legacy_proforma_invoice_no);
                     logger.debug("Inserted Subscription with id: " + subscription_id);
 
                     this.insertSubscriptionDetailsForCURR(subscription_id, datacolumns);
