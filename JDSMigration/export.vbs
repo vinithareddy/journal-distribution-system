@@ -45,7 +45,11 @@ files = Array("AS", _
               "NEWINW")
 for each file in files
     wscript.echo("Exporting file " & file)
-    Set objWB = excel.WorkBooks.Open(datafolder_in & "\" & file & ".DBF")
-    objWB.SaveAs datafolder_out &  "\" & file & ".xls", 56
+    if fso.FileExists(datafolder_in & "\" & file & ".DBF") then
+        Set objWB = excel.WorkBooks.Open(datafolder_in & "\" & file & ".DBF")
+        objWB.SaveAs datafolder_out &  "\" & file & ".xls", 56
+    else
+        wscript.echo("Cannot find the file " & file)
+    end if
 next
 excel.Quit()

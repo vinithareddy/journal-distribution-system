@@ -82,7 +82,7 @@ public class IndTemp extends MigrationBase {
 
             if(subscriberName == null || subscriberName.length() ==0){
                 // if there is no subscriber name we skip the record
-                logger.fatal("Skipping record. No subscriber name for subscriber:" + subscriberNumber + " at row no: " + excelRow);
+                logger.error("Skipping record. No subscriber name for subscriber:" + subscriberNumber + " at row no: " + excelRow);
                 continue;
             }
 

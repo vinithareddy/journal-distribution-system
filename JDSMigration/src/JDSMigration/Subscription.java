@@ -132,12 +132,12 @@ public class Subscription extends MigrationBase {
                         this.subscriberID = subscriberId;
                         subscriberid_cache.put(this.subscriberNumber.toString(), subscriberId);
                     } catch (SQLException e) {
-                        logger.fatal("No Subscriber ID found for Subscriber Number " + datacolumns[0] + " in Subscriber DB Table. Row No: " + (excelRowNumber));
+                        logger.debug("No Subscriber ID found for Subscriber Number " + datacolumns[0] + " in Subscriber DB Table. Row No: " + (excelRowNumber));
                         continue;
                     }
                 }
             } else {
-                logger.fatal("No subscription for Subscriber Number " + datacolumns[0] + " Row No: " + (excelRowNumber));
+                logger.debug("No subscription for Subscriber Number " + datacolumns[0] + " Row No: " + (excelRowNumber));
                 continue;
             }
 
@@ -527,7 +527,7 @@ public class Subscription extends MigrationBase {
 
         //Cases where start year and end year is zero but no. of copies are not zero - LOG IT
         if (startYr == 0) {
-            logger.fatal("No start year for subscription " + subscriptionID + "but subscription details are updated in the table");
+            logger.fatal("No start year for subscription " + subscriptionID + " but subscription details are updated in the table. Row No: " + excelRowNumber);
         }
         pst_insert_subscription_dtls = this.conn.prepareStatement(sql_insert_subscriptiondetails);
         pst_insert_subscription_dtls.setInt(++paramIndex1, subscriptionID);

@@ -65,7 +65,7 @@ public class Corr extends MigrationBase {
                 String SubscriptionDate = !data[5].isEmpty() ? data[5] : data[14];
 
                 if (SubscriptionDate.isEmpty()) {
-                    logger.fatal("No reply date or subscription date to calculate inward number");
+                    logger.error("No reply date or subscription date to calculate inward number");
                     continue;
                 }
                 logger.debug("Subscription repl data is: " + SubscriptionDate);
@@ -74,34 +74,34 @@ public class Corr extends MigrationBase {
                 subYearMatcher.find();
 
                 try {
-                    String subscriptionYear = subYearMatcher.group(1);
+                String subscriptionYear = subYearMatcher.group(1);
 
-                    logger.debug("subscription year: " + subscriptionYear);
-                    /*if (Integer.parseInt(subscriptionYear) < 2009) {
-                     logger.debug("Skipping record " + rowCount + "," + "year " + subscriptionYear + " less than 2009");
-                     continue;
-                     }*/
-                    try {
-                        inwardMatcher.find();
-                        String inwardNo = subscriptionYear.substring(2) + inwardMatcher.group(1) + "-" + String.format("%05d", Integer.parseInt(inwardMatcher.group(2)));
-                        logger.debug("Inward Number: " + inwardNo);
+                logger.debug("subscription year: " + subscriptionYear);
+                /*if (Integer.parseInt(subscriptionYear) < 2009) {
+                 logger.debug("Skipping record " + rowCount + "," + "year " + subscriptionYear + " less than 2009");
+                 continue;
+                 }*/
+                try {
+                    inwardMatcher.find();
+                    String inwardNo = subscriptionYear.substring(2) + inwardMatcher.group(1) + "-" + String.format("%05d", Integer.parseInt(inwardMatcher.group(2)));
+                    logger.debug("Inward Number: " + inwardNo);
 
-                        if (!inwardNo.isEmpty()) {
-                            pst_update_inward.setString(1, subscriberNumber);
-                            pst_update_inward.setString(2, inwardNo);
-                            if (pst_update_inward.executeUpdate() == 1) {
-                                logger.debug("Updated inward with " + subscriberNumber);
-                            } else {
-                                logger.fatal("Failed to update inward: " + inwardNo + " with subscriber Number: " + subscriberNumber);
-                            }
-
+                    if (!inwardNo.isEmpty()) {
+                        pst_update_inward.setString(1, subscriberNumber);
+                        pst_update_inward.setString(2, inwardNo);
+                        if (pst_update_inward.executeUpdate() == 1) {
+                            logger.debug("Updated inward with " + subscriberNumber);
+                        } else {
+                                logger.error("Failed to update inward: " + inwardNo + ". Subscriber Number: " + subscriberNumber + " not found");
                         }
-                    } catch (NumberFormatException | SQLException e) {
-                        logger.fatal("Invalid Inward Number: " + data[2]);
-                        continue;
+
                     }
+                } catch (NumberFormatException | SQLException | IllegalStateException e) {
+                    logger.error(e + "Invalid Inward Number: " + data[2]);
+                    continue;
+                }
                 } catch (IllegalStateException e) {
-                    logger.fatal("Invalid SubscriptionDate: " + SubscriptionDate + " or Invalid No: " + data[2]);
+                    logger.fatal("Invalid SubscriptionDate: " + SubscriptionDate + " or Invalid No: " + data[2] + " Subscriber Num: " + subscriberNumber + " Row No: " + rowCount);
                     continue;
                 }
 
@@ -139,7 +139,7 @@ public class Corr extends MigrationBase {
                     conn.commit();
                     commitSize = 0;
                 }
-            } catch (IOException | BiffException | SQLException e) {
+            } catch (IOException | BiffException | SQLException | IllegalStateException e) {
                 logger.fatal("Exception at row: " + (rowCount + 1) + " " + String.valueOf(e));
             }
 
