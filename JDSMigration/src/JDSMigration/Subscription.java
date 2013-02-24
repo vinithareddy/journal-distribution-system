@@ -67,7 +67,7 @@ public class Subscription extends MigrationBase {
         this.openExcel(dataFile);
         int commitCounter = 0;
         Map<String, Object> subscriberid_cache = new HashMap<>();
-        Map<String, Object> subscriber_balance = new HashMap<>();
+        //Map<String, Object> subscriber_balance = new HashMap<>();
 
 
         String[] datacolumns;
@@ -110,6 +110,12 @@ public class Subscription extends MigrationBase {
             // Check if subscriber exists
             logger.debug("Migrating subscription for subscriber Number: " + datacolumns[0]);
             this.subscriberNumber = datacolumns[0];
+
+            if(Subscription.subscriberIDsWithoutNames.containsKey(this.subscriberNumber)){
+                logger.error(String.format("Subscription for subscriber %s is skipped since subscriber does not have a name. Row No. %s", this.subscriberNumber, excelRowNumber));
+                continue;
+            }
+
             int subscriberId = 0;
             boolean has_subscription = false;
 
@@ -132,7 +138,7 @@ public class Subscription extends MigrationBase {
                         this.subscriberID = subscriberId;
                         subscriberid_cache.put(this.subscriberNumber.toString(), subscriberId);
                     } catch (SQLException e) {
-                        logger.debug("No Subscriber ID found for Subscriber Number " + datacolumns[0] + " in Subscriber DB Table. Row No: " + (excelRowNumber));
+                        logger.fatal("No Subscriber ID found for Subscriber Number " + datacolumns[0] + " in Subscriber DB Table. Row No: " + (excelRowNumber));
                         continue;
                     }
                 }
@@ -165,18 +171,22 @@ public class Subscription extends MigrationBase {
             float amount = Float.parseFloat(datacolumns[29]);
 
             // Get the balance
-            Date subdate = util.dateStringToSqlDate(null);
-            try {
-                if (!corr_subscriber.isEmpty() && Integer.parseInt(corr_subscriber) == Integer.parseInt(this.subscriberNumber)) {
-                    subdate = util.dateStringToSqlDate(util.convertDateFormat(corr_sub_date, "MM/dd/yyyy", "dd/MM/yyyy"));
-                    corr_balance =  calculate_balance(corrdatacolumns);
-                } else {
-                    corr_balance = (float) 0;
-                }
-            } catch (NumberFormatException | ParseException | NullPointerException e) {
-                logger.fatal("cannot update subscription date and balance for subscriber: " + this.subscriberNumber + " date: " + e.toString() + " subscriber in corr:" + corr_subscriber);
 
+            try {
                 corr_balance = (float) 0;
+                if (!corr_subscriber.isEmpty() && Integer.parseInt(corr_subscriber) == Integer.parseInt(this.subscriberNumber)) {
+                    corr_balance =  calculate_balance(corrdatacolumns);
+                }
+            } catch (NumberFormatException | NullPointerException e) {
+                logger.fatal("cannot update balance: " + this.subscriberNumber + e.toString() + " subscriber in corr:" + corr_subscriber);
+                corr_balance = (float) 0;
+            }
+
+            Date subdate = util.dateStringToSqlDate(null);
+            try{
+                subdate = util.dateStringToSqlDate(util.convertDateFormat(corr_sub_date, "MM/dd/yyyy", "dd/MM/yyyy"));
+            }catch (NumberFormatException | ParseException | NullPointerException e) {
+                logger.error("cannot update subscription date and balance for subscriber: " + this.subscriberNumber + " date: " + e.toString() + " subscriber in corr:" + corr_subscriber);
             }
 
             // Get the legacy_proforma_invoice_no
@@ -198,9 +208,9 @@ public class Subscription extends MigrationBase {
             //Insert Subscription
 //------------------------------------------------------------------------------------------------------------------------------
             // check if end year is < 2012, else do not migrate the records
-            int startYear = Integer.parseInt(datacolumns[31]);
+            //int startYear = Integer.parseInt(datacolumns[31]);
             logger.debug("End year field has: " + datacolumns[32]);
-            int endYear = Integer.parseInt(datacolumns[32]) > 0 ? Integer.parseInt(datacolumns[32]) : startYear;
+            //int endYear = Integer.parseInt(datacolumns[32]) > 0 ? Integer.parseInt(datacolumns[32]) : startYear;
 
             // Used to show subscription but the details were empty
             if ("7123".equals(this.subscriberNumber)) {

@@ -6,7 +6,6 @@ package JDSMigration;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -83,6 +82,8 @@ public class IndTemp extends MigrationBase {
             if(subscriberName == null || subscriberName.length() ==0){
                 // if there is no subscriber name we skip the record
                 logger.error("Skipping record. No subscriber name for subscriber:" + subscriberNumber + " at row no: " + excelRow);
+                //MigrationBase.subscriberIDsWithoutNames.put(subscriberNumber, null);
+                subscriberIDsWithoutNames.put(subscriberNumber, null);
                 continue;
             }
 

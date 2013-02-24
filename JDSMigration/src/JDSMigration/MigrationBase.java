@@ -12,10 +12,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import jxl.read.biff.BiffException;
 import org.apache.log4j.Logger;
@@ -56,6 +54,7 @@ public class MigrationBase implements IMigrate {
     private ExcelReader excelReader = null;
     public static final int COMMIT_SIZE = 1000;
     private PreparedStatement pst_pgid;
+    protected static HashMap<String, Object> subscriberIDsWithoutNames = new HashMap<>();
 //--------------------------------------------------------------------------------------------
     //Select Statement for Inward Id
     public String sql_select_inward = "Select id from inward where inwardNumber = ?";
