@@ -138,7 +138,7 @@ public class migrateFellows extends MigrationBase {
                 countryID = this.getCountryID(country);
                 if (countryID == 0) {
                     logger.warn("Found country " + country + " which does not have a entry in the database");
-                    shippingAddress = country + " " + country;
+                    shippingAddress = shippingAddress + " " + country;
                 }
             } else {
                 countryID = this.getIndiaID();
