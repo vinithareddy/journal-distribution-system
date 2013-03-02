@@ -246,7 +246,7 @@ public class Inward extends MigrationBase {
             int chqddNumber = 0;
             int paymentmode  = 0;
             if (szchqddNumber.matches("^\\d+")) {
-                chqddNumber = Integer.parseInt(columns[5]);
+                chqddNumber = Integer.parseInt(columns[5].substring(0, 5));
                 paymentmode = 1;
             }
             pst_insert.setInt(++paramIndex, chqddNumber);

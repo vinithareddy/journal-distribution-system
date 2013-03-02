@@ -15,13 +15,13 @@ import java.text.ParseException;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import javax.mail.Address;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import jxl.read.biff.BiffException;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-import javax.mail.Address;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
 
 /**
  *
@@ -74,6 +74,7 @@ public class MigrationBase implements IMigrate {
     public String sql_insert_subscription_no_dt = "insert into subscription(subscriberID,inwardID)"
             + "values(?,?)";
     public String sql_insert_legacy_subscription_info = "insert into subscription_legacy(subscription_id,legacy_amount, legacy_balance, legacy_proforma_invoice_no, legacy_proforma_invoice_date) values (?, ?, ?, ?, ?)";
+    public String sql_insert_invoice_legacy = "insert into invoice(invoiceNumber,subscriptionId,invoiceCreationDate,invoice_type_id,amount)values(?,?,?,?,?)";
     public String sql_insert_subscription_free_subs = "insert into subscription(subscriberID,inwardID) values(?,?)";
 //--------------------------------------------------------------------------------------------
     //Insert Statement for Subscription Details
@@ -100,6 +101,7 @@ public class MigrationBase implements IMigrate {
     private PreparedStatement pst_insert_agent = null;
     private PreparedStatement pst_insert_legacy_subscription_info = null;
     private Map<String, Object> subscriberid_cache = new HashMap<>();
+    private PreparedStatement pst_insert_legacy_invoice = null;
 
     public MigrationBase() throws SQLException {
 
@@ -626,6 +628,7 @@ public class MigrationBase implements IMigrate {
         pst_insert_city = this.conn.prepareStatement(insert_city, Statement.RETURN_GENERATED_KEYS);
         pst_insert_agent = this.conn.prepareStatement(insert_agent, Statement.RETURN_GENERATED_KEYS);
         pst_insert_legacy_subscription_info = this.conn.prepareStatement(sql_insert_legacy_subscription_info);
+        pst_insert_legacy_invoice = this.conn.prepareStatement(sql_insert_invoice_legacy);
 
     }
 
@@ -848,11 +851,9 @@ public class MigrationBase implements IMigrate {
                 subID = 0;
             }
         }
-            return subID;
+        return subID;
 
-        }
-
-
+    }
 
     public int getSubscriberTyeID(int subscriberID) {
         int subtypeID;
@@ -1041,6 +1042,18 @@ public class MigrationBase implements IMigrate {
             pst_insert_legacy_subscription_info.setString(4, legacy_proforma_invoice_no);
             pst_insert_legacy_subscription_info.setDate(5, legacy_proforma_invoice_date);
             pst_insert_legacy_subscription_info.executeUpdate();
+
+            if (corr_balance > 0) {
+
+                pst_insert_legacy_invoice.setString(1, legacy_proforma_invoice_no);
+                pst_insert_legacy_invoice.setInt(2, sub_id);
+                pst_insert_legacy_invoice.setDate(3, legacy_proforma_invoice_date);
+                pst_insert_legacy_invoice.setInt(4, 3); // 3 for please refer list
+                pst_insert_legacy_invoice.setFloat(5, corr_balance);
+                pst_insert_legacy_invoice.executeUpdate();
+            }
+
+
             return sub_id;
         } else {
             throw (new SQLException("Failed to add subscription"));

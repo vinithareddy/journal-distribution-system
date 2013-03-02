@@ -33,9 +33,9 @@ public class IndTemp extends MigrationBase {
     //Connection conn = null;
     private String sql_insert = "insert IGNORE into subscriber(subtype, subscriberNumber"
             + ",subscriberName, department"
-            + ",institution, shippingAddress"
+            + ",institution, shippingAddress, invoiceAddress"
             + ",city, state, pincode, country, deactive, email)values"
-            + "((select id from subscriber_type where subtypecode = ?),?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            + "((select id from subscriber_type where subtypecode = ?),?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     PreparedStatement pst_insert = null;
     HashMap<String, String> agentSubscriberMap;
 
@@ -102,7 +102,7 @@ public class IndTemp extends MigrationBase {
             String department = datacolumns[8];
             String institute = datacolumns[9];
             String address = datacolumns[10];
-            //String address2 = datacolumns[6];
+            String invoiceaddress = address;
             String cityAndPin = datacolumns[11];
             String country = datacolumns[13];
             String email = datacolumns[55];
@@ -273,6 +273,18 @@ public class IndTemp extends MigrationBase {
             if (agentId != 0){
                 agentSubscriberMap.put(subscriberNumber, Integer.toString(agentId));
             }
+            if(department.length() > 0){
+                invoiceaddress += "\n" + department;
+            }
+            if(institute.length() > 0){
+                invoiceaddress += "\n" + institute;
+            }
+            if(city.length() > 0){
+                invoiceaddress += "\n" + city;
+            }
+            if(pin > 0){
+                invoiceaddress += "\n" + String.valueOf(pin);
+            }
             int paramIndex = 0;
             pst_insert.setString(++paramIndex, subscribercode);
             pst_insert.setString(++paramIndex, subscriberNumber);
@@ -281,6 +293,7 @@ public class IndTemp extends MigrationBase {
             pst_insert.setString(++paramIndex, department);
             pst_insert.setString(++paramIndex, institute);
             pst_insert.setString(++paramIndex, address);
+            pst_insert.setString(++paramIndex, invoiceaddress);
             pst_insert.setInt(++paramIndex, cityID);
             pst_insert.setInt(++paramIndex, stateID);
             pst_insert.setInt(++paramIndex, pin);
@@ -288,12 +301,8 @@ public class IndTemp extends MigrationBase {
             //pst_insert.setInt(++paramIndex, 0);
             pst_insert.setInt(++paramIndex, 0);
             pst_insert.setString(++paramIndex, email);
-            pst_insert.addBatch();
             recordCounter++;
-
-
-
-            int ret = this.db.executeUpdatePreparedStatement(pst_insert);
+            int ret = pst_insert.executeUpdate();
             if (ret == 0) {
                 logger.fatal("Skipping Duplicate Subscriber : " + subscriberNumber + " Name: " + subscriberName);
                 DuplicateList.add(subscriberNumber);
