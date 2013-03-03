@@ -104,7 +104,7 @@ public class Corr extends MigrationBase {
                     logger.fatal("Invalid SubscriptionDate: " + SubscriptionDate + " or Invalid No: " + data[2] + " Subscriber Num: " + subscriberNumber + " Row No: " + rowCount);
                     continue;
                 }
-
+                
 
                 //logger.debug("REF_NO:" + refNo);
                 if (!refNo.isEmpty() && refNo.toUpperCase().indexOf("KVPY") > -1) {
