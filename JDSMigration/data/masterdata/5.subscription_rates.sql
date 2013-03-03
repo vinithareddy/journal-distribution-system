@@ -767,3 +767,86 @@ insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate)
 insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (9, 14, 2009, 1, 0);
 insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (10, 14, 2009, 1, 0);
 insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (11, 14, 2009, 1, 0);
+
+/*----1996---------------------------------------------------------------------------------------------------------*/
+/* For Indian Personal */
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (1, 11, 1996, 1, 200);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (2, 11, 1996, 1, 150);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (3, 11, 1996, 1, 150);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (4, 11, 1996, 1, 150);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (5, 11, 1996, 1, 150);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (6, 11, 1996, 1, 150);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (7, 11, 1996, 1, 150);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (8, 11, 1996, 1, 150);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (9, 11, 1996, 1, 150);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (10, 11, 1996, 1, 200);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (11, 11, 1996, 1, 350);
+
+/* For Indian Universities and Institutions */
+/* Individual Journals */
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (1, 8, 1996, 1, 200);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (2, 8, 1996, 1, 150);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (3, 8, 1996, 1, 150);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (4, 8, 1996, 1, 150);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (5, 8, 1996, 1, 150);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (6, 8, 1996, 1, 150);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (7, 8, 1996, 1, 150);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (8, 8, 1996, 1, 150);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (9, 8, 1996, 1, 150);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (10, 8, 1996, 1, 200);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (11, 8, 1996, 1, 350);
+
+/* For Indian Schools and Colleges */
+/* Individual Journals */
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (1, 9, 1996, 1, 200);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (2, 9, 1996, 1, 150);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (3, 9, 1996, 1, 150);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (4, 9, 1996, 1, 150);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (5, 9, 1996, 1, 150);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (6, 9, 1996, 1, 150);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (7, 9, 1996, 1, 150);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (8, 9, 1996, 1, 150);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (9, 9, 1996, 1, 150);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (10, 9, 1996, 1, 200);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (11, 9, 1996, 1, 350);
+
+/*----1995---------------------------------------------------------------------------------------------------------*/
+/* For Indian Personal */
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (1, 11, 1995, 1, 100);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (2, 11, 1995, 1, 75);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (3, 11, 1995, 1, 75);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (4, 11, 1995, 1, 75);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (5, 11, 1995, 1, 75);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (6, 11, 1995, 1, 75);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (7, 11, 1995, 1, 75);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (8, 11, 1995, 1, 75);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (9, 11, 1995, 1, 75);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (11, 11, 1995,1, 350);
+
+/* For Indian Universities and Institutions */
+/* Individual Journals */
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (1, 8, 1995, 1, 100);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (2, 8, 1995, 1, 75);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (3, 8, 1995, 1, 75);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (4, 8, 1995, 1, 70);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (5, 8, 1995, 1, 70);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (6, 8, 1995, 1, 70);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (7, 8, 1995, 1, 70);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (8, 8, 1995, 1, 75);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (9, 8, 1995, 1, 75);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (11, 8, 1995, 1, 350);
+
+
+/* For Indian Schools and Colleges */
+/* Individual Journals */
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (1, 9, 1995, 1, 100);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (2, 9, 1995, 1, 75);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (3, 9, 1995, 1, 75);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (4, 9, 1995, 1, 75);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (5, 9, 1995, 1, 75);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (6, 9, 1995, 1, 75);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (7, 9, 1995, 1, 75);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (8, 9, 1995, 1, 75);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (9, 9, 1995, 1, 75);
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (11, 9, 1995, 1, 350);
+
