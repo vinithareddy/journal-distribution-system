@@ -1048,7 +1048,7 @@ public class MigrationBase implements IMigrate {
                 pst_insert_legacy_invoice.setString(1, legacy_proforma_invoice_no);
                 pst_insert_legacy_invoice.setInt(2, sub_id);
                 pst_insert_legacy_invoice.setDate(3, legacy_proforma_invoice_date);
-                pst_insert_legacy_invoice.setInt(4, 3); // 3 for please refer list
+                pst_insert_legacy_invoice.setInt(4, 2); // 2 for outstanding payment
                 pst_insert_legacy_invoice.setFloat(5, corr_balance);
                 pst_insert_legacy_invoice.executeUpdate();
             }
