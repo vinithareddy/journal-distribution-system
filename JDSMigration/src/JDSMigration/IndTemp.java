@@ -34,8 +34,8 @@ public class IndTemp extends MigrationBase {
     private String sql_insert = "insert IGNORE into subscriber(subtype, subscriberNumber"
             + ",subscriberName, department"
             + ",institution, shippingAddress, invoiceAddress"
-            + ",city, state, pincode, country, deactive, email)values"
-            + "((select id from subscriber_type where subtypecode = ?),?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            + ",city, state, pincode, country, deactive, email, phone, fax)values"
+            + "((select id from subscriber_type where subtypecode = ?),?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     PreparedStatement pst_insert = null;
     HashMap<String, String> agentSubscriberMap;
 
@@ -106,6 +106,7 @@ public class IndTemp extends MigrationBase {
             String cityAndPin = datacolumns[11];
             String country = datacolumns[13];
             String email = datacolumns[55];
+            String phone = datacolumns[56];
             if(email.isEmpty()){
                 email = datacolumns[3];
             }
@@ -301,6 +302,8 @@ public class IndTemp extends MigrationBase {
             //pst_insert.setInt(++paramIndex, 0);
             pst_insert.setInt(++paramIndex, 0);
             pst_insert.setString(++paramIndex, email);
+            pst_insert.setString(++paramIndex, phone);
+            pst_insert.setString(++paramIndex, null); // for fax
             recordCounter++;
             int ret = pst_insert.executeUpdate();
             if (ret == 0) {

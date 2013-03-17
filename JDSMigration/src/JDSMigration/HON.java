@@ -91,6 +91,8 @@ public class HON extends MigrationBase{
                     stateid,
                     pin,
                     countryID,
+                    null,
+                    null,
                     null);
             if(subscriberid > 0){
                 logger.info("Successfully inserted subsciber data for:" + name);

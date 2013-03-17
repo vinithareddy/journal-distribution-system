@@ -86,6 +86,8 @@ public class CURRFEX extends MigrationBase{
                     stateid,
                     pin,
                     countryid,
+                    null,
+                    null,
                     null);
             if (subscriberid > 0) {
                 logger.info("Successfully inserted subsciber data for:" + name);

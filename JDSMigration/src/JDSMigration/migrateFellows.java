@@ -7,7 +7,6 @@ package JDSMigration;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -175,6 +174,8 @@ public class migrateFellows extends MigrationBase {
             pst_insert_subscriber.setInt(++paramIndex, 0);
             pst_insert_subscriber.setString(++paramIndex, email);
             pst_insert_subscriber.setDate(++paramIndex, util.dateStringToSqlDate(util.getDateString()));
+            pst_insert_subscriber.setString(++paramIndex, null); // for phone
+            pst_insert_subscriber.setString(++paramIndex, null); // for fax
             pst_insert_subscriber.addBatch();
 
             int subscriberid = 0;
@@ -209,29 +210,29 @@ public class migrateFellows extends MigrationBase {
                 int subscriptionID = this.insertSubscription(subscriberid, inwardId);
 
                 /*pst_insert_subscription.setInt(++paramIndex, subscriberid);
-                pst_insert_subscription.setInt(++paramIndex, inwardId);
-                //pst_insert_subscription.setBoolean(++paramIndex, true);
+                 pst_insert_subscription.setInt(++paramIndex, inwardId);
+                 //pst_insert_subscription.setBoolean(++paramIndex, true);
 
-                //Inserting the record in Subscription Table
-                int ret = this.db.executeUpdatePreparedStatement(pst_insert_subscription);
+                 //Inserting the record in Subscription Table
+                 int ret = this.db.executeUpdatePreparedStatement(pst_insert_subscription);
 
-                //Logging the inserting row
-                if (ret == 1) {
-                    recordCounter++;
-                    insertedSubscriptions++;
-                    pst_insert_subscription_legacy.setInt(1, ret);
-                    pst_insert_subscription_legacy.setFloat(2, 0);
-                    pst_insert_subscription_legacy.setFloat(3, 0);
-                    pst_insert_subscription_legacy.executeUpdate();
-                } else {
-                    logger.fatal("Failed to insert subscription for: " + subscriberNumber + " Name: " + subscriberName);
-                    break;
-                }
+                 //Logging the inserting row
+                 if (ret == 1) {
+                 recordCounter++;
+                 insertedSubscriptions++;
+                 pst_insert_subscription_legacy.setInt(1, ret);
+                 pst_insert_subscription_legacy.setFloat(2, 0);
+                 pst_insert_subscription_legacy.setFloat(3, 0);
+                 pst_insert_subscription_legacy.executeUpdate();
+                 } else {
+                 logger.fatal("Failed to insert subscription for: " + subscriberNumber + " Name: " + subscriberName);
+                 break;
+                 }
 
-                //Getting back the subsciption Id
-                ResultSet rs_sub = pst_insert_subscription.getGeneratedKeys();
-                rs_sub.first();
-                int subscriptionID = rs_sub.getInt(1);*/
+                 //Getting back the subsciption Id
+                 ResultSet rs_sub = pst_insert_subscription.getGeneratedKeys();
+                 rs_sub.first();
+                 int subscriptionID = rs_sub.getInt(1);*/
 
                 /*----------------------------------------------------------------*/
                 /*---Insert Subscription details---*/

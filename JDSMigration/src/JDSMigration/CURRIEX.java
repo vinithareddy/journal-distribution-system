@@ -53,7 +53,7 @@ public class CURRIEX extends MigrationBase {
 
             int copies = this.getInteger(datacolumns[12]);
 
-            if(copies == 0){
+            if (copies == 0) {
                 continue; // do not migrate if there is no subscription
             }
 
@@ -71,11 +71,11 @@ public class CURRIEX extends MigrationBase {
                 logger.debug("city id is:" + cityid);
             }
 
-            if (cityid == 0){
+            if (cityid == 0) {
                 logger.warn("Found City with Id 0 " + cityPin);
                 address = address + " " + cityPin;
             }
-            if (stateid == 0){
+            if (stateid == 0) {
                 logger.warn("Found State with Id 0 " + datacolumns[10]);
                 address = address + " " + datacolumns[8];
             }
@@ -91,12 +91,14 @@ public class CURRIEX extends MigrationBase {
                     stateid,
                     pin,
                     countryid,
+                    null,
+                    null,
                     null);
-            if(subscriberid > 0){
+            if (subscriberid > 0) {
                 logger.info("Successfully inserted subsciber data for:" + name);
                 //int subscription_id = this.insertSubscription(subscriberid);
                 int subscription_id = this.insertSubscription(subscriberid);
-                if(subscription_id > 0){
+                if (subscription_id > 0) {
                     boolean isSuccess = this.insertSubscriptionDetails(
                             subscription_id,
                             11, //jgroup id
@@ -107,14 +109,14 @@ public class CURRIEX extends MigrationBase {
                             12, //end month
                             1); //price group id
 
-                    if(isSuccess){
+                    if (isSuccess) {
                         logger.info("Subscription inserted successfully for: " + name);
                         success++;
                     }
-                }else{
+                } else {
                     logger.fatal("Failed to insert subscription for: " + name);
                 }
-            }else{
+            } else {
                 logger.fatal("Failed to insert subscriber for: " + name);
             }
         }

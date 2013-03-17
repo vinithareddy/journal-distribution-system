@@ -84,13 +84,13 @@ public class MigrationBase implements IMigrate {
     public String sql_insert_subscriber = "insert IGNORE into subscriber(subtype, subscriberNumber"
             + ",subscriberName, department"
             + ",institution, shippingAddress, invoiceAddress"
-            + ",city, state, pincode, country, deactive, email)values"
-            + "((select id from subscriber_type where subtypecode = ?),?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            + ",city, state, pincode, country, deactive, email, phone)values"
+            + "((select id from subscriber_type where subtypecode = ?),?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     public String sql_insert_subscriber_dt = "insert IGNORE into subscriber(subtype, subscriberNumber"
             + ",subscriberName, department"
             + ",institution, shippingAddress, invoiceAddress"
-            + ",city, state, pincode, country, deactive, email,subscriberCreationDate)values"
-            + "((select id from subscriber_type where subtypecode = ?),?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
+            + ",city, state, pincode, country, deactive, email,subscriberCreationDate, phone, fax)values"
+            + "((select id from subscriber_type where subtypecode = ?),?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     public String sql_getLastSubscriberId = "SELECT id from subscriber order by id desc LIMIT 1";
 //--------------------------------------------------------------------------------------------
     private PreparedStatement pst_insert_subscription = null;
@@ -975,7 +975,7 @@ public class MigrationBase implements IMigrate {
 
     public int insertSubscriber(String subtypeCode, String SubscriberName, String department,
             String institution, String ShipAddress, String invAddress,
-            int city, int state, int pincode, int country, String email) throws SQLException, ParseException,
+            int city, int state, int pincode, int country, String email, String phone, String fax) throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException {
 
         String nextSubscriberNumber = this.getNextSubscriberNumber();
@@ -996,6 +996,8 @@ public class MigrationBase implements IMigrate {
         pst_insert_subscriber.setBoolean(++paramindex, false);
         pst_insert_subscriber.setString(++paramindex, email);
         pst_insert_subscriber.setDate(++paramindex, util.dateStringToSqlDate(util.getDateString()));
+        pst_insert_subscriber.setString(++paramindex, phone);
+        pst_insert_subscriber.setString(++paramindex, fax);
 
         int subscriberid = 0;
         try {

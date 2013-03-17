@@ -201,6 +201,8 @@ public class migrateExchange extends MigrationBase{
             pst_insert_subscriber.setInt(++paramIndex, 0);
             pst_insert_subscriber.setString(++paramIndex, email);
             pst_insert_subscriber.setDate(++paramIndex, util.dateStringToSqlDate(util.getDateString()));
+            pst_insert_subscriber.setString(++paramIndex, null); // for phone
+            pst_insert_subscriber.setString(++paramIndex, null); // for fax
             pst_insert_subscriber.addBatch();
 
             int subscriberid = 0;

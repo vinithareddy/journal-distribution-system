@@ -32,8 +32,8 @@ public class Temp extends MigrationBase {
     private String sql_insert = "insert IGNORE into subscriber(subtype, subscriberNumber"
             + ",subscriberName, department"
             + ",institution, shippingAddress, invoiceAddress"
-            + ",city, state, pincode, country, deactive, email)values"
-            + "((select id from subscriber_type where subtypecode = ?),?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            + ",city, state, pincode, country, deactive, email, phone, fax)values"
+            + "((select id from subscriber_type where subtypecode = ?),?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     PreparedStatement pst_insert = null;
     HashMap<String, String> agentSubscriberMap;
 
@@ -102,6 +102,7 @@ public class Temp extends MigrationBase {
             String cityAndPin = datacolumns[11];
             String country = datacolumns[13];
             String email = datacolumns[55];
+            String phone = datacolumns[56];
             String agent = datacolumns[46];
             if (email.isEmpty()) {
                 String temp = datacolumns[3];
@@ -275,6 +276,8 @@ public class Temp extends MigrationBase {
             //pst_insert.setInt(++paramIndex, 0);
             pst_insert.setInt(++paramIndex, 0);
             pst_insert.setString(++paramIndex, email);
+            pst_insert.setString(++paramIndex, phone);
+            pst_insert.setString(++paramIndex, null); // for fax
             //pst_insert.addBatch();
             recordCounter++;
 

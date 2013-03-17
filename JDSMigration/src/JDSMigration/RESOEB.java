@@ -49,6 +49,8 @@ public class RESOEB extends MigrationBase {
             String institute = null;
             String department = null;
             int pin = this.getPinCode(datacolumns[9]);
+            String phone = datacolumns[10];
+            String fax = datacolumns[11];
             int stateid = 0;
             int countryid = this.getIndiaID(); //default to india
             int cityid = 0;
@@ -97,7 +99,7 @@ public class RESOEB extends MigrationBase {
 
             String cityPin = datacolumns[6];
             String country = datacolumns[8];
-            
+
             if(datacolumns[15].equals("I")){
                 stateid = this.getStateID(datacolumns[8]);
                 countryid = this.getIndiaID();
@@ -112,7 +114,7 @@ public class RESOEB extends MigrationBase {
                 logger.debug("city is:" + city[0]);
                 logger.debug("city id is:" + cityid);
             }
-            
+
             if (cityid == 0){
                 logger.warn("Found City with Id 0 " + cityPin);
                 address = address + " " + cityPin;
@@ -141,7 +143,9 @@ public class RESOEB extends MigrationBase {
                     stateid,
                     pin,
                     countryid,
-                    email);
+                    email,
+                    phone,
+                    fax);
 
             if(subscriberid > 0){
                 logger.info("Successfully inserted subsciber data for:" + name);
