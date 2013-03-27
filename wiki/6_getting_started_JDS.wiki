@@ -49,6 +49,7 @@ Open Netbeans->Services->Servers->Apache->Right Click, select properties. In the
 
 (14) Download "mysql-connector-java-5.1.18-bin.jar". NetBeans -> Right Click on Project -> Properties -> Libraries.
 Select JAR/Folder. Select "mysql-connector-java-5.1.18-bin.jar".
+Copy the jar to Tomcat lib folder as well.
 
 
 (15) Getting code from google code into my laptop
