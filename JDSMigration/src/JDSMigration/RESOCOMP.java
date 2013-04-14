@@ -84,7 +84,7 @@ public class RESOCOMP extends MigrationBase {
                 subscriberTypeID = this.getSubTypeId("EF");; //code for foreign institutes
                 subscriberTypeCode = "EF";
             } else {
-                throw new Exception("Cannot determine subscriber type");
+                throw new Exception("Cannot determine subscriber type: " + subscriberType);
             }
 
 
