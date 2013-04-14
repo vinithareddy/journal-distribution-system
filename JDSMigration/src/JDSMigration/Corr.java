@@ -38,15 +38,17 @@ public class Corr extends MigrationBase {
         int commitSize = 0;
         int rowCount = 0;
         String sql = "update subscriber set agent=? where subscriberNumber=?";
-        String update_inward_with_sub_id = "update inward set subscriberid=(select id from subscriber where subscriberNumber=?) where inwardNumber=?";
+        String update_inward_with_sub_id = "update inward set subscriberid=(select id from subscriber where subscriberNumber=?),letterNumber=? where inwardNumber=?";
         PreparedStatement pst = this.conn.prepareStatement(sql);
         PreparedStatement pst_update_inward = this.conn.prepareStatement(update_inward_with_sub_id);
 
         //pattern match for DATE_ACN to get the subscription Year.
         Pattern subYearPattern = Pattern.compile("\\d{1,2}/\\d{1,2}/(\\d+)");
         Pattern inwardNumberPattern = Pattern.compile("(\\w)-?(\\d+)?");
+        //Pattern refnoPattern = Pattern.compile("(.*) dt.?(.*)");
         Matcher subYearMatcher;
         Matcher inwardMatcher;
+        //Matcher refnoMatcher;
         while (true) {
             try {
 
@@ -86,9 +88,16 @@ public class Corr extends MigrationBase {
                     String inwardNo = subscriptionYear.substring(2) + inwardMatcher.group(1) + "-" + String.format("%05d", Integer.parseInt(inwardMatcher.group(2)));
                     logger.debug("Inward Number: " + inwardNo);
 
+
+
+
                     if (!inwardNo.isEmpty()) {
+                        // get the ref_no which is nothing but the letter number from the subscriber
+                        String ref_no = data[11];
+
                         pst_update_inward.setString(1, subscriberNumber);
-                        pst_update_inward.setString(2, inwardNo);
+                        pst_update_inward.setString(2, ref_no);
+                        pst_update_inward.setString(3, inwardNo);
                         if (pst_update_inward.executeUpdate() == 1) {
                             logger.debug("Updated inward with " + subscriberNumber);
                         } else {
@@ -104,7 +113,7 @@ public class Corr extends MigrationBase {
                     logger.fatal("Invalid SubscriptionDate: " + SubscriptionDate + " or Invalid No: " + data[2] + " Subscriber Num: " + subscriberNumber + " Row No: " + rowCount);
                     continue;
                 }
-                
+
 
                 //logger.debug("REF_NO:" + refNo);
                 if (!refNo.isEmpty() && refNo.toUpperCase().indexOf("KVPY") > -1) {

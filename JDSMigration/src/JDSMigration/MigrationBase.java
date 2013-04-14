@@ -1045,7 +1045,10 @@ public class MigrationBase implements IMigrate {
             pst_insert_legacy_subscription_info.setDate(5, legacy_proforma_invoice_date);
             pst_insert_legacy_subscription_info.executeUpdate();
 
-            if (corr_balance > 0) {
+            if(legacy_proforma_invoice_no.length() == 0){
+                logger.fatal("Invoice number for subscription with balance missing. Subscriber No: " + subscriberId);
+            }
+            else if (corr_balance > 0 && legacy_proforma_invoice_no.length() > 0) {
 
                 pst_insert_legacy_invoice.setString(1, legacy_proforma_invoice_no);
                 pst_insert_legacy_invoice.setInt(2, sub_id);
@@ -1147,7 +1150,7 @@ public class MigrationBase implements IMigrate {
     }
 
     public void executeMasterDataScripts() throws IOException, SQLException {
-        String files[] = new String[11];
+        String files[] = new String[10];
         files[0] = "data" + "\\masterdata\\1.journals.sql";
         files[1] = "data" + "\\masterdata\\2.journal_groups.sql";
         files[2] = "data" + "\\masterdata\\3.journal_group_contents.sql";
@@ -1159,7 +1162,7 @@ public class MigrationBase implements IMigrate {
         files[8] = "data" + "\\masterdata\\9.year.sql";
         files[9] = "data" + "\\masterdata\\10.districts.sql";
         //files[10] = "data" + "\\masterdata\\jds_schema_data.sql";
-        files[10] = "data" + "\\masterdata\\truncate_transaction_data.sql";
+        //files[10] = "data" + "\\masterdata\\truncate_transaction_data.sql";
 
         for (int j = 0; j < files.length; j++) {
             String s;
