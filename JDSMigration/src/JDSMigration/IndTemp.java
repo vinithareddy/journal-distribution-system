@@ -102,7 +102,8 @@ public class IndTemp extends MigrationBase {
             String department = datacolumns[8];
             String institute = datacolumns[9];
             String address = datacolumns[10];
-            String invoiceaddress = address;
+            String temp_invoice_address = address;
+            String invoiceaddress = "";
             String cityAndPin = datacolumns[11];
             String country = datacolumns[13];
             String email = datacolumns[55];
@@ -275,16 +276,24 @@ public class IndTemp extends MigrationBase {
                 agentSubscriberMap.put(subscriberNumber, Integer.toString(agentId));
             }
             if(department.length() > 0){
-                invoiceaddress += "\n" + department;
+                invoiceaddress = invoiceaddress.length() > 0 ? (invoiceaddress + "\n" + department) : department;
+                //invoiceaddress += "\n" + department;
             }
             if(institute.length() > 0){
-                invoiceaddress += "\n" + institute;
+                invoiceaddress = invoiceaddress.length() > 0 ? (invoiceaddress + "\n" + institute) : institute;
+                //invoiceaddress += "\n" + institute;
+            }
+            if(temp_invoice_address.length() > 0){
+                invoiceaddress = invoiceaddress.length() > 0 ? (invoiceaddress + "\n" + temp_invoice_address) : temp_invoice_address;
+                //invoiceaddress += "\n" + temp_invoice_address;
             }
             if(city.length() > 0){
-                invoiceaddress += "\n" + city;
+                invoiceaddress = invoiceaddress.length() > 0 ? (invoiceaddress + "\n" + city) : city;
+                //invoiceaddress += "\n" + city;
             }
             if(pin > 0){
-                invoiceaddress += "\n" + String.valueOf(pin);
+                invoiceaddress = invoiceaddress.length() > 0 ? (invoiceaddress + "\n" + String.valueOf(pin)) : String.valueOf(pin);
+                //invoiceaddress += "\n" + String.valueOf(pin);
             }
             int paramIndex = 0;
             pst_insert.setString(++paramIndex, subscribercode);
