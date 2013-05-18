@@ -81,7 +81,7 @@ public class RESOCOMP extends MigrationBase {
                 subscriberTypeID = this.getSubTypeId("EI"); //code for indian institutes
                 subscriberTypeCode = "EI";
             } else if (!subscriberType.isEmpty() && subscriberType.equalsIgnoreCase("F")) {
-                subscriberTypeID = this.getSubTypeId("EF");; //code for foreign institutes
+                subscriberTypeID = this.getSubTypeId("EF"); //code for foreign institutes
                 subscriberTypeCode = "EF";
             } else {
                 throw new Exception("Cannot determine subscriber type: " + subscriberType);
@@ -92,7 +92,7 @@ public class RESOCOMP extends MigrationBase {
             String country = datacolumns[7];
 
             // get the country id if its a foreign subscriber
-            if (subscriberTypeID == 13) {
+            if (subscriberTypeCode.equals("EF")) {
                 countryid = this.getCountryID(country);
                 address += "\n" + cityPin; //append citypin to the address
                 logger.debug("Country id is:" + countryid);
