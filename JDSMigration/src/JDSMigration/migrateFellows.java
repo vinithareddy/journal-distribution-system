@@ -77,7 +77,7 @@ public class migrateFellows extends MigrationBase {
             String subscriberName = datacolumns[7] + " " + datacolumns[8] + " " + datacolumns[9];
             String department = datacolumns[12];
             String institution = datacolumns[13];
-            String shippingAddress = datacolumns[15] + " " + datacolumns[16];
+            String shippingAddress = datacolumns[14] + " " + datacolumns[15];
             String cityAndPin = datacolumns[16];
             String pincode = datacolumns[17];
             String state = datacolumns[18];
