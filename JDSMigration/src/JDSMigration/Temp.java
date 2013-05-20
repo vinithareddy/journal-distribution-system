@@ -105,6 +105,7 @@ public class Temp extends MigrationBase {
             String email = datacolumns[55];
             String phone = datacolumns[56];
             String agent = datacolumns[46];
+            String state = "";
             if (email.isEmpty()) {
                 String temp = datacolumns[3];
                 email = temp.replaceAll("Another Email: ", "");
@@ -191,7 +192,7 @@ public class Temp extends MigrationBase {
             countryID = this.getCountryID(country);
             // If country is not found, check if this is a state
             if (countryID == 0) {
-                String state = country;
+                state = country;
                 if (this.stateMap.containsKey(state)) {
                     state = this.stateMap.get(state);
                 }
@@ -265,6 +266,11 @@ public class Temp extends MigrationBase {
                 invoiceaddress = invoiceaddress.length() > 0 ? (invoiceaddress + "\n" + city) : city;
                 //invoiceaddress += "\n" + city;
             }
+
+            if(state.length() > 0){
+                invoiceaddress = invoiceaddress.length() > 0 ? (invoiceaddress + "\n" + state) : state;
+            }
+            
             if(pin > 0){
                 invoiceaddress = invoiceaddress.length() > 0 ? (invoiceaddress + "\n" + String.valueOf(pin)) : String.valueOf(pin);
                 //invoiceaddress += "\n" + String.valueOf(pin);
