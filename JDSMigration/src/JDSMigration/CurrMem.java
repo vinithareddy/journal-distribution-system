@@ -71,7 +71,7 @@ public class CurrMem extends MigrationBase{
             String name = datacolumns[1];
             String department = datacolumns[2];
             String institute = datacolumns[3];
-            String address = datacolumns[4] + "\n" + datacolumns[4];
+            String address = datacolumns[4] + " " + datacolumns[5];
             String cityAndPin = datacolumns[6];
             String pin = datacolumns[7].replaceAll(" ", "");
             pin = pin.isEmpty() ? "0" : pin;
