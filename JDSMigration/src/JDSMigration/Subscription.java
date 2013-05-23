@@ -399,7 +399,7 @@ public class Subscription extends MigrationBase {
                                                 logger.debug("Inserted Subscription with id: " + subscriptionID);
                                                 commitCounter++;
                                             }
-                                            insertSubscriptionDetailsForRES(subscriptionID, datacolumns);
+                                            insertSubscriptionDetailsForRES(subscriberID, subscriptionID, datacolumns);
                                         }
                                     } catch (ParseException e) {
                                         logger.fatal(e.toString());
@@ -415,7 +415,7 @@ public class Subscription extends MigrationBase {
                                                 logger.debug("Inserted Subscription with id: " + subscriptionID);
                                                 commitCounter++;
                                             }
-                                            insertSubscriptionDetailsForCURR(subscriptionID, datacolumns);
+                                            insertSubscriptionDetailsForCURR(subscriberId, subscriptionID, datacolumns);
                                             commitCounter++;
                                         }
                                     } catch (ParseException e) {
@@ -563,16 +563,22 @@ public class Subscription extends MigrationBase {
         return insertedRowsSubDtls;
     }
 
-    public boolean insertSubscriptionDetailsForCURR(int subscription_id, String[] datacolumns) throws SQLException, ParseException {
+    public boolean insertSubscriptionDetailsForCURR(int subscriberID, int subscription_id, String[] datacolumns) throws SQLException, ParseException {
+
+        int journalGrpID = 11;
+        int startYear = getstartYearCURR(datacolumns);
+        int endYear = getendYearCURR(datacolumns);
+        int subtypeID = getSubscriberTyeID(subscriberID);
+        int priceGroupID = getJournalPriceGroupID(journalGrpID, subtypeID, startYear, endYear);
 
         boolean status = this.insertSubscriptionDetails(subscription_id,
-                11,
+                journalGrpID,
                 getCopiesCURR(datacolumns),
-                getstartYearCURR(datacolumns),
+                startYear,
                 getstartMonthCURR(datacolumns),
-                getendYearCURR(datacolumns),
+                endYear,
                 getendMonthCURR(datacolumns),
-                1);
+                priceGroupID);
         return status;
     }
 
@@ -687,16 +693,22 @@ public class Subscription extends MigrationBase {
         return cey;
     }
 
-    public boolean insertSubscriptionDetailsForRES(int subscription_id, String[] datacolumns) throws SQLException, ParseException {
+    public boolean insertSubscriptionDetailsForRES(int subscriberID, int subscription_id, String[] datacolumns) throws SQLException, ParseException {
+
+        int journalGrpID = 10;
+        int startYear = getstartYearRES(datacolumns);
+        int endYear = getendYearRES(datacolumns);
+        int subtypeID = getSubscriberTyeID(subscriberID);
+        int priceGroupID = getJournalPriceGroupID(journalGrpID, subtypeID, startYear, endYear);
 
         boolean status = this.insertSubscriptionDetails(subscription_id,
-                10,
+                journalGrpID,
                 getCopiesRES(datacolumns),
-                getstartYearRES(datacolumns),
+                startYear,
                 getstartMonthRES(datacolumns),
-                getendYearRES(datacolumns),
+                endYear,
                 getendMonthRES(datacolumns),
-                1);
+                priceGroupID);
         return status;
     }
 
