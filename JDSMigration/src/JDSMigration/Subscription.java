@@ -16,6 +16,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import jxl.read.biff.BiffException;
 import org.apache.log4j.Logger;
 
@@ -92,6 +94,7 @@ public class Subscription extends MigrationBase {
             String corr_subscriber = null;
             String corr_sub_date = null;
             Float corr_balance;
+            String inward_year = "";
             //boolean active = true;
             if (datacolumns == null) {
                 break;
@@ -102,7 +105,19 @@ public class Subscription extends MigrationBase {
                  * DATE_ACK, if this is null we'll take the DATE_REPLY field
                  */
                 corr_sub_date = corrdatacolumns[7].length() > 0 ? corrdatacolumns[7] : corrdatacolumns[5];
+                try {
+
+
+                    SimpleDateFormat inward_date_format = new SimpleDateFormat("mm/dd/yyyy");
+                    java.util.Date inward_date = inward_date_format.parse(corr_sub_date);
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(inward_date);
+                    inward_year = String.valueOf(cal.get(Calendar.YEAR)).substring(2);
+                }catch(java.text.ParseException ex){
+                    logger.error(ex);
+                }
             }
+
 
             totalRows++;
             excelRowNumber = totalRows + 1;
@@ -111,7 +126,7 @@ public class Subscription extends MigrationBase {
             logger.debug("Migrating subscription for subscriber Number: " + datacolumns[0]);
             this.subscriberNumber = datacolumns[0];
 
-            if(Subscription.subscriberIDsWithoutNames.containsKey(this.subscriberNumber)){
+            if (Subscription.subscriberIDsWithoutNames.containsKey(this.subscriberNumber)) {
                 logger.error(String.format("Subscription for subscriber %s is skipped since subscriber does not have a name. Row No. %s", this.subscriberNumber, excelRowNumber));
                 continue;
             }
@@ -149,10 +164,33 @@ public class Subscription extends MigrationBase {
 
             // Get the inward number
             int inwardId = 0;
-            pst_select_inward.setString(1, datacolumns[1]);
-            ResultSet rs_inward = this.db.executeQueryPreparedStatement(pst_select_inward);
-            if (rs_inward.first()) {
-                inwardId = rs_inward.getInt(1);
+            String inwardNumber = corrdatacolumns[2];
+            try {
+                if (inwardNumber.length() > 0) {
+                    String inward_letter_pattern = "(\\w).*";
+                    String inward_number_pattern = "(\\d+)";
+                    Pattern r = Pattern.compile(inward_letter_pattern);
+                    Pattern r2 = Pattern.compile(inward_number_pattern);
+                    Matcher m = r.matcher(inwardNumber);
+                    Matcher m2 = r2.matcher(inwardNumber);
+                    String inward_letter = "";
+                    String inward_number = "";
+                    if (m.find()) {
+                        inward_letter = m.group(1);
+                    }
+                    if (m2.find()) {
+                        inward_number = m2.group(1);
+                    }
+
+                    String final_inward_number = inward_year + inward_letter + "-" + String.format("%05d", Integer.parseInt(inward_number));
+                    pst_select_inward.setString(1, final_inward_number);
+                    ResultSet rs_inward = this.db.executeQueryPreparedStatement(pst_select_inward);
+                    if (rs_inward.first()) {
+                        inwardId = rs_inward.getInt(1);
+                    }
+                }
+            } catch (NumberFormatException ex) {
+                logger.error(ex);
             }
 
             // Get the agent Id if it exists
@@ -175,7 +213,7 @@ public class Subscription extends MigrationBase {
             try {
                 corr_balance = (float) 0;
                 if (!corr_subscriber.isEmpty() && Integer.parseInt(corr_subscriber) == Integer.parseInt(this.subscriberNumber)) {
-                    corr_balance =  calculate_balance(corrdatacolumns);
+                    corr_balance = calculate_balance(corrdatacolumns);
                 }
             } catch (NumberFormatException | NullPointerException e) {
                 logger.fatal("cannot update balance: " + this.subscriberNumber + e.toString() + " subscriber in corr:" + corr_subscriber);
@@ -183,15 +221,15 @@ public class Subscription extends MigrationBase {
             }
 
             Date subdate = util.dateStringToSqlDate(null);
-            try{
+            try {
                 subdate = util.dateStringToSqlDate(util.convertDateFormat(corr_sub_date, "MM/dd/yyyy", "dd/MM/yyyy"));
-            }catch (NumberFormatException | ParseException | NullPointerException e) {
+            } catch (NumberFormatException | ParseException | NullPointerException e) {
                 logger.error("cannot update subscription date and balance for subscriber: " + this.subscriberNumber + " date: " + e.toString() + " subscriber in corr:" + corr_subscriber);
             }
 
             // Get the legacy_proforma_invoice_no
             String legacy_proforma_invoice_no = "";
-            if(!(corrdatacolumns[10].isEmpty() || corrdatacolumns[10] == null)) {
+            if (!(corrdatacolumns[10].isEmpty() || corrdatacolumns[10] == null)) {
                 legacy_proforma_invoice_no = corrdatacolumns[10];
             }
 
@@ -469,20 +507,20 @@ public class Subscription extends MigrationBase {
         }
 
         /*String insert_balance_sql = "insert into subscriber_balance_legacy (subscriber_id, balance) values (?, ?)";
-        PreparedStatement pst_insert_balance_sql = conn.prepareStatement(insert_balance_sql);
-        for (Map.Entry<String, Object> entry : subscriber_balance.entrySet()) {
-            String key = entry.getKey();
-            String value = entry.getValue().toString();
-            float balance = Float.parseFloat(value);
-            if (balance > 0) {
-                pst_insert_balance_sql.setInt(1, Integer.parseInt(key));
-                pst_insert_balance_sql.setFloat(2, balance);
-                pst_insert_balance_sql.addBatch();
-            }
-        }
-        pst_insert_balance_sql.executeBatch();
-        conn.commit();
-        conn.setAutoCommit(true);*/
+         PreparedStatement pst_insert_balance_sql = conn.prepareStatement(insert_balance_sql);
+         for (Map.Entry<String, Object> entry : subscriber_balance.entrySet()) {
+         String key = entry.getKey();
+         String value = entry.getValue().toString();
+         float balance = Float.parseFloat(value);
+         if (balance > 0) {
+         pst_insert_balance_sql.setInt(1, Integer.parseInt(key));
+         pst_insert_balance_sql.setFloat(2, balance);
+         pst_insert_balance_sql.addBatch();
+         }
+         }
+         pst_insert_balance_sql.executeBatch();
+         conn.commit();
+         conn.setAutoCommit(true);*/
 
 
 
@@ -512,6 +550,9 @@ public class Subscription extends MigrationBase {
             logger.fatal("Subscriber type id = " + subtypeID + " for subscriber : " + this.subscriberNumber);
         }
         logger.debug("Journal grp id is " + jrnlGrpId);
+        if (this.subscriberNumber.equals("5116")) {
+            logger.debug("subscriber number check");
+        }
         int priceGroupID = this.getJournalPriceGroupID(jrnlGrpId, subtypeID, startYr, endYr);
         logger.debug("Price group id is: " + priceGroupID);
         if (priceGroupID == 0) {
@@ -638,8 +679,8 @@ public class Subscription extends MigrationBase {
         // This is a stray case in which CURRYR is not empty but DATE_CURR is empty. In such cases use the start year
         // CURRYR defines the period for which the subscription is valid
         // DATE_CURR defines the start year of subscription
-        if((DATE_CURR.isEmpty() || DATE_CURR == null) &&
-                !(CURRYR.isEmpty() || CURRYR.equals("0"))){
+        if ((DATE_CURR.isEmpty() || DATE_CURR == null)
+                && !(CURRYR.isEmpty() || CURRYR.equals("0"))) {
             int startYr = Integer.parseInt(datacolumns[31]);
             DATE_CURR = Integer.toString(this.getCorrectedYear(startYr));
             DATE_CURR = "01/01/" + DATE_CURR;
@@ -768,8 +809,8 @@ public class Subscription extends MigrationBase {
         // This is a stray case in which RESYR is not empty but DATE_RES is empty. In such cases use the start year
         // RESYR defines the period for which the subscription is valid
         // DATE_RES defines the start year of subscription
-        if((DATE_CURR.isEmpty() || DATE_CURR == null) &&
-                !(CURRYR.isEmpty() || CURRYR.equals("0"))){
+        if ((DATE_CURR.isEmpty() || DATE_CURR == null)
+                && !(CURRYR.isEmpty() || CURRYR.equals("0"))) {
             int startYr = Integer.parseInt(datacolumns[31]);
             DATE_CURR = Integer.toString(this.getCorrectedYear(startYr));
             DATE_CURR = "01/01/" + DATE_CURR;
@@ -799,26 +840,24 @@ public class Subscription extends MigrationBase {
     }
 
     /*
-    public String getCEYRES(String[] datacolumns) throws ParseException {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-        String CURRYR = datacolumns[21];
-        String CEY = "0";
-        java.util.Date cey = dateFormat.parse("01/01/1900");
-        if (!(getCSYRES(datacolumns).equals("0"))) {
-            Calendar temp = Calendar.getInstance();
+     public String getCEYRES(String[] datacolumns) throws ParseException {
+     SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+     String CURRYR = datacolumns[21];
+     String CEY = "0";
+     java.util.Date cey = dateFormat.parse("01/01/1900");
+     if (!(getCSYRES(datacolumns).equals("0"))) {
+     Calendar temp = Calendar.getInstance();
 
-            temp.setTime(dateFormat.parse(getCSYRES(datacolumns)));
-            if (!(CURRYR.isEmpty() || CURRYR.equals("0"))) {
-                temp.add(Calendar.DAY_OF_YEAR, Integer.parseInt(CURRYR) * 364);
-            }
-            cey = temp.getTime();
-            CEY = dateFormat.format(cey);
-        }
-        return CEY;
-    }
-    */
-
-
+     temp.setTime(dateFormat.parse(getCSYRES(datacolumns)));
+     if (!(CURRYR.isEmpty() || CURRYR.equals("0"))) {
+     temp.add(Calendar.DAY_OF_YEAR, Integer.parseInt(CURRYR) * 364);
+     }
+     cey = temp.getTime();
+     CEY = dateFormat.format(cey);
+     }
+     return CEY;
+     }
+     */
     public java.util.Date getceyRES(String[] datacolumns) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         String CURRYR = datacolumns[21];
