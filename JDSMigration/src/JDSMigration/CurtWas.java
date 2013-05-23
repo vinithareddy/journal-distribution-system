@@ -82,7 +82,7 @@ public class CurtWas extends MigrationBase{
             String department = datacolumns[4];
             String institution = datacolumns[5];
 
-            String address =  datacolumns[6] + " " + datacolumns[7] +
+            String address =  datacolumns[6] + " " + datacolumns[7] + " " +
                             datacolumns[8] + " " + datacolumns[9];
             String country = datacolumns[10];
             countryid = this.getCountryID(country);
