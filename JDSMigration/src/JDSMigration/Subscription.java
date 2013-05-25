@@ -299,7 +299,7 @@ public class Subscription extends MigrationBase {
                     //logger.debug("Start Year:" + startYr);
                     //logger.debug("End Year:" + endYr);
 
-                    subscriptionID = this.insertSubscription(subscriberId, inwardId, amount, subdate, corr_balance, agentId, legacy_proforma_invoice_no, legacy_proforma_invoice_date);
+                    subscriptionID = this.insertSubscription(this.subscriberID, inwardId, amount, subdate, corr_balance, agentId, legacy_proforma_invoice_no, legacy_proforma_invoice_date);
                     logger.debug("Inserted Subscription with id: " + subscriptionID);
                     insertedRows++;
                     commitCounter++;
@@ -433,11 +433,11 @@ public class Subscription extends MigrationBase {
                                     try {
                                         if (checkIfValidSubscriptionRES(datacolumns) && getCopiesRES(datacolumns) > 0) {
                                             if (subscriptionID == 0) {
-                                                subscriptionID = this.insertSubscription(subscriberId, inwardId, amount, subdate, corr_balance, agentId, legacy_proforma_invoice_no, legacy_proforma_invoice_date);
+                                                subscriptionID = this.insertSubscription(this.subscriberID, inwardId, amount, subdate, corr_balance, agentId, legacy_proforma_invoice_no, legacy_proforma_invoice_date);
                                                 logger.debug("Inserted Subscription with id: " + subscriptionID);
                                                 commitCounter++;
                                             }
-                                            insertSubscriptionDetailsForRES(subscriberID, subscriptionID, datacolumns);
+                                            insertSubscriptionDetailsForRES(this.subscriberID, subscriptionID, datacolumns);
                                         }
                                     } catch (ParseException e) {
                                         logger.fatal(e.toString());
@@ -449,11 +449,11 @@ public class Subscription extends MigrationBase {
                                     try {
                                         if (checkIfValidSubscriptionCURR(datacolumns) && getCopiesCURR(datacolumns) > 0) {
                                             if (subscriptionID == 0) {
-                                                subscriptionID = this.insertSubscription(subscriberId, inwardId, amount, subdate, corr_balance, agentId, legacy_proforma_invoice_no, legacy_proforma_invoice_date);
+                                                subscriptionID = this.insertSubscription(this.subscriberID, inwardId, amount, subdate, corr_balance, agentId, legacy_proforma_invoice_no, legacy_proforma_invoice_date);
                                                 logger.debug("Inserted Subscription with id: " + subscriptionID);
                                                 commitCounter++;
                                             }
-                                            insertSubscriptionDetailsForCURR(subscriberId, subscriptionID, datacolumns);
+                                            insertSubscriptionDetailsForCURR(this.subscriberID, subscriptionID, datacolumns);
                                             commitCounter++;
                                         }
                                     } catch (ParseException e) {
