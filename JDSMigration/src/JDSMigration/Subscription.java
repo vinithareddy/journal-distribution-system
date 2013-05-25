@@ -143,7 +143,7 @@ public class Subscription extends MigrationBase {
 
             if (has_subscription) {
                 if (subscriberid_cache.containsKey(this.subscriberNumber)) {
-                    subscriberId = Integer.parseInt(subscriberid_cache.get(this.subscriberNumber).toString());
+                    this.subscriberID = Integer.parseInt(subscriberid_cache.get(this.subscriberNumber).toString());
                 } else {
                     pst_select_subscriber.setString(1, datacolumns[0]);
                     ResultSet rs_subscriber = this.db.executeQueryPreparedStatement(pst_select_subscriber);
@@ -550,7 +550,7 @@ public class Subscription extends MigrationBase {
             logger.fatal("Subscriber type id = " + subtypeID + " for subscriber : " + this.subscriberNumber);
         }
         logger.debug("Journal grp id is " + jrnlGrpId);
-        if (this.subscriberNumber.equals("5116")) {
+        if (this.subscriberNumber.equals("5464")) {
             logger.debug("subscriber number check");
         }
         int priceGroupID = this.getJournalPriceGroupID(jrnlGrpId, subtypeID, startYr, endYr);
