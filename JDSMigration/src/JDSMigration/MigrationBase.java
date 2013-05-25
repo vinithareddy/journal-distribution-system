@@ -919,6 +919,26 @@ public class MigrationBase implements IMigrate {
     }
 
     public String getNextSubscriberNumber() throws SQLException, ParseException,
+            java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, Exception {
+        String nextSubscriber;
+        String lastSubscriber;
+        String lastSubscriberSql = "SELECT subscriberNumber FROM subscriber ORDER BY id DESC LIMIT 1";
+        ResultSet rs = db.executeQuery(lastSubscriberSql);
+        if (rs.first()) {
+
+            lastSubscriber = rs.getString(1);
+
+            // get the last subscriber number after the split
+            int subscriber = Integer.parseInt(lastSubscriber);
+            //increment
+            ++subscriber;
+            nextSubscriber = String.valueOf(subscriber);
+            return nextSubscriber;
+        }
+        throw new Exception("Could not find the last row in subscriber table");
+    }
+
+    /*public String getNextSubscriberNumber() throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException {
 
         String nextSubscriber;
@@ -948,7 +968,7 @@ public class MigrationBase implements IMigrate {
             nextSubscriber = year + getMonthToCharacterMap(calendar.get(Calendar.MONTH)) + "-" + subtype + "-" + String.format("%05d", 1);
         }
         return nextSubscriber;
-    }
+    }*/
 
     public String getMonthToCharacterMap(int _month) {
         char[] alphabet = "abcdefghijkl".toCharArray();
@@ -976,7 +996,7 @@ public class MigrationBase implements IMigrate {
     public int insertSubscriber(String subtypeCode, String SubscriberName, String department,
             String institution, String ShipAddress, String invAddress,
             int city, int state, int pincode, int country, String email, String phone, String fax) throws SQLException, ParseException,
-            java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException {
+            java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, Exception {
 
         String nextSubscriberNumber = this.getNextSubscriberNumber();
         int paramindex = 0;
@@ -1165,6 +1185,7 @@ public class MigrationBase implements IMigrate {
         files[10] = "data" + "\\masterdata\\truncate_transaction_data.sql";
 
         for (int j = 0; j < files.length; j++) {
+            System.out.println("Processing file " + files[j]);
             String s;
             StringBuilder sb = new StringBuilder();
 

@@ -1,6 +1,6 @@
 USE jds;
 
-delete from year;
+truncate table year;
 ALTER TABLE year AUTO_INCREMENT = 1;
 
 insert into year

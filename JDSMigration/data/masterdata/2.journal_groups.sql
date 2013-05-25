@@ -1,5 +1,5 @@
 USE jds;
-delete from journal_groups;
+truncate table journal_groups;
 ALTER TABLE journal_groups AUTO_INCREMENT = 1;
 
 insert into `journal_groups`(`journalGroupName`) values ('Pramana - Journal of Physics');

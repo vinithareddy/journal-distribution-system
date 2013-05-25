@@ -4083,7 +4083,7 @@ BEGIN
 
 
 
-      delete from circulation_figure;
+      truncate table circulation_figure;
 
 
 
@@ -5124,7 +5124,7 @@ DECLARE
 
 
 
-      delete from temp_sub_rate;
+      truncate table temp_sub_rate;
 
 
 

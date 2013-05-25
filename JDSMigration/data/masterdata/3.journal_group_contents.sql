@@ -1,6 +1,6 @@
 USE jds;
 
-delete from journal_group_contents;
+truncate table journal_group_contents;
 ALTER TABLE journal_group_contents AUTO_INCREMENT = 1;
 
 insert into `journal_group_contents`(`journalGroupId`,`journalId`) values (1,1);

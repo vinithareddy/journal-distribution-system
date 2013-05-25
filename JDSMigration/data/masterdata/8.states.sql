@@ -1,6 +1,6 @@
 USE jds;
 
-delete from states;
+truncate table states;
 ALTER TABLE states AUTO_INCREMENT = 1;
 
 insert into states

@@ -1,8 +1,8 @@
 USE jds;
 
-delete from cities;
+truncate table cities;
 ALTER TABLE cities AUTO_INCREMENT = 1;
-
+SET autocommit=0;
 insert into cities
 (city) VALUES
 ('Agra'), 
@@ -316,7 +316,5 @@ insert into cities
 ('Jhunjhunu'),
 ('Puri'),
 ('24 Parganas North'), 
-('24 Parganas South')
-
-
-
+('24 Parganas South');
+COMMIT;

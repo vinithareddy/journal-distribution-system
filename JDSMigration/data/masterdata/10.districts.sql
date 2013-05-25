@@ -1,6 +1,6 @@
 USE jds;
 
-delete from districts;
+truncate table districts;
 ALTER TABLE districts AUTO_INCREMENT = 1;
 
 insert into districts

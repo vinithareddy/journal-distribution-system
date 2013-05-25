@@ -1,64 +1,64 @@
 use jds;
 
-delete from inward;
+truncate table inward;
 ALTER TABLE inward AUTO_INCREMENT = 1;
 
-delete from subscriber;
+truncate table subscriber;
 ALTER TABLE subscriber AUTO_INCREMENT = 1;
 
-delete from subscriptiondetails;
+truncate table subscriptiondetails;
 ALTER TABLE subscriptiondetails AUTO_INCREMENT = 1;
 
-delete from subscription;
+truncate table subscription;
 ALTER TABLE subscription AUTO_INCREMENT = 1;
 
-delete from subscription_legacy;
+truncate table subscription_legacy;
 ALTER TABLE subscription_legacy AUTO_INCREMENT = 1;
 
-delete from mailing_list;
+truncate table mailing_list;
 ALTER TABLE mailing_list AUTO_INCREMENT = 1;
 
-delete from mailing_list_detail;
+truncate table mailing_list_detail;
 ALTER TABLE mailing_list_detail AUTO_INCREMENT = 1;
 
-delete from back_issue_list;
+truncate table back_issue_list;
 ALTER TABLE back_issue_list AUTO_INCREMENT = 1;
 
-delete from reminder_details;
+truncate table reminder_details;
 ALTER TABLE reminder_details AUTO_INCREMENT = 1;
 
-delete from reminders;
+truncate table reminders;
 ALTER TABLE reminders AUTO_INCREMENT = 1;
 
-delete from missing_issue;
+truncate table missing_issue;
 ALTER TABLE missing_issue AUTO_INCREMENT = 1;
 
-delete from missing_issue_journals;
+truncate table missing_issue_journals;
 ALTER TABLE missing_issue_journals AUTO_INCREMENT = 1;
 
-delete from invoice;
+truncate table invoice;
 ALTER TABLE invoice AUTO_INCREMENT = 1;
 
-delete from payment;
+truncate table payment;
 ALTER TABLE payment AUTO_INCREMENT = 1;
 
-delete from print_order;
+truncate table print_order;
 ALTER TABLE print_order AUTO_INCREMENT = 1;
 
-delete from circulation_figure;
+truncate table circulation_figure;
 ALTER TABLE circulation_figure AUTO_INCREMENT = 1;
 
-delete from inward_agent_details;
+truncate table inward_agent_details;
 ALTER TABLE inward_agent_details AUTO_INCREMENT = 1;
 
-delete from prl;
+truncate table prl;
 ALTER TABLE prl AUTO_INCREMENT = 1;
 
-delete from prl_details;
+truncate table prl_details;
 ALTER TABLE prl_details AUTO_INCREMENT = 1;
 
-delete from agents;
+truncate table agents;
 ALTER TABLE agents AUTO_INCREMENT = 1;
 
-delete from chq_return_details;
+truncate table chq_return_details;
 ALTER TABLE chq_return_details AUTO_INCREMENT = 1;

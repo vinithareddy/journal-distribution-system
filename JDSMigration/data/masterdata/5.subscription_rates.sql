@@ -1,8 +1,8 @@
 USE jds;
 
-delete from subscription_rates;
+truncate table subscription_rates;
 ALTER TABLE subscription_rates AUTO_INCREMENT = 1;
-
+SET autocommit=0;
 insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (1,0,0,0,0,0);
 insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (2,11,10,2013,1,10000);
 insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (3,12,10,2013,1,13000);
@@ -633,3 +633,4 @@ insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`perio
 insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (628,9,9,2013,2,600);
 insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (629,9,9,2013,3,900);
 insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (630,11,17,2013,10,50000);
+COMMIT;

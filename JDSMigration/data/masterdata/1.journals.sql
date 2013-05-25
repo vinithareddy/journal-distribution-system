@@ -1,6 +1,6 @@
 USE jds;
 
-delete from journals;
+truncate table journals;
 ALTER TABLE journals AUTO_INCREMENT = 1;
 
 insert into `journals`(`journalCode`,`journalName`,`issnNo`,`startYear`) values ('P','Pramana - Journal of Physics','0304-4289',1987);
@@ -15,7 +15,7 @@ insert into `journals`(`journalCode`,`journalName`,`issnNo`,`startYear`) values 
 insert into `journals`(`journalCode`,`journalName`,`issnNo`,`startYear`) values ('RES','Resonanace - Journal of Science Education','0971-8044',2000);
 insert into `journals`(`journalCode`,`journalName`,`issnNo`,`startYear`) values ('CURR','Current Science','0011-3891',2000);
 
-delete from journal_details;
+truncate table journal_details;
 ALTER TABLE journal_details AUTO_INCREMENT = 1;
 
 insert into `journal_details`(`journals_id`,`year`,`pages`,`issues`,`page_size`,`no_of_volumes`) values (1,2012,1800,12,'A4',2);
@@ -42,7 +42,7 @@ insert into `journal_details`(`journals_id`,`year`,`pages`,`issues`,`page_size`,
 insert into `journal_details`(`journals_id`,`year`,`pages`,`issues`,`page_size`,`no_of_volumes`) values (10,2013,1200,12,'A4',1);
 insert into `journal_details`(`journals_id`,`year`,`pages`,`issues`,`page_size`,`no_of_volumes`) values (11,2013,3000,24,'Other',2);
 
-delete from journal_volume_details;
+truncate table journal_volume_details;
 ALTER TABLE journal_volume_details AUTO_INCREMENT = 1;
 
 insert into `journal_volume_details`(`journal_details_id`, `volume_number`,`start_month`) values (1,78,'January');

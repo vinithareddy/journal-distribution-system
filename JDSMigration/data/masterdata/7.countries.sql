@@ -1,6 +1,6 @@
 USE jds;
 
-delete from countries;
+truncate table countries;
 ALTER TABLE countries AUTO_INCREMENT = 1;
 
 insert into countries

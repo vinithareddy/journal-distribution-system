@@ -1,6 +1,6 @@
 USE jds;
 
-delete from subscriber_type;
+truncate table subscriber_type;
 ALTER TABLE subscriber_type AUTO_INCREMENT = 1;
 
 insert into `subscriber_type`(`subtypecode`,`subtypedesc`,`subtype`,`nationality`,`institutional`,`freejrnl`,`discount`) values ('FELJM','Fellows','Free','I','P',2,0);
