@@ -6,10 +6,10 @@ ALTER TABLE inward AUTO_INCREMENT = 1;
 truncate table subscriber;
 ALTER TABLE subscriber AUTO_INCREMENT = 1;
 
-truncate table subscriptiondetails;
+delete from subscriptiondetails;
 ALTER TABLE subscriptiondetails AUTO_INCREMENT = 1;
 
-truncate table subscription;
+delete from subscription;
 ALTER TABLE subscription AUTO_INCREMENT = 1;
 
 truncate table subscription_legacy;

@@ -76,12 +76,14 @@ public class RESOEB extends MigrationBase {
             if (datacolumns[5].isEmpty() == false) {
                 address = address == null ? datacolumns[5] : address + "\n" + datacolumns[5];
             }
+            /*
             if (datacolumns[10].isEmpty() == false) {
                 address = address == null ? datacolumns[10] : address + "\nTel: " + datacolumns[10];
             }
             if (datacolumns[11].isEmpty() == false) {
                 address = address == null ? datacolumns[11] : address + "\nFAX: " + datacolumns[11];
             }
+            */
 
             /*
             if ((subscriberType.equalsIgnoreCase("I") || subscriberType.isEmpty()) && !subscriberType.equalsIgnoreCase("F")) {
