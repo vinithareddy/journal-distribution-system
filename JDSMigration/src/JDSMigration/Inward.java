@@ -66,8 +66,8 @@ public class Inward extends MigrationBase {
         //String sql_distrcit = "select id from districts where district = ?";
         //String sql_state = "select id from states where state = ?";
         //String sql_country = "select id from countries where country = ?";
-        String insert_sql = "insert into inward(inwardNumber,inward.from,country,state,district,city,email,inwardCreationDate,inwardPurpose,chqddNumber,paymentmode,currency,amount,remarks,completed) "
-                + "values (?,?,?,(select id from states where state = ?),(select id from districts where district = ?),?,?,?,(select id from inward_purpose where purpose=?),?,?,(select id from currency where currency = ?),?,?,true)";
+        String insert_sql = "insert into inward(inwardNumber,inward.from,country,state,district,city,email,inwardCreationDate,inwardPurpose,chqddNumber,paymentmode,currency,amount,remarks,completed, language) "
+                + "values (?,?,?,(select id from states where state = ?),(select id from districts where district = ?),?,?,?,(select id from inward_purpose where purpose=?),?,?,(select id from currency where currency = ?),?,?,true, ?)";
 
         //db.executeUpdate(sql_truncate);
         PreparedStatement pst = conn.prepareStatement(sql);
@@ -109,6 +109,12 @@ public class Inward extends MigrationBase {
             String Currency = "INR";
             String szchqddNumber = columns[5];
             String remarks = null;
+            String language = columns[9];
+            int langcode = 1;
+
+            if(language.toUpperCase().contains("HINDI")){
+                langcode = 2;
+            }
 
             // if the from field is null skip the record
             if(From == null || From.isEmpty()){
@@ -276,6 +282,7 @@ public class Inward extends MigrationBase {
             }
 
             pst_insert.setString(++paramIndex, remarks);
+            pst_insert.setInt(++paramIndex, langcode);
 
             db.executeUpdatePreparedStatement(pst_insert);
             insertedRows++;
