@@ -41,7 +41,7 @@ public class migrateHONFEL extends MigrationBase{
     }
 
     @Override
-    public void Migrate() throws FileNotFoundException, IOException, BiffException, SQLException, ParseException, InvocationTargetException, IllegalAccessException {
+    public void Migrate() throws FileNotFoundException, IOException, BiffException, SQLException, ParseException, InvocationTargetException, IllegalAccessException, Exception {
 
         this.openExcel(dataFile);
         logger.debug("able to open file" + dataFile.toString());
@@ -89,6 +89,10 @@ public class migrateHONFEL extends MigrationBase{
             String state        = "";
             String country      = datacolumns[9];
             String email        = datacolumns[10];
+            if(!validateEmail(email)){
+                email = "";
+                logger.warn("Found email ID " + email +" that is not valid for subscriber name: " + subscriberName);
+            }
 
             //subscriberName, department, institution and address have "" quotes, remove them
             subscriberName = subscriberName.replaceAll("\"", "");

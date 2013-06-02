@@ -270,7 +270,7 @@ public class Temp extends MigrationBase {
             if(state.length() > 0){
                 invoiceaddress = invoiceaddress.length() > 0 ? (invoiceaddress + "\n" + state) : state;
             }
-            
+
             if(pin > 0){
                 invoiceaddress = invoiceaddress.length() > 0 ? (invoiceaddress + "\n" + String.valueOf(pin)) : String.valueOf(pin);
                 //invoiceaddress += "\n" + String.valueOf(pin);

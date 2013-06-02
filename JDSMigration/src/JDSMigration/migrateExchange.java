@@ -41,7 +41,7 @@ public class migrateExchange extends MigrationBase{
     }
 
     @Override
-    public void Migrate() throws FileNotFoundException, IOException, BiffException, SQLException, ParseException, InvocationTargetException, IllegalAccessException {
+    public void Migrate() throws FileNotFoundException, IOException, BiffException, SQLException, ParseException, InvocationTargetException, IllegalAccessException, Exception {
 
         this.openExcel(dataFile);
         logger.debug("able to open file" + dataFile.toString());

@@ -1224,10 +1224,12 @@ public class MigrationBase implements IMigrate {
         try {
             //new InternetAddress(to).validate();
             Address[] toUser = InternetAddress.parse(to, false);
-            for (Address s : toUser) {
-                new InternetAddress(s.toString()).validate();
+            if(toUser.length != 0) {
+                for (Address s : toUser) {
+                    new InternetAddress(s.toString()).validate();
+                }
+                success = true;
             }
-            success = true;
         } catch (AddressException ex) {
             message = ex.getMessage();
             success = false;

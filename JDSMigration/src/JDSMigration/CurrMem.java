@@ -46,7 +46,7 @@ public class CurrMem extends MigrationBase{
 
     @Override
     public void Migrate() throws SQLException, IOException, BiffException, ParseException,
-                                    InvocationTargetException, IllegalAccessException {
+                                    InvocationTargetException, IllegalAccessException, Exception {
         //this.conn.setAutoCommit(false);
         //int commitCounter = 0;
         String[] datacolumns;

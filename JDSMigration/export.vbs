@@ -42,7 +42,10 @@ files = Array("AS", _
 			  "RESOEB", _
               "TEMP", _
               "INDTEMP", _
-              "NEWINW")
+              "NEWINW", _
+              "LIFE_MEM", _
+              "HON_MEM2", _
+              "PATRO")
 for each file in files
     wscript.echo("Exporting file " & file)
     if fso.FileExists(datafolder_in & "\" & file & ".DBF") then

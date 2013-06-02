@@ -124,6 +124,9 @@ public class Subscription extends MigrationBase {
 
             // Check if subscriber exists
             logger.debug("Migrating subscription for subscriber Number: " + datacolumns[0]);
+            if(datacolumns[0].equals("5640")){
+                logger.debug("error");
+            }
             this.subscriberNumber = datacolumns[0];
 
             if (Subscription.subscriberIDsWithoutNames.containsKey(this.subscriberNumber)) {
