@@ -27,7 +27,7 @@ public class JDSMigrate {
     private boolean INIT_MASTER_DATA = true;
 
     private boolean MIGRATE_INWARD = MIGRATE_ALL && true;
-    private boolean MIGRATE_SUBSCRIBER = true;
+    private boolean MIGRATE_SUBSCRIBER = MIGRATE_ALL && true;
     private boolean MIGRATE_SUBSCRIPTION =  MIGRATE_ALL && true;
     private boolean MIGRATE_CORR = MIGRATE_ALL && true;
     private boolean MIGRATE_FELLOWS = MIGRATE_ALL && true;
@@ -52,6 +52,8 @@ public class JDSMigrate {
     //private boolean MIGRATE_RES = MIGRATE_ALL || false;
     private boolean MIGRATE_RESOCOMP = MIGRATE_ALL && true;
     private boolean MIGRATE_RESOEB = MIGRATE_ALL && true;
+    private boolean MIGRATE_LIFE_MEM = MIGRATE_ALL && true;
+    private boolean MIGRATE_HON_MEM2 = MIGRATE_ALL && true;
 
     private boolean CIRCULATION_FIGURES = MIGRATE_ALL && true;
 
@@ -173,6 +175,14 @@ public class JDSMigrate {
         if (_jdsmigrate.MIGRATE_RESOEB) {
             RESOEB _resoeb = new RESOEB();
             _resoeb.Migrate();
+        }
+        if(_jdsmigrate.MIGRATE_LIFE_MEM){
+            LIFE_MEM lifemem = new LIFE_MEM();
+            lifemem.Migrate();
+        }
+        if(_jdsmigrate.MIGRATE_HON_MEM2){
+            HON_MEM2 honmem = new HON_MEM2();
+            honmem.Migrate();
         }
         if (_jdsmigrate.CIRCULATION_FIGURES) {
             circulationFigures _circulationFigures = new circulationFigures();

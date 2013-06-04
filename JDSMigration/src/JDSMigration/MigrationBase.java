@@ -934,8 +934,9 @@ public class MigrationBase implements IMigrate {
             ++subscriber;
             nextSubscriber = String.valueOf(subscriber);
             return nextSubscriber;
+        }else{
+            return "1";
         }
-        throw new Exception("Could not find the last row in subscriber table");
     }
 
     /*public String getNextSubscriberNumber() throws SQLException, ParseException,
