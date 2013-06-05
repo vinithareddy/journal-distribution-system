@@ -129,6 +129,11 @@ public class Subscription extends MigrationBase {
             }
             this.subscriberNumber = datacolumns[0];
 
+            if(this.subscriberNumber.equals("10589")){
+                logger.debug("Skipping 10589");
+                continue;
+            }
+
             if (Subscription.subscriberIDsWithoutNames.containsKey(this.subscriberNumber)) {
                 logger.error(String.format("Subscription for subscriber %s is skipped since subscriber does not have a name. Row No. %s", this.subscriberNumber, excelRowNumber));
                 continue;

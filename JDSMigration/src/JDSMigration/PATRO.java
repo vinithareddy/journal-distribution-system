@@ -16,12 +16,12 @@ import org.apache.log4j.Logger;
  *
  * @author Shailendra
  */
-public class HON_MEM2 extends MigrationBase{
+public class PATRO extends MigrationBase{
 
-    private static final Logger logger = Logger.getLogger(HON_MEM2.class.getName());
+    private static final Logger logger = Logger.getLogger(PATRO.class.getName());
 
-    public HON_MEM2() throws SQLException, IOException, BiffException {
-        this.dataFile = this.dataFolder + "\\HON_MEM2.xls";
+    public PATRO() throws SQLException, IOException, BiffException {
+        this.dataFile = this.dataFolder + "\\PATRO.xls";
         this.openExcel(this.dataFile);
     }
 
@@ -41,35 +41,24 @@ public class HON_MEM2 extends MigrationBase{
             rownum++;
             logger.info("Migrating row: " + rownum);
 
-            String name = datacolumns[3] + " " + datacolumns[2];
+            String name = datacolumns[3];
             String address = "";
-            String institute = datacolumns[5];
+            String institute = datacolumns[4] + " " + datacolumns[5];
             String invoiceaddress = "";
             String department = "";
-            int pin = 0; //this.getPinCode(datacolumns[10]);
+            int pin = this.getPinCode(datacolumns[9]);
             int stateid = 0; //this.getStateID(datacolumns[11]);
             int countryid = 0; //this.getIndiaID(); //default to india
-            int cityid = 0; //this.getCityID(datacolumns[9]);
+            String cityname = datacolumns[8];
+            int cityid = this.getCityID(cityname);
             String cityPin = ""; //datacolumns[9];
             String email = ""; //datacolumns[13];
 
 
-            address += datacolumns[4].length() > 0 ? "\n" + datacolumns[4] : "";
-            address += datacolumns[6].length() > 0 ? "\n" + datacolumns[6] : "";
-            address += datacolumns[7].length() > 0 ? "\n" + datacolumns[7] : "";
-            address += datacolumns[8].length() > 0 ? "\n" + datacolumns[8] : "";
-
-            invoiceaddress += institute.length() > 0 ? "\n" + institute.trim() : "";
-            invoiceaddress += invoiceaddress.length() > 0 ? "\n" + address.trim() :  address;
+            address += datacolumns[6].length() > 0 ? "\n" + datacolumns[6].trim() : "";
+            address += datacolumns[7].length() > 0 ? "\n" + datacolumns[7].trim() : "";
 
             int copies = 1;
-
-//            if (datacolumns[4].isEmpty() == false) {
-//                address = address == null ? datacolumns[4] : address + "\n" + datacolumns[4];
-//            }
-//            if (datacolumns[5].isEmpty() == false) {
-//                address = address == null ? datacolumns[5] : address + "\n" + datacolumns[5];
-//            }
 
             if (cityPin.matches(".*\\d+$")) {
                 String[] city = cityPin.split("\\d+", 2);
@@ -79,12 +68,16 @@ public class HON_MEM2 extends MigrationBase{
             }
             if (cityid == 0){
                 //logger.warn("Found City with Id 0 " + cityPin);
-                //address = address + " " + cityPin;
+                address += address.length() > 0 ? "\n" + cityname : cityname;
             }
-            if (stateid == 0){
+            //if (stateid == 0){
                 //logger.warn("Found State with Id 0 " + datacolumns[11]);
                 //address = address + " " + datacolumns[11];
-            }
+            //}
+
+            invoiceaddress += institute.length() > 0 ? "\n" + institute.trim() : "";
+            invoiceaddress += invoiceaddress.length() > 0 ? "\n" + address.trim() :  address;
+
             int subscriberid = this.insertSubscriber(
                    "HONFEL",
                     name,

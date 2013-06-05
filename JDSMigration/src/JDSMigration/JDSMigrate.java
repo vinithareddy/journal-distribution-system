@@ -54,6 +54,7 @@ public class JDSMigrate {
     private boolean MIGRATE_RESOEB = MIGRATE_ALL && true;
     private boolean MIGRATE_LIFE_MEM = MIGRATE_ALL && true;
     private boolean MIGRATE_HON_MEM2 = MIGRATE_ALL && true;
+    private boolean MIGRATE_PATRO = MIGRATE_ALL && true;
 
     private boolean CIRCULATION_FIGURES = MIGRATE_ALL && true;
 
@@ -183,6 +184,10 @@ public class JDSMigrate {
         if(_jdsmigrate.MIGRATE_HON_MEM2){
             HON_MEM2 honmem = new HON_MEM2();
             honmem.Migrate();
+        }
+        if(_jdsmigrate.MIGRATE_PATRO){
+            PATRO patro = new PATRO();
+            patro.Migrate();
         }
         if (_jdsmigrate.CIRCULATION_FIGURES) {
             circulationFigures _circulationFigures = new circulationFigures();
