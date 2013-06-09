@@ -1004,7 +1004,7 @@ public class MigrationBase implements IMigrate {
 
         pst_insert_subscriber.setString(++paramindex, subtypeCode);
         pst_insert_subscriber.setString(++paramindex, nextSubscriberNumber);
-        pst_insert_subscriber.setString(++paramindex, SubscriberName);
+        pst_insert_subscriber.setString(++paramindex, SubscriberName.trim());
 
         pst_insert_subscriber.setString(++paramindex, department);
         pst_insert_subscriber.setString(++paramindex, institution);

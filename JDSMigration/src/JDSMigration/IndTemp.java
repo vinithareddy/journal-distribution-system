@@ -76,7 +76,7 @@ public class IndTemp extends MigrationBase {
                 break;
             }
 
-            String subscriberName = datacolumns[7];
+            String subscriberName = datacolumns[7].trim();
             String subscriberNumber = datacolumns[2];
 
             if(subscriberName == null || subscriberName.length() ==0){
@@ -109,7 +109,7 @@ public class IndTemp extends MigrationBase {
             String email = datacolumns[55];
             String phone = datacolumns[56];
             String state = "";
-            
+
             if(email.isEmpty()){
                 email = datacolumns[3];
             }

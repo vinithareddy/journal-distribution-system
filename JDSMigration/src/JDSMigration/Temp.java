@@ -74,7 +74,7 @@ public class Temp extends MigrationBase {
             }
 
             String subscriberNumber = datacolumns[2];
-            String subscriberName = datacolumns[7];
+            String subscriberName = datacolumns[7].trim();
             if (subscriberName == null || subscriberName.length() == 0) {
                 // if there is no subscriber name we skip the record
                 logger.error("No subscriber name for subscriber:" + subscriberNumber + " at row no: " + excelRow);
