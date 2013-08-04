@@ -1,4 +1,4 @@
-USE jds;
+USE evitaran;
 
 truncate table subscription_rates;
 ALTER TABLE subscription_rates AUTO_INCREMENT = 1;

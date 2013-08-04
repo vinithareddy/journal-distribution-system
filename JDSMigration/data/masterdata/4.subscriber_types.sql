@@ -1,4 +1,4 @@
-USE jds;
+USE evitaran;
 
 truncate table subscriber_type;
 ALTER TABLE subscriber_type AUTO_INCREMENT = 1;

@@ -1,4 +1,4 @@
-USE jds;
+USE evitaran;
 
 truncate table countries;
 ALTER TABLE countries AUTO_INCREMENT = 1;

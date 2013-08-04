@@ -170,6 +170,9 @@ public class Subscription extends MigrationBase {
                 continue;
             }
 
+            if ("9492".equals(this.subscriberNumber)) {
+                logger.debug(this.subscriberNumber);
+            }
             // Get the inward number
             int inwardId = 0;
             String inwardNumber = corrdatacolumns[2];

@@ -9,7 +9,7 @@ import org.apache.log4j.Logger;
 
 public class Database {
 
-    private String JDS_DATABASE = "jds";
+    private String JDS_DATABASE = "evitaran";
     private String JDS_DATABASE_HOST = "localhost";
     private String JDS_USER = "root";
     private String JDS_PASSWORD = "root";

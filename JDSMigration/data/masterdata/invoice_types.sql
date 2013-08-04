@@ -1,4 +1,4 @@
-USE jds;
+USE evitaran;
 
 truncate table `invoice_types`;
 ALTER TABLE `invoice_types` AUTO_INCREMENT = 1;

@@ -1,4 +1,4 @@
-USE jds;
+USE evitaran;
 
 truncate table states;
 ALTER TABLE states AUTO_INCREMENT = 1;

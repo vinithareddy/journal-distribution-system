@@ -1,4 +1,4 @@
-USE jds;
+USE evitaran;
 
 truncate table cities;
 ALTER TABLE cities AUTO_INCREMENT = 1;

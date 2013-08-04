@@ -1,4 +1,4 @@
-USE jds;
+USE evitaran;
 
 truncate table year;
 ALTER TABLE year AUTO_INCREMENT = 1;

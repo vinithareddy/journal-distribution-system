@@ -1,4 +1,4 @@
-USE jds;
+USE evitaran;
 
 truncate table journals;
 ALTER TABLE journals AUTO_INCREMENT = 1;
