@@ -98,7 +98,7 @@ public class PATRO extends MigrationBase{
                 if(subscription_id > 0){
                     boolean isSuccess = this.insertSubscriptionDetails(
                             subscription_id,
-                            10, //jgroup id for resonance
+                            6, //jgroup id for BMS
                             copies, //copies
                             Calendar.getInstance().get(Calendar.YEAR), //start year
                             1, //start month
