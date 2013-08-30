@@ -22,7 +22,7 @@ public class JDSMigrate {
     private static final Logger logger = Logger.getLogger(JDSMigrate.class);
 
     // set this to override all other migration flags
-    private boolean MIGRATE_ALL = false;
+    private boolean MIGRATE_ALL = true;
 
     private boolean INIT_MASTER_DATA = true;
 
@@ -52,9 +52,9 @@ public class JDSMigrate {
     //private boolean MIGRATE_RES = MIGRATE_ALL || false;
     private boolean MIGRATE_RESOCOMP = MIGRATE_ALL && true;
     private boolean MIGRATE_RESOEB = MIGRATE_ALL && true;
-    private boolean MIGRATE_LIFE_MEM = MIGRATE_ALL || true;
-    private boolean MIGRATE_HON_MEM2 = MIGRATE_ALL || true;
-    private boolean MIGRATE_PATRO = MIGRATE_ALL || true;
+    private boolean MIGRATE_LIFE_MEM = MIGRATE_ALL && true;
+    private boolean MIGRATE_HON_MEM2 = MIGRATE_ALL && true;
+    private boolean MIGRATE_PATRO = MIGRATE_ALL && true;
 
     private boolean CIRCULATION_FIGURES = MIGRATE_ALL && true;
 

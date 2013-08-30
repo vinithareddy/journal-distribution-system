@@ -161,7 +161,7 @@ public class Subscription extends MigrationBase {
                         this.subscriberID = subscriberId;
                         subscriberid_cache.put(this.subscriberNumber.toString(), subscriberId);
                     } catch (SQLException e) {
-                        logger.fatal("No Subscriber ID found for Subscriber Number " + datacolumns[0] + " in Subscriber DB Table. Row No: " + (excelRowNumber));
+                        logger.fatal("No Subscriber ID found for Subscriber Number " + datacolumns[0] + " in Subscriber DB Table. Row No: " + (excelRowNumber) + " Sub No mentioned exists in JNLS but does not exist in TEMP or INDTEMP");
                         continue;
                     }
                 }

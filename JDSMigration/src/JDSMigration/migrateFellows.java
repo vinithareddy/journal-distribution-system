@@ -203,6 +203,7 @@ public class migrateFellows extends MigrationBase {
              }
              */
 
+            //System.out.println("Fellow - Sub No:" + insertedSubscribers);
             if (getTotalNoOfCopiesFellows(datacolumns) > 0) {
                 /*----------------------------------------------------------------*/
                 /*---Insert Subscription ---*/
@@ -298,6 +299,7 @@ public class migrateFellows extends MigrationBase {
         int[] jrnlArr = {37, 38, 39, 40, 41, 42, 43, 44, 45};   //Data Columns frm excel
         for (int j = 0; j < jrnlArr.length; j++) {
             if (!datacolumns[jrnlArr[j]].equalsIgnoreCase("0") && !datacolumns[jrnlArr[j]].isEmpty()) {
+                //System.out.println("Column: " + jrnlArr[j] + " has data " + datacolumns[jrnlArr[j]]);
                 noCopies = noCopies + Integer.parseInt(datacolumns[jrnlArr[j]]);
             }
         }
