@@ -66,6 +66,7 @@ insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`perio
 insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (61,10,11,2013,5,1000);
 insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (62,11,11,2013,3,1750);
 insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (63,11,11,2013,5,3000);
+
 insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (64,11,10,2012,1,10000);
 insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (65,1,8,2012,1,750);
 insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (66,2,8,2012,1,300);
@@ -614,6 +615,7 @@ insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`perio
 insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (609,9,14,2009,1,0);
 insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (610,10,14,2009,1,0);
 insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (611,11,14,2009,1,0);
+
 insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (612,1,9,2013,2,1500);
 insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (613,1,9,2013,3,2250);
 insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (614,2,9,2013,2,600);
@@ -640,5 +642,99 @@ insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`perio
 insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (633,10,11,2013,1,250);
 insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (634,11,12,2013,1,5500);
 insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (635,11,13,2013,1,16500);
+
+/* 2014 subscriber */
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (636,11,10,2014,1,10000);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (637,12,10,2014,1,13000);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (638,13,10,2014,1,3300);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (639,10,10,2014,2,900);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (640,10,10,2014,3,1300);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (641,10,10,2014,5,2000);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (642,11,10,2014,2,18000);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (643,11,10,2014,3,26000);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (644,11,10,2014,5,44000);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (645,1,8,2014,1,750);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (646,2,8,2014,1,300);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (647,3,8,2014,1,300);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (648,4,8,2014,1,400);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (649,5,8,2014,1,400);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (650,6,8,2014,1,400);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (651,7,8,2014,1,400);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (652,8,8,2014,1,400);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (653,9,8,2014,1,300);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (654,10,8,2014,1,500);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (655,11,8,2014,1,4000);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (656,12,8,2014,1,7000);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (657,13,8,2014,1,3300);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (658,10,8,2014,2,900);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (659,10,8,2014,3,1300);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (660,10,8,2014,5,2000);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (661,11,8,2014,2,7500);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (662,11,8,2014,3,10000);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (663,11,8,2014,5,16000);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (664,1,9,2014,1,750);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (665,2,9,2014,1,300);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (666,3,9,2014,1,300);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (667,4,9,2014,1,400);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (668,5,9,2014,1,400);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (669,6,9,2014,1,400);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (670,7,9,2014,1,400);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (671,8,9,2014,1,400);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (672,9,9,2014,1,300);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (673,10,9,2014,1,500);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (674,11,9,2014,1,1500);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (675,12,9,2014,1,4800);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (676,13,9,2014,1,3300);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (678,10,9,2014,2,900);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (679,10,9,2014,3,1300);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (680,10,9,2014,5,2000);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (681,11,9,2014,2,2250);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (682,11,9,2014,3,3500);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (683,11,9,2014,5,6000);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (684,1,11,2014,2,700);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (685,2,11,2014,2,400);
+
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (686,3,11,2014,2,400);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (687,4,11,2014,2,500);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (688,5,11,2014,2,500);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (689,6,11,2014,2,500);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (690,7,11,2014,2,500);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (691,8,11,2014,2,500);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (692,9,11,2014,2,400);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (693,10,11,2014,2,400);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (694,11,11,2014,2,1250);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (695,10,11,2014,3,650);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (696,10,11,2014,5,1000);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (697,11,11,2014,3,1750);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (698,11,11,2014,5,3000);
+
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (699,1,9,2014,2,1500);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (700,1,9,2014,3,2250);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (701,2,9,2014,2,600);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (702,2,9,2014,3,900);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (703,3,9,2014,2,600);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (704,3,9,2014,3,900);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (705,4,9,2014,2,800);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (706,4,9,2014,3,1200);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (707,5,9,2014,2,800);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (708,5,9,2014,3,1200);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (709,6,9,2014,2,800);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (710,6,9,2014,3,1200);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (711,7,9,2014,2,800);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (712,7,9,2014,3,1200);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (713,8,9,2014,2,800);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (714,8,9,2014,3,1200);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (715,9,9,2014,2,600);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (716,9,9,2014,3,900);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (717,11,17,2014,10,50000);
+
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (718,11,16,2014,50,7500);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (719,11,17,2014,50,7500);
+
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (720,10,11,2014,1,250);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (721,11,12,2014,1,5500);
+insert into `subscription_rates`(`id`,`journalGroupId`,`subtypeId`,`year`,`period`,`rate`) values (722,11,13,2014,1,16500);
+
+
 
 COMMIT;
