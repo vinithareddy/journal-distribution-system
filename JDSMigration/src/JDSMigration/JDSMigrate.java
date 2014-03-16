@@ -22,41 +22,41 @@ public class JDSMigrate {
     private static final Logger logger = Logger.getLogger(JDSMigrate.class);
 
     // set this to override all other migration flags
-    private boolean MIGRATE_ALL = true;
+    private final boolean MIGRATE_ALL = true;
 
-    private boolean INIT_MASTER_DATA = true;
+    private final boolean INIT_MASTER_DATA = true;
 
-    private boolean MIGRATE_INWARD = MIGRATE_ALL && true;
-    private boolean MIGRATE_SUBSCRIBER = MIGRATE_ALL && true;
-    private boolean MIGRATE_SUBSCRIPTION =  MIGRATE_ALL && true;
-    private boolean MIGRATE_CORR = MIGRATE_ALL && true;
-    private boolean MIGRATE_FELLOWS = MIGRATE_ALL && true;
-    private boolean MIGRATE_ASSOCIATES = MIGRATE_ALL && true;
-    private boolean MIGRATE_EBALL = MIGRATE_ALL && true;
-    private boolean MIGRATE_HONFEL = MIGRATE_ALL && true;
-    private boolean MIGRATE_JGRANT = MIGRATE_ALL && true;
-    private boolean MIGRATE_EXCHANGE = MIGRATE_ALL && true;
+    private final boolean MIGRATE_INWARD = MIGRATE_ALL && true;
+    private final boolean MIGRATE_SUBSCRIBER = MIGRATE_ALL && true;
+    private final boolean MIGRATE_SUBSCRIPTION =  MIGRATE_ALL && true;
+    private final boolean MIGRATE_CORR = MIGRATE_ALL && true;
+    private final boolean MIGRATE_FELLOWS = MIGRATE_ALL && true;
+    private final boolean MIGRATE_ASSOCIATES = MIGRATE_ALL && true;
+    private final boolean MIGRATE_EBALL = MIGRATE_ALL && true;
+    private final boolean MIGRATE_HONFEL = MIGRATE_ALL && true;
+    private final boolean MIGRATE_JGRANT = MIGRATE_ALL && true;
+    private final boolean MIGRATE_EXCHANGE = MIGRATE_ALL && true;
 
-    private boolean CURRMEM = MIGRATE_ALL && true;
-    private boolean CURTWAS = MIGRATE_ALL && true;
+    private final boolean CURRMEM = MIGRATE_ALL && true;
+    private final boolean CURTWAS = MIGRATE_ALL && true;
     //private boolean MIGRATE_CURR = MIGRATE_ALL || false;
-    private boolean MIGRATE_CURRIEX = MIGRATE_ALL && true;
-    private boolean MIGRATE_CLIFESUB = MIGRATE_ALL && true;
-    private boolean MIGRATE_CURRWC = MIGRATE_ALL && true;
-    private boolean MIGRATE_CURREB = MIGRATE_ALL && true;
-    private boolean MIGRATE_CURRGRAN = MIGRATE_ALL && true;
-    private boolean MIGRATE_CURRFEX = MIGRATE_ALL && true;
-    private boolean MIGRATE_HON = MIGRATE_ALL && true;
-    private boolean MIGRATE_MEMBER = MIGRATE_ALL && true;
+    private final boolean MIGRATE_CURRIEX = MIGRATE_ALL && true;
+    private final boolean MIGRATE_CLIFESUB = MIGRATE_ALL && true;
+    private final boolean MIGRATE_CURRWC = MIGRATE_ALL && true;
+    private final boolean MIGRATE_CURREB = MIGRATE_ALL && true;
+    private final boolean MIGRATE_CURRGRAN = MIGRATE_ALL && true;
+    private final boolean MIGRATE_CURRFEX = MIGRATE_ALL && true;
+    private final boolean MIGRATE_HON = MIGRATE_ALL && true;
+    private final boolean MIGRATE_MEMBER = MIGRATE_ALL && true;
 
     //private boolean MIGRATE_RES = MIGRATE_ALL || false;
-    private boolean MIGRATE_RESOCOMP = MIGRATE_ALL && true;
-    private boolean MIGRATE_RESOEB = MIGRATE_ALL && true;
-    private boolean MIGRATE_LIFE_MEM = MIGRATE_ALL && true;
-    private boolean MIGRATE_HON_MEM2 = MIGRATE_ALL && true;
-    private boolean MIGRATE_PATRO = MIGRATE_ALL && true;
+    private final boolean MIGRATE_RESOCOMP = MIGRATE_ALL && true;
+    private final boolean MIGRATE_RESOEB = MIGRATE_ALL && true;
+    private final boolean MIGRATE_LIFE_MEM = MIGRATE_ALL && true;
+    private final boolean MIGRATE_HON_MEM2 = MIGRATE_ALL && true;
+    private final boolean MIGRATE_PATRO = MIGRATE_ALL && true;
 
-    private boolean CIRCULATION_FIGURES = MIGRATE_ALL && true;
+    private final boolean CIRCULATION_FIGURES = MIGRATE_ALL && true;
 
 
     public static void main(String[] args) throws IOException, FileNotFoundException,
@@ -70,16 +70,20 @@ public class JDSMigrate {
         if (_jdsmigrate.INIT_MASTER_DATA) {
             MigrationBase _migrationBase = new MigrationBase();
             _migrationBase.executeMasterDataScripts();
-            JDSMigrate.logger.fatal("Setup master data and trucated transaction data");
+            JDSMigrate.logger.info("Setup master data and trucated transaction data");
         }
 
         if (_jdsmigrate.MIGRATE_INWARD) {
             OldInward _oldinward = new OldInward("INW2009.txt");
             _oldinward.Migrate();
-            String[] inwardFiles = {"INW2010.txt", "INW2011.txt", "INW2012.txt"};
+            String[] inwardFiles = {"INW2010.txt", 
+                "INW2011.txt", 
+                "INW2012.txt",
+                "INW2013.txt"
+            };
             Inward _inward;
-            for (int i = 0; i < inwardFiles.length; i++) {
-                _inward = new Inward(inwardFiles[i]);
+            for (String inwardFile : inwardFiles) {
+                _inward = new Inward(inwardFile);
                 _inward.Migrate();
             }
             NewInward newInward = new NewInward();
