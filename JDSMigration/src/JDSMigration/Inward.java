@@ -116,13 +116,14 @@ public class Inward extends MigrationBase {
                 langcode = 2;
             }
 
+            String inwardNumber = columns[11] + "-" + String.format("%05d", Integer.parseInt(columns[0]));            
+            
             // if the from field is null skip the record
             if(From == null || From.isEmpty()){
-                logger.error("From field is empty, record skipped, rownumber = " + totalRows);
-                continue;
+                logger.debug(inwardNumber + " :From field is empty, record skipped, rownumber = " + totalRows);
+                //continue;
             }
 
-            String inwardNumber = columns[11] + "-" + String.format("%05d", Integer.parseInt(columns[0]));
 
             // replace all non word characters
             City = City.replaceAll("'", "");
@@ -240,9 +241,14 @@ public class Inward extends MigrationBase {
             } else if(inwardPurpose.contains("fellowship")){
                 inwardPurpose = "New Subscription";
             }else {
-                logger.error("Could not find inward reason " + inwardPurpose + " for inward " + inwardNumber);
+                if(!inwardPurpose.isEmpty()) {
+                    remarks = (remarks == null) ? inwardPurpose : remarks + inwardPurpose;
+                    logger.debug("Could not find inward reason " + inwardPurpose + " for inward " + inwardNumber + ". Added to remarks");
+                } else {
+                    logger.error("Could not find inward reason " + inwardPurpose + " for inward " + inwardNumber);
+                }
                 //remarks = inwardPurpose;
-                remarks = (remarks == null) ? inwardPurpose : remarks + inwardPurpose;
+
                 inwardPurpose = "Others";
                 //continue;
             }

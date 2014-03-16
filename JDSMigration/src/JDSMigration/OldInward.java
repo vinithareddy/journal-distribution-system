@@ -112,8 +112,8 @@ public class OldInward extends MigrationBase {
 
                 // if the from field is null skip the record
                 if (From == null || From.isEmpty()) {
-                    logger.error("From field is empty, record skipped, rownumber = " + totalRows);
-                    continue;
+                    logger.debug(inwardNumber + "From field is empty, record skipped, rownumber = " + totalRows);
+                    //continue;
                 }
 
                 // replace all non word characters
@@ -232,11 +232,15 @@ public class OldInward extends MigrationBase {
                 } else if (inwardPurpose.contains("fellowship")) {
                     inwardPurpose = "New Subscription";
                 } else {
-                    logger.error("Could not find inward reason " + inwardPurpose + " for inward " + inwardNumber);
+                    if(!inwardPurpose.isEmpty()) {
+                        remarks = (remarks == null) ? inwardPurpose : remarks + inwardPurpose;
+                        logger.debug("Could not find inward reason " + inwardPurpose + " for inward " + inwardNumber + ". Added to remarks");
+                    } else {
+                        logger.error("Could not find inward reason " + inwardPurpose + " for inward " + inwardNumber);
+                    }
                     //remarks = inwardPurpose;
-                    remarks = (remarks == null) ? inwardPurpose : remarks + inwardPurpose;
-                    inwardPurpose = "Others";
-                    //continue;
+                    
+                    inwardPurpose = "Others";                                        
                 }
                 pst_insert.setString(++paramIndex, inwardPurpose);
 

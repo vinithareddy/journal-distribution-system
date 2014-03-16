@@ -42,6 +42,18 @@ insert into `journal_details`(`journals_id`,`year`,`pages`,`issues`,`page_size`,
 insert into `journal_details`(`journals_id`,`year`,`pages`,`issues`,`page_size`,`no_of_volumes`) values (10,2013,1200,12,'A4',1);
 insert into `journal_details`(`journals_id`,`year`,`pages`,`issues`,`page_size`,`no_of_volumes`) values (11,2013,3000,24,'Other',2);
 
+insert into `journal_details`(`journals_id`,`year`,`pages`,`issues`,`page_size`,`no_of_volumes`) values (1,2014,1800,12,'A4',2);
+insert into `journal_details`(`journals_id`,`year`,`pages`,`issues`,`page_size`,`no_of_volumes`) values (2,2014,400,4,'A4',1);
+insert into `journal_details`(`journals_id`,`year`,`pages`,`issues`,`page_size`,`no_of_volumes`) values (3,2014,400,4,'A4',1);
+insert into `journal_details`(`journals_id`,`year`,`pages`,`issues`,`page_size`,`no_of_volumes`) values (4,2014,600,6,'Other',1);
+insert into `journal_details`(`journals_id`,`year`,`pages`,`issues`,`page_size`,`no_of_volumes`) values (5,2014,600,6,'Other',1);
+insert into `journal_details`(`journals_id`,`year`,`pages`,`issues`,`page_size`,`no_of_volumes`) values (6,2014,600,6,'Other',1);
+insert into `journal_details`(`journals_id`,`year`,`pages`,`issues`,`page_size`,`no_of_volumes`) values (7,2014,600,6,'A4',1);
+insert into `journal_details`(`journals_id`,`year`,`pages`,`issues`,`page_size`,`no_of_volumes`) values (8,2014,500,4,'Other',1);
+insert into `journal_details`(`journals_id`,`year`,`pages`,`issues`,`page_size`,`no_of_volumes`) values (9,2014,400,3,'Other',1);
+insert into `journal_details`(`journals_id`,`year`,`pages`,`issues`,`page_size`,`no_of_volumes`) values (10,2014,1200,12,'A4',1);
+insert into `journal_details`(`journals_id`,`year`,`pages`,`issues`,`page_size`,`no_of_volumes`) values (11,2014,3000,24,'Other',2);
+
 truncate table journal_volume_details;
 ALTER TABLE journal_volume_details AUTO_INCREMENT = 1;
 
@@ -72,3 +84,17 @@ insert into `journal_volume_details`(`journal_details_id`, `volume_number`,`star
 insert into `journal_volume_details`(`journal_details_id`, `volume_number`,`start_month`) values (21,18,'January');
 insert into `journal_volume_details`(`journal_details_id`, `volume_number`,`start_month`) values (22,104,'January');
 insert into `journal_volume_details`(`journal_details_id`, `volume_number`,`start_month`) values (22,105,'July');
+
+insert into `journal_volume_details`(`journal_details_id`, `volume_number`,`start_month`) values (23,82,'January');
+insert into `journal_volume_details`(`journal_details_id`, `volume_number`,`start_month`) values (23,83,'July');
+insert into `journal_volume_details`(`journal_details_id`, `volume_number`,`start_month`) values (24,35,'January');
+insert into `journal_volume_details`(`journal_details_id`, `volume_number`,`start_month`) values (25,124,'January');
+insert into `journal_volume_details`(`journal_details_id`, `volume_number`,`start_month`) values (26,123,'January');
+insert into `journal_volume_details`(`journal_details_id`, `volume_number`,`start_month`) values (27,126,'January');
+insert into `journal_volume_details`(`journal_details_id`, `volume_number`,`start_month`) values (28,37,'January');
+insert into `journal_volume_details`(`journal_details_id`, `volume_number`,`start_month`) values (29,39,'January');
+insert into `journal_volume_details`(`journal_details_id`, `volume_number`,`start_month`) values (30,39,'January');
+insert into `journal_volume_details`(`journal_details_id`, `volume_number`,`start_month`) values (31,93,'January');
+insert into `journal_volume_details`(`journal_details_id`, `volume_number`,`start_month`) values (32,19,'January');
+insert into `journal_volume_details`(`journal_details_id`, `volume_number`,`start_month`) values (33,106,'January');
+insert into `journal_volume_details`(`journal_details_id`, `volume_number`,`start_month`) values (33,107,'July');
