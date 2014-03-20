@@ -631,6 +631,7 @@ public class MigrationBase implements IMigrate {
         pst_insert_subscription_no_dt = this.conn.prepareStatement(sql_insert_subscription_no_dt, Statement.RETURN_GENERATED_KEYS);
         pst_insert_subscription_no_dt_inactive = this.conn.prepareStatement(sql_insert_subscription_no_dt_inactive, Statement.RETURN_GENERATED_KEYS);
         pst_insert_subscription_dtls = this.conn.prepareStatement(sql_insert_subscriptiondetails);
+        pst_insert_subscription_dtls_inactive = this.conn.prepareStatement(sql_insert_subscriptiondetails_inactive);
         pst_insert_subscriber = this.conn.prepareStatement(sql_insert_subscriber_dt, Statement.RETURN_GENERATED_KEYS);
         pst_insert_city = this.conn.prepareStatement(insert_city, Statement.RETURN_GENERATED_KEYS);
         pst_insert_agent = this.conn.prepareStatement(insert_agent, Statement.RETURN_GENERATED_KEYS);
