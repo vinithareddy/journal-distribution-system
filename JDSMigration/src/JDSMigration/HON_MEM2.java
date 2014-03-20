@@ -101,9 +101,9 @@ public class HON_MEM2 extends MigrationBase{
                     null);
             if(subscriberid > 0){
                 logger.info("Successfully inserted subsciber data for:" + name);
-                int subscription_id = this.insertSubscription(subscriberid);
+                int subscription_id = this.insertSubscriptionInactive(subscriberid);
                 if(subscription_id > 0){
-                    boolean isSuccess = this.insertSubscriptionDetails(
+                    boolean isSuccess = this.insertSubscriptionDetailsInactive(
                             subscription_id,
                             6, //jgroup id for BMS
                             copies, //copies

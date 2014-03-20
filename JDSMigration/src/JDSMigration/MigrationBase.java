@@ -82,6 +82,8 @@ public class MigrationBase implements IMigrate {
     //Insert Statement for Subscription Details
     public String sql_insert_subscriptiondetails = "insert into subscriptiondetails(subscriptionID, "
             + "journalGroupID, copies, startYear, startMonth, endYear, endMonth, journalPriceGroupID)values(?,?,?,?,?,?,?,?)";
+    public String sql_insert_subscriptiondetails_inactive = "insert into subscriptiondetails(subscriptionID, "
+            + "journalGroupID, copies, startYear, startMonth, endYear, endMonth, journalPriceGroupID,active)values(?,?,?,?,?,?,?,?,?)";    
 //--------------------------------------------------------------------------------------------
     public String sql_insert_subscriber = "insert IGNORE into subscriber(subtype, subscriberNumber"
             + ",subscriberName, department"
@@ -99,6 +101,7 @@ public class MigrationBase implements IMigrate {
     private PreparedStatement pst_insert_subscription_no_dt = null;
     private PreparedStatement pst_insert_subscription_no_dt_inactive = null;
     private PreparedStatement pst_insert_subscription_dtls = null;
+    private PreparedStatement pst_insert_subscription_dtls_inactive = null;
     private PreparedStatement pst_insert_subscriber = null;
     private PreparedStatement pst_insert_city = null;
     private PreparedStatement pst_insert_agent = null;
@@ -1094,6 +1097,35 @@ public class MigrationBase implements IMigrate {
     public int insertSubscription(int subscriberId) throws SQLException {
         int paramIndex = 0;
         int sub_id;
+        pst_insert_subscription_no_dt.setInt(++paramIndex, subscriberId);
+        pst_insert_subscription_no_dt.setInt(++paramIndex, 0);
+
+        //pst_insert_subscription_no_dt.setBoolean(++paramIndex, true);
+        //pst_insert_subscription_no_dt.setFloat(++paramIndex, 0);
+        //pst_insert_subscription_no_dt.setFloat(++paramIndex, 0);
+
+        //Inserting the record in Subscription Table
+        int ret = pst_insert_subscription_no_dt.executeUpdate();
+        if (ret == 1) {
+            //Getting back the subsciption Id
+            ResultSet rs_sub = pst_insert_subscription_no_dt.getGeneratedKeys();
+            rs_sub.first();
+            sub_id = rs_sub.getInt(1);  //return subscription id
+            pst_insert_legacy_subscription_info.setInt(1, sub_id);
+            pst_insert_legacy_subscription_info.setFloat(2, 0);
+            pst_insert_legacy_subscription_info.setFloat(3, 0);
+            pst_insert_legacy_subscription_info.setString(4, "");
+            pst_insert_legacy_subscription_info.setString(5, null);
+            pst_insert_legacy_subscription_info.executeUpdate();
+            return sub_id;
+        } else {
+            throw (new SQLException("Failed to add subscription"));
+        }
+    }
+    
+        public int insertSubscriptionInactive(int subscriberId) throws SQLException {
+        int paramIndex = 0;
+        int sub_id;
         pst_insert_subscription_no_dt_inactive.setInt(++paramIndex, subscriberId);
         pst_insert_subscription_no_dt_inactive.setInt(++paramIndex, 0);
         pst_insert_subscription_no_dt_inactive.setInt(++paramIndex, 0);
@@ -1119,7 +1151,6 @@ public class MigrationBase implements IMigrate {
         } else {
             throw (new SQLException("Failed to add subscription"));
         }
-
     }
 
     public int insertSubscription(int subscriberId, int inwardID) throws SQLException {
@@ -1174,6 +1205,31 @@ public class MigrationBase implements IMigrate {
         }
         throw (new SQLException("Failed to add subscription details"));
     }
+    
+    public boolean insertSubscriptionDetailsInactive(int subscriptionID, int jrnlGrpId, int noCopies,
+            int startYr, int startMonth, int endYr, int endMonth, int priceGroupID) throws SQLException {
+        int paramIndex = 0;
+        int active=0;
+        pst_insert_subscription_dtls_inactive = this.conn.prepareStatement(sql_insert_subscriptiondetails_inactive);
+        pst_insert_subscription_dtls_inactive.setInt(++paramIndex, subscriptionID);
+        pst_insert_subscription_dtls_inactive.setInt(++paramIndex, jrnlGrpId);
+        pst_insert_subscription_dtls_inactive.setInt(++paramIndex, noCopies);
+        pst_insert_subscription_dtls_inactive.setInt(++paramIndex, startYr);
+        pst_insert_subscription_dtls_inactive.setInt(++paramIndex, startMonth);
+        pst_insert_subscription_dtls_inactive.setInt(++paramIndex, endYr);
+        pst_insert_subscription_dtls_inactive.setInt(++paramIndex, endMonth);
+        pst_insert_subscription_dtls_inactive.setInt(++paramIndex, priceGroupID);
+        pst_insert_subscription_dtls_inactive.setInt(++paramIndex, active);
+
+        //Inserting the record in Subscription Table
+        int retUpdStatus = this.db.executeUpdatePreparedStatement(pst_insert_subscription_dtls_inactive);
+
+        //Logging the inserting row
+        if (retUpdStatus == 1) {
+            return true;
+        }
+        throw (new SQLException("Failed to add subscription details"));
+    }    
 
     public void executeMasterDataScripts() throws IOException, SQLException {
         String files[] = new String[11];
