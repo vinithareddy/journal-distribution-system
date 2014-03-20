@@ -79,7 +79,7 @@ public class PATRO extends MigrationBase{
             invoiceaddress += invoiceaddress.length() > 0 ? "\n" + address.trim() :  address;
 
             int subscriberid = this.insertSubscriber(
-                   "HONFEL",
+                   "LSP",
                     name,
                     department,
                     institute,

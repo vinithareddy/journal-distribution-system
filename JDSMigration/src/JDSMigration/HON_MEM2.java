@@ -1,6 +1,6 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * 20-Mar-2014: Alok Modak: All subscriptions for these subscribers are inactive
+ * 
  */
 package JDSMigration;
 

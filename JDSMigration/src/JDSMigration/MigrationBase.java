@@ -73,6 +73,8 @@ public class MigrationBase implements IMigrate {
             + "values(?,?,?,?)";
     public String sql_insert_subscription_no_dt = "insert into subscription(subscriberID,inwardID)"
             + "values(?,?)";
+    public String sql_insert_subscription_no_dt_inactive = "insert into subscription(subscriberID,inwardID,active)"
+            + "values(?,?,?)";
     public String sql_insert_legacy_subscription_info = "insert into subscription_legacy(subscription_id,legacy_amount, legacy_balance, legacy_proforma_invoice_no, legacy_proforma_invoice_date) values (?, ?, ?, ?, ?)";
     public String sql_insert_invoice_legacy = "insert into invoice(invoiceNumber,subscriptionId,invoiceCreationDate,invoice_type_id,amount)values(?,?,?,?,?)";
     public String sql_insert_subscription_free_subs = "insert into subscription(subscriberID,inwardID) values(?,?)";
@@ -95,6 +97,7 @@ public class MigrationBase implements IMigrate {
 //--------------------------------------------------------------------------------------------
     private PreparedStatement pst_insert_subscription = null;
     private PreparedStatement pst_insert_subscription_no_dt = null;
+    private PreparedStatement pst_insert_subscription_no_dt_inactive = null;
     private PreparedStatement pst_insert_subscription_dtls = null;
     private PreparedStatement pst_insert_subscriber = null;
     private PreparedStatement pst_insert_city = null;
@@ -623,6 +626,7 @@ public class MigrationBase implements IMigrate {
 
         pst_insert_subscription = this.conn.prepareStatement(sql_insert_subscription, Statement.RETURN_GENERATED_KEYS);
         pst_insert_subscription_no_dt = this.conn.prepareStatement(sql_insert_subscription_no_dt, Statement.RETURN_GENERATED_KEYS);
+        pst_insert_subscription_no_dt_inactive = this.conn.prepareStatement(sql_insert_subscription_no_dt_inactive, Statement.RETURN_GENERATED_KEYS);
         pst_insert_subscription_dtls = this.conn.prepareStatement(sql_insert_subscriptiondetails);
         pst_insert_subscriber = this.conn.prepareStatement(sql_insert_subscriber_dt, Statement.RETURN_GENERATED_KEYS);
         pst_insert_city = this.conn.prepareStatement(insert_city, Statement.RETURN_GENERATED_KEYS);
@@ -1090,18 +1094,19 @@ public class MigrationBase implements IMigrate {
     public int insertSubscription(int subscriberId) throws SQLException {
         int paramIndex = 0;
         int sub_id;
-        pst_insert_subscription_no_dt.setInt(++paramIndex, subscriberId);
-        pst_insert_subscription_no_dt.setInt(++paramIndex, 0);
+        pst_insert_subscription_no_dt_inactive.setInt(++paramIndex, subscriberId);
+        pst_insert_subscription_no_dt_inactive.setInt(++paramIndex, 0);
+        pst_insert_subscription_no_dt_inactive.setInt(++paramIndex, 0);
 
         //pst_insert_subscription_no_dt.setBoolean(++paramIndex, true);
         //pst_insert_subscription_no_dt.setFloat(++paramIndex, 0);
         //pst_insert_subscription_no_dt.setFloat(++paramIndex, 0);
 
         //Inserting the record in Subscription Table
-        int ret = pst_insert_subscription_no_dt.executeUpdate();
+        int ret = pst_insert_subscription_no_dt_inactive.executeUpdate();
         if (ret == 1) {
             //Getting back the subsciption Id
-            ResultSet rs_sub = pst_insert_subscription_no_dt.getGeneratedKeys();
+            ResultSet rs_sub = pst_insert_subscription_no_dt_inactive.getGeneratedKeys();
             rs_sub.first();
             sub_id = rs_sub.getInt(1);  //return subscription id
             pst_insert_legacy_subscription_info.setInt(1, sub_id);
