@@ -53,6 +53,7 @@ public class JDSMigrate {
     private final boolean MIGRATE_RESOCOMP = MIGRATE_ALL && true;
     private final boolean MIGRATE_RESOEB = MIGRATE_ALL && true;
     private final boolean MIGRATE_LIFE_MEM = MIGRATE_ALL && true;
+    // Susbcriber is migrated but not the subscription
     private final boolean MIGRATE_HON_MEM2 = MIGRATE_ALL && true;
     private final boolean MIGRATE_PATRO = MIGRATE_ALL && true;
 
