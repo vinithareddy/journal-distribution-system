@@ -23,9 +23,9 @@
 <script type="text/javascript">
     $(document).ready(function() {
         $("#jMenu").jMenu({
-            ulWidth: 'auto',
+            ulWidth: 100,
             effects: {
-                effectSpeedOpen: 300,
+                effectSpeedOpen: 100,
                 effectTypeClose: 'slide'
             },
             animatedText: false
@@ -38,7 +38,7 @@
 <div id="menubar">
     <div id="menu">
         <ul id="jMenu">
-            <li><a href="home"><img style="height: 20px; width: 20px;" src="<%=contextPath%>/images/home.gif"/></a>
+            <li><a href="home"><img style="height: 10px; width: 10px;" src="<%=contextPath%>/images/home.gif"/></a>
             <li><a href="#">Inward</a>
                 <ul>
                     <li><a href="<%=contextPath + "/main?action=createinward"%>">Create</a></li>
