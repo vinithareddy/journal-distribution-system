@@ -12,13 +12,18 @@
 <%-- jquery ui --%>
 <link rel="stylesheet" type="text/css" media="screen" href="<%=request.getContextPath() + "/css/jquery/redmond/jquery.ui.theme.css"%>" />
 <link rel="stylesheet" type="text/css" media="screen" href="<%=request.getContextPath() + "/css/jquery/redmond/jquery-ui.css"%>" />
+<link rel="stylesheet" type="text/css" media="screen" href="<%=request.getContextPath() + "/js/jmenu/jmenu.css"%>"/>
 
 <%-- jquery grid --%>
 <script src="<%=request.getContextPath() + "/js/jquery/grid.locale-en.js"%>" type="text/javascript"></script>
 <script src="<%=request.getContextPath() + "/js/jquery/jquery.jqGrid.min.js"%>" type="text/javascript"></script>
+<script src="<%=request.getContextPath() + "/js/jquery/jquery.cookie.js"%>" type="text/javascript"></script>
 <link rel="stylesheet" type="text/css" media="screen" href="<%=request.getContextPath() + "/css/jquery/ui.jqgrid.css"%>"/>
 
 <script src="<%=request.getContextPath() + "/js/common.js"%>" type="text/javascript"></script>
 <script src="<%=request.getContextPath() + "/js/jdsconstants.js"%>" type="text/javascript"></script>
-<%-- jquery hot keys
-<script src="<%=request.getContextPath() + "/js/jquery/jquery.hotkeys.js"%>" type="text/javascript"></script> --%>
+
+<!--<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>-->
+
+
+<script src="<%=request.getContextPath() + "/js/jmenu/jMenu.jquery.min.js"%>" type="text/javascript"></script>
