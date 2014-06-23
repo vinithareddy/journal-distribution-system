@@ -1,0 +1,38 @@
+root {
+    display: block;
+}
+
+#addJournalBtnDiv{
+    float: left;
+    width: 45%;
+    margin-left: 10%;
+}
+
+#deleteJournalBtnDiv{
+    float: left;
+    width: 45%;
+
+}
+
+#subscriptionTotal{
+
+    float: right;
+    width: 40%;
+    margin-right: 20px;
+    text-align: right;
+}
+
+#journalName{
+    width: 480px;
+}
+
+#journalGroupContents{
+    float: left;
+    width: 100%;
+}
+
+#SubscriptionRightDiv{
+    width: 49%;
+    float: right;
+    padding: 5px;
+}

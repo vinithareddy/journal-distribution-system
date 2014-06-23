@@ -1,0 +1,49 @@
+/*
+    Document   : Style for Subtype related JSPs are defined here
+*/
+root {
+    display:block;
+}
+
+#generateBtnDiv{
+    float: left;
+    width: 10%;
+}
+
+#searchBtnDiv{
+    margin-left: 45%;
+    float: left;
+    width: 10%;
+}
+
+#generateEnableBtnDiv{
+    float: left;
+    width: 15%;
+}
+
+#searchEnableBtnDiv{
+    margin-left: 40%;
+    float: left;
+    width: 15%;
+}
+
+#printLabelBtnDiv{
+    margin-left: 30%;
+    float: left;
+    width: 10%;
+}
+
+#printStickerBtnDiv{
+
+    float: left;
+    width: 10%;
+}
+
+#cancelBtnDiv{
+    float: left;
+    width: 10%;
+}
+
+#singleActionBtnDiv{
+    text-align: center;
+}

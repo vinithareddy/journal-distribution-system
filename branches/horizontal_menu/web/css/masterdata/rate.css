@@ -1,0 +1,32 @@
+/*
+    Document   : Style for Subtype related JSPs are defined here
+*/
+root {
+    display:block;
+}
+
+
+#addBtnDiv{
+    margin-left: 45%;
+    float: left;
+    width: 10%;
+}
+
+
+#searchBtnDiv{
+    margin-left: 40%;
+    float: left;
+    width: 10%;
+}
+
+#addRateBtnDiv{
+    float: left;
+    width: 10%;
+}
+
+
+#cancelBtnDiv{
+    margin-left: 45%;
+    float: left;
+    width: 10%;
+}

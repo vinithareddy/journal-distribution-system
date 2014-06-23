@@ -1,0 +1,19 @@
+root {
+    display: block;
+}
+
+.subjectLine{
+
+    margin-left: 10px;
+    width: 100%;
+    float: left;
+    margin-top: 20px;
+}
+
+#subscriptionDetail{
+    width: 50%; float: left; margin: 20px 25%;
+}
+
+#letterDateSpan{
+    width: 100px;
+}

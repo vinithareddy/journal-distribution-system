@@ -1,0 +1,23 @@
+/*
+    Document   : Style for Journal related JSPs are defined here
+*/
+root {
+    display:block;
+}
+
+#searchBtnDiv{
+    margin-left: 40%;
+    float: left;
+    width: 10%;
+}
+
+#printBtnDiv{
+    margin-left: 30%;
+    float: left;
+    width: 10%;
+}
+
+#resetBtnDiv{
+    float: left;
+    width: 10%;
+}
