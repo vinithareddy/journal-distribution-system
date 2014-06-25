@@ -189,6 +189,10 @@
                         <li><a href="<%=contextPath + "/main?action=templates"%>">Templates</a></li>
                         <li><a href="<%=contextPath + "/main?action=help"%>">Help</a></li>
                     </ul>
+                    <ul>
+                        <li class="ldd_heading">About</li>
+                        <li>eVitaran v2.0</li>
+                    </ul>
                 </div>
             </li>
             <li style="float: right;" class="lockdown">

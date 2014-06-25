@@ -10,8 +10,7 @@
 <script src="<%=request.getContextPath() + "/js/jquery/jquery-ui-1.10.0.custom.min.js"%>" type="text/javascript"></script>
 
 <%-- jquery ui --%>
-<link rel="stylesheet" type="text/css" media="screen" href="<%=request.getContextPath() + "/css/jquery/redmond/jquery.ui.theme.css"%>" />
-<link rel="stylesheet" type="text/css" media="screen" href="<%=request.getContextPath() + "/css/jquery/redmond/jquery-ui.css"%>" />
+<link rel="stylesheet" type="text/css" media="screen" href="<%=request.getContextPath() + "/css/jquery/gray/jquery-ui-1.10.4.custom.min.css"%>" />
 <link rel="stylesheet" type="text/css" media="screen" href="<%=request.getContextPath() + "/css/menu.css"%>"/>
 
 <%-- jquery grid --%>
