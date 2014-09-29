@@ -23,6 +23,7 @@ excel.DefaultFilePath = datafolder_out
 files = Array("AS", _
 			  "CLIFESUB", _
               "CORR", _
+              "CORRF", _
               "CURREB", _
               "CURRFEX", _
               "CURRGRAN", _
